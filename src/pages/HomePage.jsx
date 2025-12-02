@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState, useCallback } from 'react';
 import {
   Button,
@@ -55,6 +54,11 @@ function HomePage() {
   // Dropdown options
   const [itemTypeOptions, setItemTypeOptions] = useState([]);
   const [itemNameOptions, setItemNameOptions] = useState([]);
+  const [itemNameFilterOptions, setItemNameFilterOptions] = useState([]);
+
+  // Filter state
+  const [itemTypeFilter, setItemTypeFilter] = useState('');
+  const [itemNameFilter, setItemNameFilter] = useState('');
 
   const loadSheetDataForReading = useCallback(() => {
     setLoading(true);
@@ -141,7 +145,7 @@ function HomePage() {
   const handleItemTypeChange = (event) => {
     const selectedType = event.target.value;
     setItemType(selectedType);
-    setItemName(''); 
+    setItemName('');
     setItemTypeId('');
     const relevantGoods = goodsIdData.filter(item => item.type === selectedType);
     const uniqueNames = [...new Set(relevantGoods.map(item => item.name))];
@@ -156,6 +160,24 @@ function HomePage() {
         setItemTypeId(selectedGood.id);
     }
   };
+
+  const handleItemTypeFilterChange = (event) => {
+      const selectedType = event.target.value;
+      setItemTypeFilter(selectedType);
+      setItemNameFilter(''); // Reset item name filter
+      if (selectedType) {
+          const relevantGoods = goodsIdData.filter(item => item.type === selectedType);
+          const uniqueNames = [...new Set(relevantGoods.map(item => item.name))];
+          setItemNameFilterOptions(uniqueNames);
+      } else {
+          setItemNameFilterOptions([]);
+      }
+  };
+
+  const handleItemNameFilterChange = (event) => {
+      setItemNameFilter(event.target.value);
+  };
+
 
   const handleTodayClick = (setter) => () => {
     setter(dayjs());
@@ -191,15 +213,19 @@ function HomePage() {
             body: JSON.stringify({ newRow }),
         });
 
-        const result = await response.json();
-
         if (!response.ok) {
-            // Re-throw the result to be caught by the catch block which now expects a detailed object
-            throw result;
+            let errorData;
+            try {
+                errorData = await response.json();
+            } catch (e) {
+                throw new Error(response.statusText || '從伺服器返回了一個未知的錯誤');
+            }
+            throw new Error(errorData.message || '從伺服器返回了一個錯誤');
         }
 
+        const result = await response.json();
+
         if (!result.success) {
-            // Also throw if the operation was not successful according to the backend logic
             throw new Error(result.message || '後端返回了一個失敗的回應。');
         }
 
@@ -216,14 +242,19 @@ function HomePage() {
 
     } catch (error) {
         setIsSubmitting(false);
-        // Log the detailed error object from the backend
         console.error('Error adding data:', error);
-        // Display the most specific error message available
-        const displayMessage = error.error?.message || error.message || '發生未知錯誤。';
-        setFormError(`無法新增物品：${displayMessage}`);
+        setFormError(`無法新增物品：${error.message}`);
     }
   };
 
+  const filteredInventoryData = inventoryData.filter(item => {
+    return (
+        (itemTypeFilter ? item.itemType === itemTypeFilter : true) &&
+        (itemNameFilter ? item.itemName === itemNameFilter : true)
+    );
+  });
+
+  const totalQuantity = filteredInventoryData.reduce((sum, item) => sum + (parseInt(item.quantity, 10) || 0), 0);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="zh-cn">
@@ -263,7 +294,8 @@ function HomePage() {
                             >
                                 {itemNameOptions.map(name => (
                                     <MenuItem key={name} value={name}>{name}</MenuItem>
-                                ))}
+                                ))
+                                }
                             </Select>
                         </FormControl>
                         <TextField
@@ -324,42 +356,79 @@ function HomePage() {
                     ) : error ? (
                         <Alert severity="error">{error}</Alert>
                     ) : (
-                    <TableContainer component={Paper} variant="outlined">
-                    <Table aria-label="inventory table">
-                        <TableHead>
-                        <TableRow>
-                            <TableCell align="center">ID</TableCell>
-                            <TableCell align="center">物品種類ID</TableCell>
-                            <TableCell align="center">物品種類</TableCell>
-                            <TableCell align="center">物品名稱</TableCell>
-                            <TableCell align="center">數量</TableCell>
-                            <TableCell align="center">單價</TableCell>
-                            <TableCell align="center">購買日期</TableCell>
-                            <TableCell align="center">到期日</TableCell>
-                        </TableRow>
-                        </TableHead>
-                        <TableBody>
-                        {inventoryData.length > 0 ? (
-                            inventoryData.map((item, index) => (
-                            <TableRow key={`${item.id}-${index}`}>
-                                <TableCell align="center">{formatId(item.id)}</TableCell>
-                                <TableCell align="center">{item.itemTypeId}</TableCell>
-                                <TableCell align="center">{item.itemType}</TableCell>
-                                <TableCell align="center">{item.itemName}</TableCell>
-                                <TableCell align="center">{item.quantity}</TableCell>
-                                <TableCell align="center">${item.unitPrice}</TableCell>
-                                <TableCell align="center">{item.purchaseDate ? dayjs(item.purchaseDate).format('YYYY-MM-DD') : 'N/A'}</TableCell>
-                                <TableCell align="center">{item.expirationDate ? dayjs(item.expirationDate).format('YYYY-MM-DD') : 'N/A'}</TableCell>
-                            </TableRow>
-                            ))
-                        ) : (
+                    <>
+                        <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
+                            <FormControl fullWidth>
+                                <InputLabel id="item-type-filter-label">篩選物品種類</InputLabel>
+                                <Select
+                                    labelId="item-type-filter-label"
+                                    value={itemTypeFilter}
+                                    label="篩選物品種類"
+                                    onChange={handleItemTypeFilterChange}
+                                >
+                                    <MenuItem value=""><em>全部</em></MenuItem>
+                                    {itemTypeOptions.map(type => (
+                                        <MenuItem key={type} value={type}>{type}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                            <FormControl fullWidth disabled={!itemTypeFilter}>
+                                <InputLabel id="item-name-filter-label">篩選物品名稱</InputLabel>
+                                <Select
+                                    labelId="item-name-filter-label"
+                                    value={itemNameFilter}
+                                    label="篩選物品名稱"
+                                    onChange={handleItemNameFilterChange}
+                                >
+                                    <MenuItem value=""><em>全部</em></MenuItem>
+                                    {itemNameFilterOptions.map(name => (
+                                        <MenuItem key={name} value={name}>{name}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Box>
+                        <TableContainer component={Paper} variant="outlined">
+                        <Table aria-label="inventory table">
+                            <TableHead>
                             <TableRow>
-                            <TableCell colSpan={8} align="center">目前沒有任何物品</TableCell>
+                                <TableCell align="center">ID</TableCell>
+                                <TableCell align="center">物品種類ID</TableCell>
+                                <TableCell align="center">物品種類</TableCell>
+                                <TableCell align="center">物品名稱</TableCell>
+                                <TableCell align="center">數量</TableCell>
+                                <TableCell align="center">單價</TableCell>
+                                <TableCell align="center">購買日期</TableCell>
+                                <TableCell align="center">到期日</TableCell>
                             </TableRow>
-                        )}
-                        </TableBody>
-                    </Table>
-                    </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                            {filteredInventoryData.length > 0 ? (
+                                filteredInventoryData.map((item, index) => (
+                                <TableRow key={`${item.id}-${index}`}>
+                                    <TableCell align="center">{formatId(item.id)}</TableCell>
+                                    <TableCell align="center">{item.itemTypeId}</TableCell>
+                                    <TableCell align="center">{item.itemType}</TableCell>
+                                    <TableCell align="center">{item.itemName}</TableCell>
+                                    <TableCell align="center">{item.quantity}</TableCell>
+                                    <TableCell align="center">${item.unitPrice}</TableCell>
+                                    <TableCell align="center">{item.purchaseDate ? dayjs(item.purchaseDate).format('YYYY-MM-DD') : 'N/A'}</TableCell>
+                                    <TableCell align="center">{item.expirationDate ? dayjs(item.expirationDate).format('YYYY-MM-DD') : 'N/A'}</TableCell>
+                                </TableRow>
+                                ))
+                            ) : (
+                                <TableRow>
+                                <TableCell colSpan={8} align="center">目前沒有任何物品符合篩選條件</TableCell>
+                                </TableRow>
+                            )}
+                            </TableBody>
+                        </Table>
+                        </TableContainer>
+                        <Box sx={{ mt: 2, p: 2, border: '1px solid', borderColor: 'grey.300', borderRadius: 1, textAlign: 'right' }}>
+                            <Typography variant="h6">
+                                總數量: {totalQuantity}
+                            </Typography>
+                        </Box>
+                    </>
                 )}
                 </Box>
             </Paper>
@@ -368,5 +437,4 @@ function HomePage() {
     </LocalizationProvider>
   );
 }
-
 export default HomePage;

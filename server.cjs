@@ -1,26 +1,38 @@
 const express = require('express');
 const { google } = require('googleapis');
 const cors = require('cors');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const SPREADSHEET_ID = '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
 const port = 3001;
 
-// Updated allowedOrigins to include all previous and current URLs
-const allowedOrigins = [
-  /https?:\/\/(\d+-)?firebase-household-1764379851790\.cluster-ikxjzjhlifcwuroomfkjrx437g\.cloudworkstations\.dev/,
-  /https?:\/\/(\d+-)?firebase-household-1764594951103\.cluster-ejd22kqny5htuv5dfowoyipt52\.cloudworkstations\.dev/,
-  'http://localhost:5173'
-];
-
+// More permissive CORS options to handle dynamic workspace URLs
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.some(regex => (typeof regex === 'string' ? regex === origin : regex.test(origin)))) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: /https?:\/\/.*\.cloudworkstations\.dev/,
+  credentials: true, // Allow cookies to be sent
+  optionsSuccessStatus: 200 // For legacy browser support
 };
+
+let credentials;
+const rawCredentials = process.env.GOOGLE_SERVICE_ACCOUNT_CREDENTIALS;
+
+if (!rawCredentials) {
+    console.error("FATAL ERROR: GOOGLE_SERVICE_ACCOUNT_CREDENTIALS environment variable not found.");
+    process.exit(1);
+}
+
+try {
+    credentials = JSON.parse(rawCredentials);
+    if (credentials.client_email) {
+        console.log(`[Gemini] ✅ Service Account Email Detected: ${credentials.client_email}`);
+        console.log(`[Gemini] 👉 Please make sure your Google Sheet ('${SPREADSHEET_ID}') is shared with this email address with 'Editor' permissions.`);
+    }
+} catch (error) {
+    console.error("FATAL ERROR: Could not parse GOOGLE_SERVICE_ACCOUNT_CREDENTIALS.", error.message);
+    process.exit(1);
+}
 
 const app = express();
 
@@ -36,30 +48,32 @@ app.post('/api/add-data', async (req, res) => {
         }
 
         const auth = new google.auth.GoogleAuth({
-            keyFile: 'credentials.json', 
+            credentials,
             scopes: ['https://www.googleapis.com/auth/spreadsheets'],
         });
 
         const sheets = google.sheets({ version: 'v4', auth });
 
-        await sheets.spreadsheets.values.append({
+        const response = await sheets.spreadsheets.values.append({
             spreadsheetId: SPREADSHEET_ID,
-            range: 'HouseInventory', 
+            range: 'HouseInventory!A1',
             valueInputOption: 'USER_ENTERED',
             resource: {
                 values: [newRow],
             },
         });
 
-        return res.status(200).json({ success: true });
+        return res.status(200).json({ success: true, data: response.data });
 
     } catch (error) {
         console.error('Error during /api/add-data processing:', error);
-        // Re-enabling detailed error response for debugging
         return res.status(500).json({
             success: false, 
-            message: 'An internal server error occurred.',
-            error: error.response ? error.response.data.error : { name: error.name, message: error.message, details: error.errors } 
+            message: 'An internal server error occurred processing the request.',
+            error: {
+                name: error.name,
+                message: error.message
+            }
         });
     }
 });

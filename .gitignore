@@ -1,7 +1,6 @@
 # Environments
 .env
 .env.*
-credentials.json
 !.env.example
 
 # Dependencies

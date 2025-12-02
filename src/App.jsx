@@ -1,12 +1,11 @@
 
-import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box } from "@mui/material";
 import HomePage from "./pages/HomePage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Box sx={{ width: '100vw', height: '100vh' }}>
             <Routes>
                 <Route path="/" element={<HomePage />} />
