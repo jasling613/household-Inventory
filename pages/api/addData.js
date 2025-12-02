@@ -23,10 +23,19 @@ export default async function handler(req, res) {
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
     // 要寫入的範圍 (例如 Sheet1!A:C)
-    const range = "Sheet1!A:C";
+    const range = "HouseInventory!A2:H";
 
     // 要寫入的資料 (一列)
-    const values = [[body.name, body.item, new Date().toISOString()]];
+    const values = [[
+      body.nextId,
+      body.itemTypeId,
+      body.itemType,
+      body.itemName,
+      body.quantity,
+      body.unitPrice,
+      body.purchaseDate,
+      body.expirationDate
+    ]];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
