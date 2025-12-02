@@ -26,6 +26,14 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import CustomCalendarHeader from '../components/CustomCalendarHeader';
+fetch("/api/addData", {
+    method: "POST",
+    body: JSON.stringify({ name: "Jasmine", item: "Keyboard" }),
+  })
+    .then(res => res.json())
+    .then(data => console.log(data))
+    .catch(err => console.error(err));
+  
 
 dayjs.locale('zh-cn');
 
