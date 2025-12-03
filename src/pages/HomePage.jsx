@@ -26,13 +26,29 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import CustomCalendarHeader from '../components/CustomCalendarHeader';
-fetch("/api/addData", {
-    method: "POST",
-    body: JSON.stringify({ name: "Jasmine", item: "Keyboard" }),
-  })
-    .then(res => res.json())
-    .then(data => console.log(data))
-    .catch(err => console.error(err));
+const handleSubmit = async (event) => {
+    event.preventDefault();
+    const formattedPurchaseDate = purchaseDate ? dayjs(purchaseDate).format('YYYY-MM-DD') : '';
+    const formattedExpirationDate = expirationDate ? dayjs(expirationDate).format('YYYY-MM-DD') : '';
+  
+    const response = await fetch("/api/addData", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        nextId,
+        itemTypeId,
+        itemType,
+        itemName,
+        quantity,
+        unitPrice,
+        purchaseDate: formattedPurchaseDate,
+        expirationDate: formattedExpirationDate,
+      }),
+    });
+  
+    const result = await response.json();
+    console.log(result);
+  };
   
 
 dayjs.locale('zh-cn');

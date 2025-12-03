@@ -6,26 +6,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    const body = JSON.parse(req.body);
+    const body = req.body; // 不要再 JSON.parse
 
-    // 建立 JWT 驗證
     const auth = new google.auth.JWT(
       process.env.GOOGLE_CLIENT_EMAIL,
       null,
-      process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'), // 換行符號修正
+      process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
       ["https://www.googleapis.com/auth/spreadsheets"]
     );
 
-    // 初始化 Google Sheets API
     const sheets = google.sheets({ version: "v4", auth });
-
-    // 你的 Google Sheet ID
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
-    // 要寫入的範圍 (例如 Sheet1!A:C)
-    const range = "HouseInventory!A2:H";
+    const range = "HouseInventory!A2:H"; // 確認工作表名稱正確
 
-    // 要寫入的資料 (一列)
     const values = [[
       body.nextId,
       body.itemTypeId,
