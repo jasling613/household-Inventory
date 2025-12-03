@@ -19,12 +19,11 @@ export default async function handler(req, res) {
     console.log("GOOGLE_PRIVATE_KEY length:", process.env.GOOGLE_PRIVATE_KEY?.length);
     console.log("GOOGLE_SHEET_ID:", process.env.GOOGLE_SHEET_ID);
 
-    const auth = new google.auth.JWT(
-      process.env.GOOGLE_CLIENT_EMAIL,
-      null,
-      process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-      ["https://www.googleapis.com/auth/spreadsheets"]
-    );
+    const auth = new google.auth.JWT({
+      email: process.env.GOOGLE_CLIENT_EMAIL,
+      key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+    });
 
     // 🔎 Debug 認證物件
     console.log("Auth object created:", auth);
