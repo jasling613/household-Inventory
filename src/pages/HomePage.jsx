@@ -50,7 +50,7 @@ function HomePage() {
   const [itemType, setItemType] = useState('');
   const [itemName, setItemName] = useState('');
   const [quantity, setQuantity] = useState(1);
-  const [unitPrice, setUnitPrice] = useState(0);
+  const [unitPrice, setUnitPrice] = useState('0');
   const [purchaseDate, setPurchaseDate] = useState(null);
   const [expirationDate, setExpirationDate] = useState(null);
   const [formError, setFormError] = useState(null);
@@ -198,16 +198,19 @@ function HomePage() {
         setFormError('數量必須是大於 0 的數字。');
         return;
     }
-    if (unitPrice < 0) {
-        setFormError('單價不能是負數。');
+
+    const finalUnitPrice = parseFloat(unitPrice);
+    if (isNaN(finalUnitPrice) || finalUnitPrice < 0) {
+        setFormError('請輸入有效的單價（不可為負數）。');
         return;
     }
+
     setIsSubmitting(true);
     setFormError(null);
 
     const formattedPurchaseDate = purchaseDate ? dayjs(purchaseDate).format('DD-MM-YYYY') : '';
     const formattedExpirationDate = expirationDate ? dayjs(expirationDate).format('DD-MM-YYYY') : '';
-    const newRow = [nextId, itemTypeId, itemType, itemName, quantity, unitPrice, formattedPurchaseDate, formattedExpirationDate];
+    const newRow = [nextId, itemTypeId, itemType, itemName, quantity, finalUnitPrice, formattedPurchaseDate, formattedExpirationDate];
 
     try {
         const response = await fetch('/api/add-data', {
@@ -239,7 +242,7 @@ function HomePage() {
         setItemType('');
         setItemName('');
         setQuantity(1);
-        setUnitPrice(0);
+        setUnitPrice('0');
         setPurchaseDate(null);
         setExpirationDate(null);
         setItemNameOptions([]);
@@ -335,7 +338,7 @@ function HomePage() {
                             label="單價"
                             type="number"
                             value={unitPrice}
-                            onChange={(e) => setUnitPrice(parseFloat(e.target.value) || 0)}
+                            onChange={(e) => setUnitPrice(e.target.value)}
                             required
                             InputProps={{
                                 inputProps: { min: 0, step: "0.1" },
