@@ -19,22 +19,21 @@ import {
   Select,
   MenuItem,
   InputAdornment,
-  Autocomplete,
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import CustomCalendarHeader from '../components/CustomCalendarHeader';
 
+dayjs.extend(customParseFormat);
 dayjs.locale('zh-cn');
 
 const SPREADSHEET_ID = '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
 
 const formatId = (num) => String(num).padStart(6, '0');
-
-const quantityOptions = Array.from({ length: 10 }, (_, i) => String(i + 1));
 
 function HomePage() {
   const [inventoryData, setInventoryData] = useState([]);
@@ -301,27 +300,16 @@ function HomePage() {
                                 }
                             </Select>
                         </FormControl>
-                        <Autocomplete
-                            value={quantity.toString()}
-                            onChange={(event, newValue) => {
-                                setQuantity(parseInt(newValue, 10) || 1);
+                        <TextField
+                            label="數量"
+                            type="number"
+                            value={quantity}
+                            onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
+                            required
+                            InputProps={{
+                                inputProps: { min: 1 },
                             }}
-                            freeSolo
-                            disablePortal
-                            options={quantityOptions}
                             sx={{ flex: 1 }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    label="數量"
-                                    type="number"
-                                    required
-                                    InputProps={{
-                                        ...params.InputProps,
-                                        inputProps: { ...params.inputProps, min: 1 },
-                                    }}
-                                />
-                            )}
                         />
                         <TextField
                             label="單價"
@@ -429,8 +417,8 @@ function HomePage() {
                                     <TableCell align="center">{item.itemName}</TableCell>
                                     <TableCell align="center">{item.quantity}</TableCell>
                                     <TableCell align="center">${item.unitPrice}</TableCell>
-                                    <TableCell align="center">{item.purchaseDate ? dayjs(item.purchaseDate).format('DD-MM-YYYY') : 'N/A'}</TableCell>
-                                    <TableCell align="center">{item.expirationDate ? dayjs(item.expirationDate).format('DD-MM-YYYY') : 'N/A'}</TableCell>
+                                    <TableCell align="center">{(item.purchaseDate && item.purchaseDate.trim()) ? dayjs(item.purchaseDate, 'DD-MM-YYYY').format('DD-MM-YYYY') : 'N/A'}</TableCell>
+                                    <TableCell align="center">{(item.expirationDate && item.expirationDate.trim()) ? dayjs(item.expirationDate, 'DD-MM-YYYY').format('DD-MM-YYYY') : 'N/A'}</TableCell>
                                 </TableRow>
                                 ))
                             ) : (
