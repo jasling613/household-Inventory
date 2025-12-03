@@ -31,7 +31,7 @@ const handleSubmit = async (event) => {
     const formattedPurchaseDate = purchaseDate ? dayjs(purchaseDate).format('YYYY-MM-DD') : '';
     const formattedExpirationDate = expirationDate ? dayjs(expirationDate).format('YYYY-MM-DD') : '';
   
-    const response = await fetch("/api/addData", {
+    const response = await fetch("/api/add-data", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
