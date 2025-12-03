@@ -14,15 +14,26 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, message: "Invalid request body" });
     }
 
+    // 🔎 Debug 環境變數
+    console.log("GOOGLE_CLIENT_EMAIL:", process.env.GOOGLE_CLIENT_EMAIL);
+    console.log("GOOGLE_PRIVATE_KEY length:", process.env.GOOGLE_PRIVATE_KEY?.length);
+    console.log("GOOGLE_SHEET_ID:", process.env.GOOGLE_SHEET_ID);
+
     const auth = new google.auth.JWT(
       process.env.GOOGLE_CLIENT_EMAIL,
       null,
-      process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+      process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
       ["https://www.googleapis.com/auth/spreadsheets"]
     );
 
+    // 🔎 Debug 認證物件
+    console.log("Auth object created:", auth);
+
     const sheets = google.sheets({ version: "v4", auth });
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
+
+    // 🔎 Debug API 呼叫參數
+    console.log("Appending row:", newRow);
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
