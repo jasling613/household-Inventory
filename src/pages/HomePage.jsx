@@ -19,6 +19,7 @@ import {
   Select,
   MenuItem,
   InputAdornment,
+  Autocomplete,
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -34,6 +35,8 @@ dayjs.locale('zh-cn');
 const SPREADSHEET_ID = '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
 
 const formatId = (num) => String(num).padStart(6, '0');
+
+const quantityOptions = Array.from({ length: 10 }, (_, i) => String(i + 1));
 
 function HomePage() {
   const [inventoryData, setInventoryData] = useState([]);
@@ -300,16 +303,33 @@ function HomePage() {
                                 }
                             </Select>
                         </FormControl>
-                        <TextField
-                            label="數量"
-                            type="number"
-                            value={quantity}
-                            onChange={(e) => setQuantity(parseInt(e.target.value, 10) || 1)}
-                            required
-                            InputProps={{
-                                inputProps: { min: 1 },
+                        <Autocomplete
+                            value={quantity.toString()}
+                            onChange={(event, newValue) => {
+                                setQuantity(parseInt(newValue, 10) || 1);
                             }}
+                            onInputChange={(event, newInputValue) => {
+                                const newQuantity = parseInt(newInputValue, 10);
+                                if (!isNaN(newQuantity) && newQuantity > 0) {
+                                    setQuantity(newQuantity);
+                                }
+                            }}
+                            freeSolo
+                            disablePortal
+                            options={quantityOptions}
                             sx={{ flex: 1 }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    label="數量"
+                                    type="number"
+                                    required
+                                    InputProps={{
+                                        ...params.InputProps,
+                                        inputProps: { ...params.inputProps, min: 1 },
+                                    }}
+                                />
+                            )}
                         />
                         <TextField
                             label="單價"
