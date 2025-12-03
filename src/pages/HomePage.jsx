@@ -28,8 +28,8 @@ import 'dayjs/locale/zh-cn';
 import CustomCalendarHeader from '../components/CustomCalendarHeader';
 const handleSubmit = async (event) => {
     event.preventDefault();
-    const formattedPurchaseDate = purchaseDate ? dayjs(purchaseDate).format('YYYY-MM-DD') : '';
-    const formattedExpirationDate = expirationDate ? dayjs(expirationDate).format('YYYY-MM-DD') : '';
+    const formattedPurchaseDate = purchaseDate ? dayjs(purchaseDate).format('DD-MM-YYYY') : '';
+    const formattedExpirationDate = expirationDate ? dayjs(expirationDate).format('DD-MM-YYYY') : '';
   
     const response = await fetch("/api/add-data", {
       method: "POST",
@@ -224,8 +224,8 @@ function HomePage() {
     setIsSubmitting(true);
     setFormError(null);
 
-    const formattedPurchaseDate = purchaseDate ? dayjs(purchaseDate).format('YYYY-MM-DD') : '';
-    const formattedExpirationDate = expirationDate ? dayjs(expirationDate).format('YYYY-MM-DD') : '';
+    const formattedPurchaseDate = purchaseDate ? dayjs(purchaseDate).format('DD-MM-YYYY') : '';
+    const formattedExpirationDate = expirationDate ? dayjs(expirationDate).format('DD-MM-YYYY') : '';
     const newRow = [nextId, itemTypeId, itemType, itemName, quantity, unitPrice, formattedPurchaseDate, formattedExpirationDate];
 
     try {

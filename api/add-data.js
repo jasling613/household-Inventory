@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const body = req.body; // 不要再 JSON.parse
+    const { newRow } = req.body;
 
     const auth = new google.auth.JWT(
       process.env.GOOGLE_CLIENT_EMAIL,
@@ -18,29 +18,16 @@ export default async function handler(req, res) {
     const sheets = google.sheets({ version: "v4", auth });
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
-    const range = "HouseInventory!A2:H"; // 確認工作表名稱正確
-
-    const values = [[
-      body.nextId,
-      body.itemTypeId,
-      body.itemType,
-      body.itemName,
-      body.quantity,
-      body.unitPrice,
-      body.purchaseDate,
-      body.expirationDate
-    ]];
-
     await sheets.spreadsheets.values.append({
       spreadsheetId,
-      range,
+      range: "HouseInventory!A2:H",
       valueInputOption: "RAW",
-      requestBody: { values },
+      requestBody: { values: [newRow] },
     });
 
     return res.status(200).json({ success: true, message: "Data added successfully" });
   } catch (error) {
-    console.error("Error adding data:", error);
+    console.error("Error adding data:", error.response?.data || error.message || error);
     return res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 }
