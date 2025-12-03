@@ -31,3 +31,19 @@ export default async function handler(req, res) {
     return res.status(500).json({ success: false, message: "Server error", error: error.message });
   }
 }
+export default async function handler(req, res) {
+  try {
+    if (!process.env.GOOGLE_PRIVATE_KEY) {
+      console.error("GOOGLE_PRIVATE_KEY is not defined!");
+      return res.status(500).json({ success: false, message: "GOOGLE_PRIVATE_KEY not found" });
+    }
+
+    // 測試是否讀到字串長度
+    console.log("GOOGLE_PRIVATE_KEY length:", process.env.GOOGLE_PRIVATE_KEY.length);
+
+    return res.status(200).json({ success: true, message: "Key is loaded" });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+}
