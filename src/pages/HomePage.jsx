@@ -575,7 +575,13 @@ function HomePage() {
                                     <TableCell align="center">{item.quantity}</TableCell>
                                     <TableCell align="center">${item.unitPrice}</TableCell>
                                     <TableCell align="center">{(item.purchaseDate && item.purchaseDate.trim()) ? dayjs(item.purchaseDate, 'DD-MM-YYYY').format('DD-MM-YYYY') : 'N/A'}</TableCell>
-                                    <TableCell align="center">{(item.expirationDate && item.expirationDate.trim()) ? dayjs(item.expirationDate, 'DD-MM-YYYY').format('DD-MM-YYYY') : 'N/A'}</TableCell>
+                                    <TableCell align="center" className={item.expirationDate && item.expirationDate.trim()
+                                      ? (dayjs(item.expirationDate, 'DD-MM-YYYY').isSame(dayjs(), 'day') || dayjs(item.expirationDate, 'DD-MM-YYYY').isBefore(dayjs(), 'day'))
+                                      ? 'expired': '' : ''}>
+                                    {(item.expirationDate && item.expirationDate.trim())
+                                    ? dayjs(item.expirationDate, 'DD-MM-YYYY').format('DD-MM-YYYY')
+                                    : 'N/A'}
+                                    </TableCell>
                                 </TableRow>
                                 ))
                             ) : (
