@@ -471,7 +471,7 @@ function HomePage() {
                       >
                         {inventoryData.map((item) => (
                           <MenuItem key={item.id} value={item.id}>
-                            {formatId(item.id)} - {item.itemName}
+                            {formatId(item.id)} - {item.itemName}  [現有庫存: {item.quantity}]
                           </MenuItem>
                         ))}
                       </Select>
