@@ -468,12 +468,14 @@ function HomePage() {
                         value={consumptionItemId}
                         label="物品 ID"
                         onChange={(e) => setConsumptionItemId(e.target.value)}
-                      >
-                        {inventoryData.map((item) => (
-                          <MenuItem key={item.id} value={item.id}>
-                            {formatId(item.id)} - {item.itemName}  [現有庫存: {item.quantity}]
-                          </MenuItem>
-                        ))}
+                        >
+                        {inventoryData
+                          .filter(item => parseInt(item.quantity, 10) > 0)   // 👈 只顯示數量大於 0
+                          .map((item) => (
+                            <MenuItem key={item.id} value={item.id}>
+                              {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
+                            </MenuItem>
+                          ))}
                       </Select>
                     </FormControl>
                     <TextField
