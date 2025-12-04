@@ -43,13 +43,13 @@ export default async function handler(req, res) {
       return res.status(404).json({ success: false, message: "Sheet is empty or could not be read" });
     }
 
-    const rowIndex = rows.findIndex(row => row[0] === id);
+    const rowIndex = rows.findIndex(row => (row[0] || '').trim() === id.trim());
     if (rowIndex === -1) {
       return res.status(404).json({ success: false, message: `Item with ID ${id} not found` });
     }
-
-    // Google Sheet 是 1-indexed，且資料從第 2 列開始
-    const rowToUpdate = rowIndex + 2;
+    
+    // Google Sheets 是 1-indexed，所以只要 +1
+    const rowToUpdate = rowIndex + 1;
 
     console.log(`Updating row ${rowToUpdate} with new quantity: ${newQuantity}`);
 
