@@ -65,6 +65,12 @@ function HomePage() {
   const [itemTypeFilter, setItemTypeFilter] = useState('');
   const [itemNameFilter, setItemNameFilter] = useState('');
 
+  // Consumption state
+  const [consumptionItemId, setConsumptionItemId] = useState('');
+  const [consumptionQuantity, setConsumptionQuantity] = useState(1);
+  const [consumptionError, setConsumptionError] = useState(null);
+  const [isConsuming, setIsConsuming] = useState(false);
+
   const loadSheetDataForReading = useCallback(() => {
     setLoading(true);
     setError(null);
@@ -254,6 +260,78 @@ function HomePage() {
         setFormError(`無法新增物品：${error.message}`);
     }
   };
+//扣減
+  const handleConsumption = async (operation) => {
+    if (!consumptionItemId) {
+      setConsumptionError('請選擇要消耗的物品 ID。');
+      return;
+    }
+
+    const itemToUpdate = inventoryData.find(item => item.id === consumptionItemId);
+    if (!itemToUpdate) {
+      setConsumptionError('找不到對應的物品。');
+      return;
+    }
+
+    const currentQuantity = parseInt(itemToUpdate.quantity, 10);
+    const changeQuantity = parseInt(consumptionQuantity, 10);
+
+    if (isNaN(changeQuantity) || changeQuantity <= 0) {
+        setConsumptionError('消耗數量必須是大於 0 的數字。');
+        return;
+    }
+    
+    let newQuantity;
+    if (operation === 'add') {
+        newQuantity = currentQuantity + changeQuantity;
+    } else {
+        newQuantity = currentQuantity - changeQuantity;
+    }
+
+    if (newQuantity < 0) {
+      setConsumptionError('消耗後的數量不可為負數。');
+      return;
+    }
+
+    setIsConsuming(true);
+    setConsumptionError(null);
+
+    try {
+        const response = await fetch('/api/update-data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ id: consumptionItemId, newQuantity }),
+        });
+
+        if (!response.ok) {
+            let errorData;
+            try {
+                errorData = await response.json();
+            } catch (e) {
+                throw new Error(response.statusText || '從伺服器返回了一個未知的錯誤');
+            }
+            throw new Error(errorData.message || '從伺服器返回了一個錯誤');
+        }
+
+        const result = await response.json();
+
+        if (!result.success) {
+            throw new Error(result.message || '後端返回了一個失敗的回應。');
+        }
+
+        setIsConsuming(false);
+        setConsumptionItemId('');
+        setConsumptionQuantity(1);
+        setTimeout(() => loadSheetDataForReading(), 500);
+
+    } catch (error) {
+        setIsConsuming(false);
+        console.error('Error updating data:', error);
+        setConsumptionError(`無法更新數量：${error.message}`);
+    }
+  };
 
   const filteredInventoryData = inventoryData.filter(item => {
     return (
@@ -379,6 +457,61 @@ function HomePage() {
                 </Box>
 
                 <Box sx={{ mt: 6 }}>
+                  <Typography variant="h4" component="h1" gutterBottom align="center">
+                    減掉消耗
+                  </Typography>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, my: 3 }}>
+                    <FormControl fullWidth required>
+                      <InputLabel id="consumption-item-id-label">物品 ID</InputLabel>
+                      <Select
+                        labelId="consumption-item-id-label"
+                        value={consumptionItemId}
+                        label="物品 ID"
+                        onChange={(e) => setConsumptionItemId(e.target.value)}
+                      >
+                        {inventoryData.map((item) => (
+                          <MenuItem key={item.id} value={item.id}>
+                            {formatId(item.id)} - {item.itemName}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                    <TextField
+                      label="數量"
+                      type="number"
+                      value={consumptionQuantity}
+                      onChange={(e) => setConsumptionQuantity(e.target.value)}
+                      required
+                      InputProps={{
+                        inputProps: { min: 1 },
+                      }}
+                    />
+                    <Box sx={{ display: 'flex', gap: 2 }}>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          onClick={() => handleConsumption('add')}
+                          disabled={isConsuming}
+                          fullWidth
+                        >
+                          {isConsuming ? <CircularProgress size={24} /> : '增加'}
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="error"
+                          onClick={() => handleConsumption('subtract')}
+                          disabled={isConsuming}
+                          fullWidth
+                        >
+                          {isConsuming ? <CircularProgress size={24} /> : '扣減'}
+                        </Button>
+                    </Box>
+                  </Box>
+                  {consumptionError && <Alert severity="error" sx={{ mt: 2 }}>{consumptionError}</Alert>}
+                </Box>
+
+
+                <Box sx={{ mt: 6 }}>
                 <Typography variant="h4" component="h1" gutterBottom align="center">庫存總覽</Typography>
                     {loading ? (
                         <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}><CircularProgress /></Box>
@@ -412,7 +545,8 @@ function HomePage() {
                                     <MenuItem value=""><em>全部</em></MenuItem>
                                     {itemNameFilterOptions.map(name => (
                                         <MenuItem key={name} value={name}>{name}</MenuItem>
-                                    ))}
+                                    ))
+                                    }
                                 </Select>
                             </FormControl>
                         </Box>

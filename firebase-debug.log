@@ -1543,3 +1543,85 @@
 [error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
 [debug] [2025-12-03T06:13:58.536Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
 [debug] [2025-12-03T06:13:58.536Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-04T03:08:02.728Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-04T03:08:02.732Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-04T03:08:08.088Z] Running auto auth
+[debug] [2025-12-04T03:08:08.094Z] Running auto auth
+[debug] [2025-12-04T03:08:08.200Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.212Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.218Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.253Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.254Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.258Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firestore.googleapis.com [none]
+[debug] [2025-12-04T03:08:08.258Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firestore.googleapis.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.398Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-12-04T03:08:08.400Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.405Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/cloudfunctions.googleapis.com [none]
+[debug] [2025-12-04T03:08:08.405Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.409Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-12-04T03:08:08.410Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.413Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseio.com [none]
+[debug] [2025-12-04T03:08:08.413Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseio.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.509Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.509Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.510Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.521Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.522Z] No OAuth tokens found
+[debug] [2025-12-04T03:08:08.522Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firestore.googleapis.com [none]
+[debug] [2025-12-04T03:08:08.522Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firestore.googleapis.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.529Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-12-04T03:08:08.529Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.534Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/cloudfunctions.googleapis.com [none]
+[debug] [2025-12-04T03:08:08.534Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/cloudfunctions.googleapis.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.537Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-12-04T03:08:08.537Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:08.544Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseio.com [none]
+[debug] [2025-12-04T03:08:08.545Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseio.com x-goog-quota-user=projects/household-inventory-proj-58671
+[debug] [2025-12-04T03:08:09.673Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseio.com 403
+[debug] [2025-12-04T03:08:09.676Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseio.com [omitted]
+[debug] [2025-12-04T03:08:09.710Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseapphosting.googleapis.com 200
+[debug] [2025-12-04T03:08:09.710Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-12-04T03:08:09.768Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebasedataconnect.googleapis.com 200
+[debug] [2025-12-04T03:08:09.768Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-12-04T03:08:09.778Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseio.com 403
+[debug] [2025-12-04T03:08:09.778Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseio.com [omitted]
+[debug] [2025-12-04T03:08:09.792Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/cloudfunctions.googleapis.com 200
+[debug] [2025-12-04T03:08:09.792Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2025-12-04T03:08:09.817Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/cloudfunctions.googleapis.com 200
+[debug] [2025-12-04T03:08:09.817Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/cloudfunctions.googleapis.com [omitted]
+[debug] [2025-12-04T03:08:09.825Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firestore.googleapis.com 200
+[debug] [2025-12-04T03:08:09.826Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firestore.googleapis.com [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-04T03:08:09.849Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-04T03:08:09.853Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-04T03:08:09.864Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-04T03:08:09.864Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-04T03:08:09.872Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebasedataconnect.googleapis.com 200
+[debug] [2025-12-04T03:08:09.872Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-12-04T03:08:09.877Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firestore.googleapis.com 200
+[debug] [2025-12-04T03:08:09.877Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firestore.googleapis.com [omitted]
+[debug] [2025-12-04T03:08:09.886Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseapphosting.googleapis.com 200
+[debug] [2025-12-04T03:08:09.886Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/household-inventory-proj-58671/services/firebaseapphosting.googleapis.com [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-04T03:08:09.953Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-04T03:08:09.954Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-04T03:08:09.972Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-04T03:08:09.973Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-04T03:08:09.992Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-04T03:08:09.994Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-04T03:08:09.996Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-04T03:08:09.996Z] > authorizing via signed-in user (jasling613@gmail.com)
