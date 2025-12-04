@@ -336,7 +336,8 @@ function HomePage() {
   const filteredInventoryData = inventoryData.filter(item => {
     return (
         (itemTypeFilter ? item.itemType === itemTypeFilter : true) &&
-        (itemNameFilter ? item.itemName === itemNameFilter : true)
+        (itemNameFilter ? item.itemName === itemNameFilter : true) &&
+        parseInt(item.quantity, 10) > 0   // 👈 新增這行，隱藏數量為 0
     );
   });
 
