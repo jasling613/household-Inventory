@@ -51,6 +51,7 @@ function HomePage() {
   const [itemName, setItemName] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [unitPrice, setUnitPrice] = useState('0');
+  const [purchaseLocation, setPurchaseLocation] = useState('');
   const [purchaseDate, setPurchaseDate] = useState(null);
   const [expirationDate, setExpirationDate] = useState(null);
   const [formError, setFormError] = useState(null);
@@ -60,6 +61,7 @@ function HomePage() {
   const [itemTypeOptions, setItemTypeOptions] = useState([]);
   const [itemNameOptions, setItemNameOptions] = useState([]);
   const [itemNameFilterOptions, setItemNameFilterOptions] = useState([]);
+  const [locationOptions, setLocationOptions] = useState([]);
 
   // Filter state
   const [itemTypeFilter, setItemTypeFilter] = useState('');
@@ -82,7 +84,7 @@ function HomePage() {
     window.gapi.client.sheets.spreadsheets.values
       .batchGet({
         spreadsheetId: SPREADSHEET_ID,
-        ranges: ['HouseInventory!A2:H', 'GoodsID!A2:C'],
+        ranges: ['HouseInventory!A2:I', 'GoodsID!A2:C', 'Location!A2:A'],
       })
       .then(
         (response) => {
@@ -94,8 +96,9 @@ function HomePage() {
             itemName: row[3],
             quantity: row[4] || '1',
             unitPrice: row[5] || '0',
-            purchaseDate: row[6] || null,
-            expirationDate: row[7] || null,
+            purchaseLocation: row[6] || '',
+            purchaseDate: row[7] ? dayjs(row[7], "DD-MM-YYYY") : null,   // H 欄
+            expirationDate: row[8] ? dayjs(row[8], "DD-MM-YYYY") : null,
           }));
           setInventoryData(formattedInventory);
 
@@ -106,10 +109,15 @@ function HomePage() {
               setNextId(formatId(lastId + 1));
             }
           }
-
+          // 處理 GoodsID
           const goodsIdRows = response.result.valueRanges[1].values || [];
           const goodsData = goodsIdRows.map(row => ({ id: row[0], type: row[1], name: row[2] }));
           setGoodsIdData(goodsData);
+
+          // 在這裡加購買地點處理
+          const locationRows = response.result.valueRanges[2].values || [];
+          const locationOptions = locationRows.map(row => row[0]); // A 欄的值
+          setLocationOptions(locationOptions);
 
           const uniqueTypes = [...new Set(goodsData.map(item => item.type))];
           setItemTypeOptions(uniqueTypes);
@@ -229,7 +237,7 @@ function HomePage() {
 
     const formattedPurchaseDate = purchaseDate ? dayjs(purchaseDate).format('DD-MM-YYYY') : '';
     const formattedExpirationDate = expirationDate ? dayjs(expirationDate).format('DD-MM-YYYY') : '';
-    const newRow = [nextId, itemTypeId, itemType, itemName, quantity, finalUnitPrice, formattedPurchaseDate, formattedExpirationDate];
+    const newRow = [nextId, itemTypeId, itemType, itemName, quantity, finalUnitPrice, purchaseLocation,  formattedPurchaseDate, formattedExpirationDate];
 
     try {
         const response = await fetch('/api/add-data', {
@@ -262,6 +270,7 @@ function HomePage() {
         setItemName('');
         setQuantity(1);
         setUnitPrice('0');
+        setPurchaseLocation('');
         setPurchaseDate(null);
         setExpirationDate(null);
         setItemNameOptions([]);
@@ -426,19 +435,36 @@ function HomePage() {
                                 />
                             )}
                         />
-                        <TextField
+                    </Box>
+                        {/* 單價 + 購買地點 */}
+                        <Box sx={{ display: 'flex', gap: 2 }}>
+                          <TextField
                             label="單價"
                             type="number"
                             value={unitPrice}
                             onChange={(e) => setUnitPrice(e.target.value)}
                             required
                             InputProps={{
-                                inputProps: { min: 0, step: "0.1" },
-                                startAdornment: <InputAdornment position="start">$</InputAdornment>,
+                              inputProps: { min: 0, step: "0.1" },
+                              startAdornment: <InputAdornment position="start">$</InputAdornment>,
                             }}
                             sx={{ flex: 1 }}
-                        />
-                    </Box>
+                          />
+
+                          <FormControl fullWidth required sx={{ flex: 1 }}>
+                              <InputLabel id="purchase-location-label">購買地點</InputLabel>
+                              <Select
+                                labelId="purchase-location-label"
+                                value={purchaseLocation}
+                                label="購買地點"
+                                onChange={(e) => setPurchaseLocation(e.target.value)}
+                              >
+                                {locationOptions.map((loc, idx) => (
+                                  <MenuItem key={idx} value={loc}>{loc}</MenuItem>
+                                ))}
+                              </Select>
+                            </FormControl>
+                        </Box>
                     <Box sx={{ display: 'flex', gap: 2 }}>
                         <DatePicker
                             label="購買日期"
@@ -584,6 +610,7 @@ function HomePage() {
                                 <TableCell align="center">物品名稱</TableCell>
                                 <TableCell align="center">數量</TableCell>
                                 <TableCell align="center">單價</TableCell>
+                                <TableCell align="center">購買地點</TableCell>
                                 <TableCell align="center">購買日期</TableCell>
                                 <TableCell align="center">到期日</TableCell>
                             </TableRow>
@@ -598,13 +625,17 @@ function HomePage() {
                                     <TableCell align="center">{item.itemName}</TableCell>
                                     <TableCell align="center">{item.quantity}</TableCell>
                                     <TableCell align="center">${item.unitPrice}</TableCell>
-                                    <TableCell align="center">{(item.purchaseDate && item.purchaseDate.trim()) ? dayjs(item.purchaseDate, 'DD-MM-YYYY').format('DD-MM-YYYY') : 'N/A'}</TableCell>
-                                    <TableCell align="center" className={item.expirationDate && item.expirationDate.trim()
-                                      ? (dayjs(item.expirationDate, 'DD-MM-YYYY').isSame(dayjs(), 'day') || dayjs(item.expirationDate, 'DD-MM-YYYY').isBefore(dayjs(), 'day'))
-                                      ? 'expired': '' : ''}>
-                                    {(item.expirationDate && item.expirationDate.trim())
-                                    ? dayjs(item.expirationDate, 'DD-MM-YYYY').format('DD-MM-YYYY')
-                                    : 'N/A'}
+                                    <TableCell align="center">{item.purchaseLocation || 'N/A'}</TableCell>
+                                    <TableCell align="center">{item.purchaseDate && item.purchaseDate.isValid()? item.purchaseDate.format('DD-MM-YYYY'): 'N/A'}</TableCell>
+                                    <TableCell align="center" className={item.expirationDate && item.expirationDate.isValid()
+                                        ? (item.expirationDate.isSame(dayjs(), 'day') || item.expirationDate.isBefore(dayjs(), 'day'))
+                                          ? 'expired'
+                                          : ''
+                                        : ''
+                                    }>
+                                      {item.expirationDate && item.expirationDate.isValid()
+                                        ? item.expirationDate.format('DD-MM-YYYY')
+                                        : 'N/A'}
                                     </TableCell>
                                 </TableRow>
                                 ))
