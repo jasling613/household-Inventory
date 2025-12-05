@@ -207,9 +207,25 @@ function HomePage() {
   
   const getLowestPrice = () => {
     if (!itemNameFilter) return null;
-    const prices = allFilteredData.map(item => parseFloat(item.unitPrice));
+    const prices = allFilteredData
+      .map(item => parseFloat(item.unitPrice))
+      .filter(price => !isNaN(price));   // 過濾掉 NaN
     return prices.length > 0 ? Math.min(...prices) : null;
   };
+  const getLowestPriceLocation = () => {
+    if (!itemNameFilter) return null;
+    const pricesWithLocation = allFilteredData.map(item => ({
+      price: parseFloat(item.unitPrice),
+      location: item.purchaseLocation || 'N/A'
+    }));
+    if (pricesWithLocation.length === 0) return null;
+  
+    const minItem = pricesWithLocation.reduce((prev, curr) =>
+      curr.price < prev.price ? curr : prev
+    );
+    return minItem.location;
+  };
+
 
   const handleTodayClick = (setter) => () => {
     setter(dayjs());
@@ -594,12 +610,14 @@ function HomePage() {
                         </Box>
 
                         {itemNameFilter && (
-  <Box sx={{ mb: 2, p: 2, border: '1px solid', borderColor: 'grey.300', borderRadius: 1 }}>
-    <Typography variant="h6" color="primary">
-      {itemNameFilter} 的最低價：${getLowestPrice() ?? 'N/A'}
-    </Typography>
-  </Box>
-)}
+                        <Box sx={{ mb: 2, p: 2, border: '1px solid', borderColor: 'grey.300', borderRadius: 1 }}>
+                        <Typography variant="h6" color="primary">
+                        {itemNameFilter} 的最低價：${getLowestPrice() ?? 'N/A'}
+                        {getLowestPriceLocation() ? ` （購買地點：${getLowestPriceLocation()}）` : ''}
+                      </Typography>
+                    </Box>
+                  )}
+
                         <TableContainer component={Paper} variant="outlined">
                         <Table aria-label="inventory table">
                             <TableHead>
