@@ -188,7 +188,20 @@ function HomePage() {
   const handleItemNameFilterChange = (event) => {
       setItemNameFilter(event.target.value);
   };
-
+  
+  const allFilteredData = inventoryData.filter(item => {
+    return (
+      (itemTypeFilter ? item.itemType === itemTypeFilter : true) &&
+      (itemNameFilter ? item.itemName === itemNameFilter : true)
+      // 👈 不加數量限制，包含 0
+    );
+  });
+  
+  const getLowestPrice = () => {
+    if (!itemNameFilter) return null;
+    const prices = allFilteredData.map(item => parseFloat(item.unitPrice));
+    return prices.length > 0 ? Math.min(...prices) : null;
+  };
 
   const handleTodayClick = (setter) => () => {
     setter(dayjs());
@@ -553,6 +566,14 @@ function HomePage() {
                                 </Select>
                             </FormControl>
                         </Box>
+
+                        {itemNameFilter && (
+  <Box sx={{ mb: 2, p: 2, border: '1px solid', borderColor: 'grey.300', borderRadius: 1 }}>
+    <Typography variant="h6" color="primary">
+      {itemNameFilter} 的最低價：${getLowestPrice() ?? 'N/A'}
+    </Typography>
+  </Box>
+)}
                         <TableContainer component={Paper} variant="outlined">
                         <Table aria-label="inventory table">
                             <TableHead>
