@@ -111,6 +111,79 @@ app.post('/api/update-data', async (req, res) => {
   }
 });
 
+// To Buy List
+app.post('/api/add-to-buy', async (req, res) => {
+  try {
+    const { newRow } = req.body;
+    if (!newRow || !Array.isArray(newRow)) {
+      return res.status(400).json({ success: false, message: 'Invalid data format.' });
+    }
+
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'ToBuyList!A:G',
+      valueInputOption: 'USER_ENTERED',
+      resource: { values: [newRow] },
+    });
+
+    res.json({ success: true });
+  } catch (error) {
+    console.error('Error writing to ToBuyList:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+app.post('/api/update-to-buy-status', async (req, res) => {
+  const { id, status } = req.body;
+
+  try {
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    // 先讀取整個 ToBuyList
+    const readRes = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'ToBuyList!A2:G',
+    });
+
+    const rows = readRes.data.values || [];
+    const rowIndex = rows.findIndex((row) => row[0].trim() === id.trim());
+
+    console.log('Updating ID:', id, 'Found rowIndex:', rowIndex);
+
+    if (rowIndex === -1) {
+      return res.status(404).json({ success: false, message: 'ID not found in sheet' });
+    }
+
+    // Google Sheet 是從第 2 行開始，所以要 +2
+    const rowNumber = rowIndex + 2;
+    console.log('Row number to update:', rowNumber);
+
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `ToBuyList!F${rowNumber}`, // F 欄是狀態
+      valueInputOption: 'RAW',
+      requestBody: { values: [[status]] },
+    });
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error updating status:', err);
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+
 app.listen(port, '0.0.0.0', () => {
   console.log(`Backend server started, listening on http://0.0.0.0:${port}`);
 });

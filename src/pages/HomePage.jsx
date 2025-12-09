@@ -28,6 +28,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import CustomCalendarHeader from '../components/CustomCalendarHeader';
+import ToBuyList from './ToBuyList';
 
 dayjs.extend(customParseFormat);
 dayjs.locale('zh-cn');
@@ -72,6 +73,9 @@ function HomePage() {
   const [consumptionQuantity, setConsumptionQuantity] = useState(1);
   const [consumptionError, setConsumptionError] = useState(null);
   const [isConsuming, setIsConsuming] = useState(false);
+
+  //To Buy List
+  const [showToBuyList, setShowToBuyList] = useState(false);
 
   const loadSheetDataForReading = useCallback(() => {
     setLoading(true);
@@ -383,9 +387,25 @@ function HomePage() {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="zh-cn">
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', bgcolor: 'grey.100' }}>
+     {showToBuyList ? (
+      // 👉 顯示 ToBuyList 頁面
+      <ToBuyList onBack={() => setShowToBuyList(false)} />
+    ) : (
+      // 👉 顯示原本的 HomePage 畫面
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', bgcolor: 'grey.100' }}>
         <Container maxWidth="md">
-            <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+          <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+            
+            {/* 標題上方右方的按鈕 */}
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+              <Button 
+                variant="outlined" 
+                color="secondary" 
+                onClick={() => setShowToBuyList(true)}  // 切換 ToBuyList
+              >
+                待買清單
+              </Button>
+            </Box>
                 <Typography variant="h4" component="h1" gutterBottom align="center">
                 新增物品
                 </Typography>
@@ -676,6 +696,7 @@ function HomePage() {
             </Paper>
         </Container>
         </Box>
+        )}
     </LocalizationProvider>
   );
 }
