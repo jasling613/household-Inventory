@@ -74,10 +74,11 @@ const handleToggle = async (id) => {
   setChecked((prev) => ({ ...prev, [id]: newChecked }));
 
   try {
-    const response = await fetch('/api/update-to-buy-status', {
+    const response = await fetch('/api/add-to-buy', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        action: 'update',   // 👈 指定動作
         id,
         status: newChecked ? '已買' : '待買',
       }),
@@ -129,7 +130,10 @@ const handleToggle = async (id) => {
       const response = await fetch('/api/add-to-buy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ newRow }),
+        body: JSON.stringify({
+          action: 'add',   // 👈 指定動作
+          newRow,
+        }),
       });
 
       if (!response.ok) {
