@@ -223,10 +223,10 @@ const handleToggle = async (id) => {
               </Box>
             </Box>
 
-        {/* 新增待買項目表單 */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3 }}>
+{/* 新增待買項目表單 */}
+<Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3 }}>
   {/* 第一行：ID + 物品名稱 */}
-  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+  <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
     <TextField label="ID" value={newId} disabled sx={{ flex: 1 }} />
     <TextField
       label="物品名稱"
@@ -240,7 +240,7 @@ const handleToggle = async (id) => {
   </Box>
 
   {/* 第二行：數量 + 購買地點 */}
-  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+  <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
     <Autocomplete
       value={newQuantity.toString()}
       onChange={(event, newValue) => {
@@ -279,7 +279,7 @@ const handleToggle = async (id) => {
   </Box>
 
   {/* 第三行：單價 + 優先度 */}
-  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+  <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
     <TextField
       label="預估單價"
       type="number"
@@ -310,14 +310,12 @@ const handleToggle = async (id) => {
   </Box>
 
   {/* 第四行：新增按鈕 */}
-  <Box sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-end' } }}>
+  <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
     <Button variant="contained" onClick={handleAddToBuy}>
       新增
     </Button>
   </Box>
 </Box>
-
-
 
         {/* 表格模式 */}
         {!shoppingMode && (
