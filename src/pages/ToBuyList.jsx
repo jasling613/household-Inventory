@@ -196,89 +196,99 @@ const handleToggle = async (id) => {
 
         {/* 新增待買項目表單 */}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3 }}>
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <TextField label="ID" value={newId} disabled sx={{ flex: 1 }} />
-            <TextField
-              label="物品名稱"
-              value={newItemName}
-              onChange={(e) => setNewItemName(e.target.value)}
-              required
-              error={submitted && (!newItemName || newItemName.trim() === '')}
-              helperText={submitted && (!newItemName || newItemName.trim() === '') ? '物品名稱必須填寫' : ''}
-              sx={{ flex: 2 }}
-            />
-            <Autocomplete
-              value={newQuantity.toString()}
-              onChange={(event, newValue) => {
-                setNewQuantity(parseInt(newValue, 10) || 1);
-              }}
-              onInputChange={(event, newInputValue) => {
-                const newQuantity = parseInt(newInputValue, 10);
-                if (!isNaN(newQuantity) && newQuantity > 0) {
-                  setNewQuantity(newQuantity);
-                }
-              }}
-              freeSolo
-              disablePortal
-              options={quantityOptions}
-              sx={{ flex: 1 }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="數量"
-                  type="number"
-                  required
-                  InputProps={{
-                    ...params.InputProps,
-                    inputProps: { ...params.inputProps, min: 1 },
-                  }}
-                />
-              )}
-            />
-          </Box>
+  {/* 第一行：ID + 物品名稱 */}
+  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+    <TextField label="ID" value={newId} disabled sx={{ flex: 1 }} />
+    <TextField
+      label="物品名稱"
+      value={newItemName}
+      onChange={(e) => setNewItemName(e.target.value)}
+      required
+      error={submitted && (!newItemName || newItemName.trim() === '')}
+      helperText={submitted && (!newItemName || newItemName.trim() === '') ? '物品名稱必須填寫' : ''}
+      sx={{ flex: 1 }}
+    />
+  </Box>
 
-          <Box sx={{ display: 'flex', gap: 2 }}>
-            <TextField
-              label="購買地點"
-              value={newLocation}
-              onChange={(e) => setNewLocation(e.target.value)}
-              sx={{ flex: 1 }}
-            />
-            <TextField
-              label="預估單價"
-              type="number"
-              value={newUnitPrice}
-              onChange={(e) => setNewUnitPrice(e.target.value)}
-              required
-              InputProps={{
-                inputProps: { min: 0, step: "0.1" },   // 支援小數點
-                startAdornment: <InputAdornment position="start">$</InputAdornment>, // 顯示 $
-              }}
-              sx={{ flex: 1 }}
-            />
-            <FormControl sx={{ flex: 1 }}>
-              <InputLabel id="priority-label">優先度</InputLabel>
-              <Select
-                labelId="priority-label"
-                id="priority-select"
-                value={newPriority}
-                onChange={(e) => setNewPriority(e.target.value)}
-                label="優先度"
-              >
-                <MenuItem value="高">高</MenuItem>
-                <MenuItem value="中">中</MenuItem>
-                <MenuItem value="低">低</MenuItem>
-              </Select>
-            </FormControl>
-          </Box>
+  {/* 第二行：數量 + 購買地點 */}
+  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+    <Autocomplete
+      value={newQuantity.toString()}
+      onChange={(event, newValue) => {
+        setNewQuantity(parseInt(newValue, 10) || 1);
+      }}
+      onInputChange={(event, newInputValue) => {
+        const newQuantity = parseInt(newInputValue, 10);
+        if (!isNaN(newQuantity) && newQuantity > 0) {
+          setNewQuantity(newQuantity);
+        }
+      }}
+      freeSolo
+      disablePortal
+      options={quantityOptions}
+      sx={{ flex: 1 }}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="數量"
+          type="number"
+          required
+          InputProps={{
+            ...params.InputProps,
+            inputProps: { ...params.inputProps, min: 1 },
+          }}
+        />
+      )}
+    />
 
-          {/* 第三行：新增按鈕 */}
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <Button variant="contained" onClick={handleAddToBuy}>
-              新增
-            </Button>
-          </Box>
-        </Box>
+    <TextField
+      label="購買地點"
+      value={newLocation}
+      onChange={(e) => setNewLocation(e.target.value)}
+      sx={{ flex: 1 }}
+    />
+  </Box>
+
+  {/* 第三行：單價 + 優先度 */}
+  <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+    <TextField
+      label="預估單價"
+      type="number"
+      value={newUnitPrice}
+      onChange={(e) => setNewUnitPrice(e.target.value)}
+      required
+      InputProps={{
+        inputProps: { min: 0, step: "0.1" },
+        startAdornment: <InputAdornment position="start">$</InputAdornment>,
+      }}
+      sx={{ flex: 1 }}
+    />
+
+    <FormControl sx={{ flex: 1 }}>
+      <InputLabel id="priority-label">優先度</InputLabel>
+      <Select
+        labelId="priority-label"
+        id="priority-select"
+        value={newPriority}
+        onChange={(e) => setNewPriority(e.target.value)}
+        label="優先度"
+      >
+        <MenuItem value="高">高</MenuItem>
+        <MenuItem value="中">中</MenuItem>
+        <MenuItem value="低">低</MenuItem>
+      </Select>
+    </FormControl>
+  </Box>
+
+  {/* 第四行：新增按鈕 */}
+  <Box sx={{ display: 'flex', justifyContent: { xs: 'center', sm: 'flex-end' } }}>
+    <Button variant="contained" onClick={handleAddToBuy}>
+      新增
+    </Button>
+  </Box>
+</Box>
+
+
 
         {/* 表格模式 */}
         {!shoppingMode && (
