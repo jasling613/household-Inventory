@@ -4,7 +4,7 @@ import {
   Table, TableHead, TableRow, TableCell, TableBody,
   Checkbox, List, ListItem, ListItemText, TextField,
   FormControl, InputLabel, Select, MenuItem,
-  InputAdornment, Autocomplete,TableContainer
+  InputAdornment, Autocomplete,TableContainer,Avatar,
 } from '@mui/material';
 
 const SPREADSHEET_ID = '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
@@ -200,28 +200,45 @@ const handleToggle = async (id) => {
     : items.filter((row) => row[5] !== "已買" || row[0] === justToggled);
 
   return (
-    <Container maxWidth="md">
-      <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
-        {/* 標題 + 返回按鈕 + 模式切換 */}
-            <Box sx={{
-                display: 'flex',
-                flexDirection: { xs: 'column', sm: 'row' }, // 手機垂直，桌面水平
-                justifyContent: 'space-between',
-                alignItems: { xs: 'flex-start', sm: 'center' },
-                gap: 2, // 按鈕和標題之間留空間
-              }}
-            >
-              <Typography variant="h4">待買清單</Typography>
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
-                <Button
-                  variant="outlined"
-                  onClick={() => setShoppingMode(!shoppingMode)}
-                >
-                  {shoppingMode ? '返回表格模式' : '購物模式'}
-                </Button>
-                <Button variant="outlined" onClick={onBack}>返回庫存</Button>
-              </Box>
-            </Box>
+<Container maxWidth="md">
+  <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+    {/* 頂部列：左邊 Logo + 右邊按鈕 */}
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        mb: 2,
+      }}
+    >
+      {/* 左上角 Logo */}
+      <Avatar
+        src="/favicon.png"
+        alt="Logo"
+        variant="square"
+        sx={{ width: 40, height: 40 }}
+      />
+
+      {/* 右上角按鈕 */}
+      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
+        <Button
+          variant="outlined"
+          onClick={() => setShoppingMode(!shoppingMode)}
+        >
+          {shoppingMode ? "返回表格模式" : "購物模式"}
+        </Button>
+        <Button variant="outlined" onClick={onBack}>
+          返回庫存
+        </Button>
+      </Box>
+    </Box>
+
+    {/* 下一行置中標題 */}
+    <Box sx={{ textAlign: "center", mb: 3 }}>
+      <Typography variant="h4" sx={{ fontWeight: "bold" }}>
+        待買清單
+      </Typography>
+    </Box>
 
 {/* 新增待買項目表單 */}
 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3 }}>
