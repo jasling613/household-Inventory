@@ -11,8 +11,10 @@ const SPREADSHEET_ID = '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
 
 function ToBuyList({ onBack }) {
   const [items, setItems] = useState([]);
-  const [shoppingMode, setShoppingMode] = useState(false);
+  const [shoppingMode, setShoppingMode] = useState(true);
   const [checked, setChecked] = useState({});
+  const [showBought, setShowBought] = useState(false); // 預設隱藏已買
+  const [justToggled, setJustToggled] = useState(null); // 👈 新增暫存狀態
 
   // 新增表單 state
   const [newId, setNewId] = useState('');
@@ -68,21 +70,34 @@ function ToBuyList({ onBack }) {
     }
   }, []);
 
-// 勾選已購買 → 更新狀態
+// 勾選已購買 → 更新狀態 (樂觀更新 + 延遲隱藏)
 const handleToggle = async (id) => {
-  const newChecked = !checked[id];
-  setChecked((prev) => ({ ...prev, [id]: newChecked }));
+  // 找出目前這筆 item 的狀態
+  const currentItem = items.find((row) => row[0] === id);
+  const isBought = currentItem && currentItem[5] === "已買";
+  const newStatus = isBought ? "待買" : "已買";
+
+  // 👇 樂觀更新：先改前端 items，讓 UI 立即顯示剔號
+  setItems((prevItems) =>
+    prevItems.map((row) =>
+      row[0] === id ? [...row.slice(0, 5), newStatus, ...row.slice(6)] : row
+    )
+  );
+
+  // 👇 標記剛剛勾選的項目，延遲隱藏
+  setJustToggled(id);
+  setTimeout(() => setJustToggled(null), 500); // 0.5 秒後清除
 
   const payload = {
-    action: "updateStatus",   // 👈 和後端一致
+    action: "updateStatus",
     id,
-    status: newChecked ? "已買" : "待買",
+    status: newStatus,
   };
 
-  console.log("Sending payload:", payload); // 檢查送出的資料
+  console.log("Sending payload:", payload);
 
   try {
-    const response = await fetch("/api/add-to-buy", {   // 👈 改成 add-to-buy
+    const response = await fetch("/api/add-to-buy", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -93,22 +108,31 @@ const handleToggle = async (id) => {
     }
 
     const result = await response.json();
-    if (result.success) {
-      // 更新 items 陣列裡的狀態 (第 6 欄 F)
+    if (!result.success) {
+      console.error("Update failed:", result.message);
+      // 👇 回滾前端狀態
       setItems((prevItems) =>
         prevItems.map((row) =>
           row[0] === id
-            ? [...row.slice(0, 5), newChecked ? "已買" : "待買", ...row.slice(6)]
+            ? [...row.slice(0, 5), isBought ? "已買" : "待買", ...row.slice(6)]
             : row
         )
       );
-    } else {
-      console.error("Update failed:", result.message);
     }
   } catch (err) {
     console.error("Error updating status:", err);
+    // 👇 API 出錯也回滾
+    setItems((prevItems) =>
+      prevItems.map((row) =>
+        row[0] === id
+          ? [...row.slice(0, 5), isBought ? "已買" : "待買", ...row.slice(6)]
+          : row
+      )
+    );
   }
 };
+
+
 
   // 新增待買項目
   const handleAddToBuy = async () => {
@@ -169,6 +193,11 @@ const handleToggle = async (id) => {
       console.error('Error adding to ToBuyList:', err);
     }
   };
+
+    // 👇 新增過濾邏輯放這裡
+    const visibleItems = showBought
+    ? items
+    : items.filter((row) => row[5] !== "已買" || row[0] === justToggled);
 
   return (
     <Container maxWidth="md">
@@ -334,27 +363,51 @@ const handleToggle = async (id) => {
         
         {/* 購物模式：簡化清單 + Checkbox */}
         {shoppingMode && (
-          <List sx={{ mt: 3 }}>
-            {items.map((row, index) => {
-              const id = row[0];
-              const itemName = row[1];
-              const quantity = row[2];
-              const location = row[3];
-              return (
-                <ListItem key={index} sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Checkbox checked={!!checked[id]} onChange={() => handleToggle(id)} />
-                  <ListItemText
-                    primary={`${id} - ${itemName} (${quantity})`}
-                    secondary={location ? `地點: ${location}` : ''}
-                  />
-                </ListItem>
-              );
-            })}
-          </List>
-        )}
+  <Box sx={{ mt: 3 }}>
+    {/* 顯示/隱藏已買切換按鈕 */}
+    <Button
+      variant="outlined"
+      onClick={() => setShowBought((prev) => !prev)}
+      sx={{ mb: 2 }}
+    >
+      {showBought ? "隱藏已買" : "顯示已買"}
+    </Button>
+
+    <List>
+      {visibleItems.map((row, index) => {
+        const id = row[0];
+        const itemName = row[1];
+        const quantity = row[2];
+        const location = row[3];
+        const unitPrice = row[4];
+        const status = row[5];
+        const priority = row[6];
+
+        return (
+          <ListItem
+            key={index}
+            sx={{ display: "flex", alignItems: "center" }}
+          >
+            <Checkbox
+              checked={status === "已買"}
+              onChange={() => handleToggle(id)}
+            />
+            <ListItemText
+              primary={`${id} - ${itemName} (數量: ${quantity})`}
+              secondary={
+                `${location ? `地點: ${location}` : "地點: 待定"} | ` +
+                `${unitPrice && Number(unitPrice) !== 0 ? `單價: $${unitPrice}` : "單價: 待定"} | ` +
+                `優先度: ${priority ? priority : "待定"}`
+              }
+            />
+          </ListItem>
+        );
+      })}
+    </List>
+  </Box>
+)}
+
       </Paper>
     </Container>
-  );
-}
-
+    );}
 export default ToBuyList;

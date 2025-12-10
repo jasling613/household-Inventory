@@ -5,12 +5,12 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const SPREADSHEET_ID = '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
+const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID || '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
 const port = 3001;
 
-// CORS 設定，允許 Cloud Workstations 前端呼叫
+// CORS 設定，允許 Cloud Workstations + localhost
 const corsOptions = {
-  origin: /https?:\/\/.*\.cloudworkstations\.dev/,
+  origin: [/https?:\/\/.*\.cloudworkstations\.dev/, "http://localhost:5173"],
   credentials: true,
   optionsSuccessStatus: 200
 };
@@ -38,151 +38,110 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// ➕ 新增物品
-app.post('/api/add-data', async (req, res) => {
-  try {
-    const { newRow } = req.body;
-    if (!newRow || !Array.isArray(newRow)) {
-      return res.status(400).json({ success: false, message: 'Invalid data format.' });
-    }
-
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-    });
-
-    const sheets = google.sheets({ version: 'v4', auth });
-
-    const response = await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'HouseInventory!A1',
-      valueInputOption: 'USER_ENTERED',
-      resource: { values: [newRow] },
-    });
-
-    return res.status(200).json({ success: true, data: response.data });
-  } catch (error) {
-    console.error('Error during /api/add-data:', error);
-    return res.status(500).json({ success: false, message: error.message });
-  }
-});
-
-// ✏️ 更新數量（扣減 / 增加）
-app.post('/api/update-data', async (req, res) => {
-  try {
-    const { id, newQuantity } = req.body;
-    if (!id || newQuantity === undefined) {
-      return res.status(400).json({ success: false, message: 'Missing id or newQuantity.' });
-    }
-
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-    });
-
-    const sheets = google.sheets({ version: 'v4', auth });
-
-    // 先讀取 ID 欄位
-    const getResponse = await sheets.spreadsheets.values.get({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'HouseInventory!A:A',
-    });
-
-    const rows = getResponse.data.values || [];
-    const rowIndex = rows.findIndex(row => row[0] === id);
-
-    if (rowIndex === -1) {
-      return res.status(404).json({ success: false, message: `Item with ID ${id} not found.` });
-    }
-
-    const rowToUpdate = rowIndex + 1; // Google Sheets 是 1-indexed
-
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: SPREADSHEET_ID,
-      range: `HouseInventory!E${rowToUpdate}`,
-      valueInputOption: 'USER_ENTERED',
-      resource: { values: [[newQuantity]] },
-    });
-
-    return res.status(200).json({ success: true, message: 'Quantity updated successfully.' });
-  } catch (error) {
-    console.error('Error during /api/update-data:', error);
-    return res.status(500).json({ success: false, message: error.message });
-  }
-});
-
-// To Buy List
+// 🛒 統一的多 action API
 app.post('/api/add-to-buy', async (req, res) => {
   try {
-    const { newRow } = req.body;
-    if (!newRow || !Array.isArray(newRow)) {
-      return res.status(400).json({ success: false, message: 'Invalid data format.' });
-    }
+    console.log("Received payload:", req.body);
+    const { action, newRow, id, status, priority, quantity } = req.body;
 
     const auth = new google.auth.GoogleAuth({
       credentials,
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
-
     const sheets = google.sheets({ version: 'v4', auth });
 
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'ToBuyList!A:G',
-      valueInputOption: 'USER_ENTERED',
-      resource: { values: [newRow] },
-    });
+    // ➕ 新增待買項目
+    if (action === "add") {
+      if (!newRow || !Array.isArray(newRow)) {
+        return res.json({ success: false, message: "Invalid newRow" });
+      }
+      await sheets.spreadsheets.values.append({
+        spreadsheetId: SPREADSHEET_ID,
+        range: "ToBuyList!A:G",
+        valueInputOption: "USER_ENTERED",
+        resource: { values: [newRow] },
+      });
+      return res.json({ success: true, message: "Item added successfully" });
+    }
 
-    res.json({ success: true });
+    // ✏️ 更新狀態
+    if (action === "updateStatus") {
+      if (!id || !status) {
+        return res.json({ success: false, message: "Missing id or status" });
+      }
+      const readRes = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: "ToBuyList!A:A",
+      });
+      const rows = readRes.data.values || [];
+      const rowIndex = rows.findIndex((row) => row[0] && row[0].trim() === id.trim());
+      if (rowIndex === -1) {
+        return res.json({ success: false, message: "ID not found in sheet" });
+      }
+      const rowNumber = rowIndex + 1;
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `ToBuyList!F${rowNumber}`,
+        valueInputOption: "RAW",
+        resource: { values: [[status]] },
+      });
+      return res.json({ success: true, message: "Status updated successfully" });
+    }
+
+    // ✏️ 更新優先度
+    if (action === "updatePriority") {
+      if (!id || !priority) {
+        return res.json({ success: false, message: "Missing id or priority" });
+      }
+      const readRes = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: "ToBuyList!A:A",
+      });
+      const rows = readRes.data.values || [];
+      const rowIndex = rows.findIndex((row) => row[0] && row[0].trim() === id.trim());
+      if (rowIndex === -1) {
+        return res.json({ success: false, message: "ID not found in sheet" });
+      }
+      const rowNumber = rowIndex + 1;
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `ToBuyList!G${rowNumber}`,
+        valueInputOption: "RAW",
+        resource: { values: [[priority]] },
+      });
+      return res.json({ success: true, message: "Priority updated successfully" });
+    }
+
+    // ✏️ 更新數量
+    if (action === "updateQuantity") {
+      if (!id || quantity === undefined) {
+        return res.json({ success: false, message: "Missing id or quantity" });
+      }
+      const readRes = await sheets.spreadsheets.values.get({
+        spreadsheetId: SPREADSHEET_ID,
+        range: "ToBuyList!A:A",
+      });
+      const rows = readRes.data.values || [];
+      const rowIndex = rows.findIndex((row) => row[0] && row[0].trim() === id.trim());
+      if (rowIndex === -1) {
+        return res.json({ success: false, message: "ID not found in sheet" });
+      }
+      const rowNumber = rowIndex + 1;
+      await sheets.spreadsheets.values.update({
+        spreadsheetId: SPREADSHEET_ID,
+        range: `ToBuyList!C${rowNumber}`,
+        valueInputOption: "USER_ENTERED",
+        resource: { values: [[quantity]] },
+      });
+      return res.json({ success: true, message: "Quantity updated successfully" });
+    }
+
+    return res.json({ success: false, message: "Invalid action" });
   } catch (error) {
-    console.error('Error writing to ToBuyList:', error);
-    res.status(500).json({ success: false, message: error.message });
+    console.error("Error in /api/add-to-buy:", error);
+    res.json({ success: false, message: error.message });
   }
 });
-
-app.post('/api/update-to-buy-status', async (req, res) => {
-  const { id, status } = req.body;
-
-  try {
-    const auth = new google.auth.GoogleAuth({
-      credentials,
-      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-    });
-    const sheets = google.sheets({ version: 'v4', auth });
-
-    // 先讀取整個 ToBuyList
-    const readRes = await sheets.spreadsheets.values.get({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'ToBuyList!A2:G',
-    });
-
-    const rows = readRes.data.values || [];
-    const rowIndex = rows.findIndex((row) => row[0].trim() === id.trim());
-
-    console.log('Updating ID:', id, 'Found rowIndex:', rowIndex);
-
-    if (rowIndex === -1) {
-      return res.status(404).json({ success: false, message: 'ID not found in sheet' });
-    }
-
-    // Google Sheet 是從第 2 行開始，所以要 +2
-    const rowNumber = rowIndex + 2;
-    console.log('Row number to update:', rowNumber);
-
-    await sheets.spreadsheets.values.update({
-      spreadsheetId: SPREADSHEET_ID,
-      range: `ToBuyList!F${rowNumber}`, // F 欄是狀態
-      valueInputOption: 'RAW',
-      resource: { values: [[status]] }, 
-    });
-
-    res.json({ success: true });
-  } catch (err) {
-    console.error('Error updating status:', err);
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
-
 
 app.listen(port, '0.0.0.0', () => {
   console.log(`Backend server started, listening on http://0.0.0.0:${port}`);
