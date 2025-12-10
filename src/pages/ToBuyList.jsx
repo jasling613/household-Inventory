@@ -68,7 +68,6 @@ function ToBuyList({ onBack }) {
     }
   }, []);
 
- // 勾選已購買 → 更新狀態
 // 勾選已購買 → 更新狀態
 const handleToggle = async (id) => {
   const newChecked = !checked[id];
@@ -83,7 +82,7 @@ const handleToggle = async (id) => {
   console.log("Sending payload:", payload); // 檢查送出的資料
 
   try {
-    const response = await fetch("/api/update-to-buy-status", {
+    const response = await fetch("/api/add-to-buy", {   // 👈 改成 add-to-buy
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -110,7 +109,6 @@ const handleToggle = async (id) => {
     console.error("Error updating status:", err);
   }
 };
-
 
   // 新增待買項目
   const handleAddToBuy = async () => {
