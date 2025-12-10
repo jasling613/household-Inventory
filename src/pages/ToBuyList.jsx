@@ -4,7 +4,7 @@ import {
   Table, TableHead, TableRow, TableCell, TableBody,
   Checkbox, List, ListItem, ListItemText, TextField,
   FormControl, InputLabel, Select, MenuItem,
-  InputAdornment, Autocomplete
+  InputAdornment, Autocomplete,TableContainer
 } from '@mui/material';
 
 const SPREADSHEET_ID = '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
@@ -69,19 +69,24 @@ function ToBuyList({ onBack }) {
   }, []);
 
  // 勾選已購買 → 更新狀態
+// 勾選已購買 → 更新狀態
 const handleToggle = async (id) => {
   const newChecked = !checked[id];
   setChecked((prev) => ({ ...prev, [id]: newChecked }));
 
+  const payload = {
+    action: "updateStatus",   // 👈 和後端一致
+    id,
+    status: newChecked ? "已買" : "待買",
+  };
+
+  console.log("Sending payload:", payload); // 檢查送出的資料
+
   try {
-    const response = await fetch('/api/add-to-buy', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'update',   // 👈 指定動作
-        id,
-        status: newChecked ? '已買' : '待買',
-      }),
+    const response = await fetch("/api/update-to-buy-status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
     });
 
     if (!response.ok) {
@@ -93,16 +98,19 @@ const handleToggle = async (id) => {
       // 更新 items 陣列裡的狀態 (第 6 欄 F)
       setItems((prevItems) =>
         prevItems.map((row) =>
-          row[0] === id ? [...row.slice(0, 5), newChecked ? '已買' : '待買', ...row.slice(6)] : row
+          row[0] === id
+            ? [...row.slice(0, 5), newChecked ? "已買" : "待買", ...row.slice(6)]
+            : row
         )
       );
     } else {
-      console.error('Update failed:', result.message);
+      console.error("Update failed:", result.message);
     }
   } catch (err) {
-    console.error('Error updating status:', err);
+    console.error("Error updating status:", err);
   }
 };
+
 
   // 新增待買項目
   const handleAddToBuy = async () => {
@@ -266,35 +274,45 @@ const handleToggle = async (id) => {
 
         {/* 表格模式 */}
         {!shoppingMode && (
-          <Table sx={{ mt: 3 }}>
-<TableHead>
-  <TableRow>
-    <TableCell align="center">ID</TableCell>
-    <TableCell align="center">物品名稱</TableCell>
-    <TableCell align="center">數量</TableCell>
-    <TableCell align="center">購買地點</TableCell>
-    <TableCell align="center">預估單價</TableCell>
-    <TableCell align="center">狀態</TableCell>
-    <TableCell align="center">優先度</TableCell>
-  </TableRow>
-</TableHead>
-                <TableBody>
-                  {items.map((row, index) => (
-                    <TableRow key={index}>
-                      {row.map((cell, i) => (
-                        <TableCell key={i} align="center">
-                          {i === 3
-                            ? (cell && cell.trim() !== '' ? cell : '待定')   // 👈 購買地點空白顯示待定
-                            : i === 4
-                              ? (Number(cell) === 0 ? '待定' : `$${cell}`)   // 👈 單價 0 顯示待定
-                              : cell}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))}
-                </TableBody>
-          </Table>
+  <TableContainer component={Paper} variant="outlined" sx={{ mt: 3, overflowX: "auto" }}>
+    <Table sx={{ minWidth: 650 }} aria-label="to-buy-table">
+      <TableHead>
+        <TableRow>
+          <TableCell align="center">ID</TableCell>
+          <TableCell align="center">物品名稱</TableCell>
+          <TableCell align="center">數量</TableCell>
+          <TableCell align="center">購買地點</TableCell>
+          <TableCell align="center">預估單價</TableCell>
+          <TableCell align="center">狀態</TableCell>
+          <TableCell align="center">優先度</TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {items.length > 0 ? (
+          items.map((row, index) => (
+            <TableRow key={index}>
+              {row.map((cell, i) => (
+                <TableCell key={i} align="center">
+                  {i === 3
+                    ? (cell && cell.trim() !== '' ? cell : '待定')   // 👈 購買地點空白顯示待定
+                    : i === 4
+                      ? (Number(cell) === 0 ? '待定' : `$${cell}`)   // 👈 單價 0 顯示待定
+                      : cell}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={7} align="center">
+              目前沒有待買項目
+            </TableCell>
+          </TableRow>
         )}
+      </TableBody>
+    </Table>
+  </TableContainer>
+)}
         
         {/* 購物模式：簡化清單 + Checkbox */}
         {shoppingMode && (

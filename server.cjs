@@ -173,7 +173,7 @@ app.post('/api/update-to-buy-status', async (req, res) => {
       spreadsheetId: SPREADSHEET_ID,
       range: `ToBuyList!F${rowNumber}`, // F 欄是狀態
       valueInputOption: 'RAW',
-      requestBody: { values: [[status]] },
+      resource: { values: [[status]] }, 
     });
 
     res.json({ success: true });

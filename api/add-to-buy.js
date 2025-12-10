@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { action, newRow, id, status } = req.body;
+    const { action, newRow, id, status, priority, quantity } = req.body;
 
     const auth = new google.auth.JWT({
       email: process.env.GOOGLE_CLIENT_EMAIL,
@@ -17,8 +17,8 @@ export default async function handler(req, res) {
     const sheets = google.sheets({ version: "v4", auth });
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
+    // ➕ 新增待買項目
     if (action === "add") {
-      // ➕ 新增待買項目
       if (!newRow || !Array.isArray(newRow)) {
         return res.status(400).json({ success: false, message: "Invalid newRow" });
       }
@@ -27,14 +27,14 @@ export default async function handler(req, res) {
         spreadsheetId,
         range: "ToBuyList!A:G",
         valueInputOption: "USER_ENTERED",
-        requestBody: { values: [newRow] },
+        resource: { values: [newRow] },
       });
 
       return res.status(200).json({ success: true, message: "Item added successfully" });
     }
 
-    if (action === "update") {
-      // ✏️ 更新購物模式狀態
+    // ✏️ 更新購物模式狀態（待買 ↔ 已買）
+    if (action === "updateStatus") {
       if (!id || !status) {
         return res.status(400).json({ success: false, message: "Missing id or status" });
       }
@@ -51,16 +51,76 @@ export default async function handler(req, res) {
         return res.status(404).json({ success: false, message: "ID not found in sheet" });
       }
 
-      const rowNumber = rowIndex + 2; // 因為 A2 是 rowIndex=0
+      const rowNumber = rowIndex + 2;
 
       await sheets.spreadsheets.values.update({
         spreadsheetId,
         range: `ToBuyList!F${rowNumber}`, // F 欄是狀態
         valueInputOption: "RAW",
-        requestBody: { values: [[status]] },
+        resource: { values: [[status]] },
       });
 
       return res.status(200).json({ success: true, message: "Status updated successfully" });
+    }
+
+    // ✏️ 更新優先度
+    if (action === "updatePriority") {
+      if (!id || !priority) {
+        return res.status(400).json({ success: false, message: "Missing id or priority" });
+      }
+
+      const readRes = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: "ToBuyList!A2:G",
+      });
+
+      const rows = readRes.data.values || [];
+      const rowIndex = rows.findIndex((row) => row[0].trim() === id.trim());
+
+      if (rowIndex === -1) {
+        return res.status(404).json({ success: false, message: "ID not found in sheet" });
+      }
+
+      const rowNumber = rowIndex + 2;
+
+      await sheets.spreadsheets.values.update({
+        spreadsheetId,
+        range: `ToBuyList!G${rowNumber}`, // G 欄是優先度
+        valueInputOption: "RAW",
+        resource: { values: [[priority]] },
+      });
+
+      return res.status(200).json({ success: true, message: "Priority updated successfully" });
+    }
+
+    // ✏️ 更新數量
+    if (action === "updateQuantity") {
+      if (!id || quantity === undefined) {
+        return res.status(400).json({ success: false, message: "Missing id or quantity" });
+      }
+
+      const readRes = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: "ToBuyList!A2:G",
+      });
+
+      const rows = readRes.data.values || [];
+      const rowIndex = rows.findIndex((row) => row[0].trim() === id.trim());
+
+      if (rowIndex === -1) {
+        return res.status(404).json({ success: false, message: "ID not found in sheet" });
+      }
+
+      const rowNumber = rowIndex + 2;
+
+      await sheets.spreadsheets.values.update({
+        spreadsheetId,
+        range: `ToBuyList!C${rowNumber}`, // C 欄是數量
+        valueInputOption: "USER_ENTERED",
+        resource: { values: [[quantity]] },
+      });
+
+      return res.status(200).json({ success: true, message: "Quantity updated successfully" });
     }
 
     return res.status(400).json({ success: false, message: "Invalid action" });

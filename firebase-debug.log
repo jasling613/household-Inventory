@@ -558,3 +558,243 @@
 [error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
 [debug] [2025-12-09T04:58:37.911Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
 [debug] [2025-12-09T04:58:37.911Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-09T08:46:20.062Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-09T08:46:20.064Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-09T08:46:20.081Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.085Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.086Z] > refreshing access token with scopes: []
+[debug] [2025-12-09T08:46:20.091Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-09T08:46:20.092Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.100Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.101Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.101Z] > refreshing access token with scopes: []
+[debug] [2025-12-09T08:46:20.102Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-09T08:46:20.102Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.119Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.120Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.120Z] > refreshing access token with scopes: []
+[debug] [2025-12-09T08:46:20.121Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-09T08:46:20.121Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.126Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.127Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.127Z] > refreshing access token with scopes: []
+[debug] [2025-12-09T08:46:20.127Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-09T08:46:20.128Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.131Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-09T08:46:20.131Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-09T08:46:20.133Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.133Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.133Z] > refreshing access token with scopes: []
+[debug] [2025-12-09T08:46:20.134Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-09T08:46:20.134Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.136Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.136Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.137Z] > refreshing access token with scopes: []
+[debug] [2025-12-09T08:46:20.137Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-09T08:46:20.137Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.144Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.144Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.144Z] > refreshing access token with scopes: []
+[debug] [2025-12-09T08:46:20.145Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-09T08:46:20.145Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.149Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.149Z] Checked if tokens are valid: false, expires at: 1765259915776
+[debug] [2025-12-09T08:46:20.149Z] > refreshing access token with scopes: []
+[debug] [2025-12-09T08:46:20.150Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-09T08:46:20.151Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.322Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-09T08:46:20.322Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.381Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [none]
+[debug] [2025-12-09T08:46:20.381Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-09T08:46:20.386Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-09T08:46:20.386Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.397Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [none]
+[debug] [2025-12-09T08:46:20.397Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-09T08:46:20.406Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-09T08:46:20.406Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.420Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-12-09T08:46:20.420Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-09T08:46:20.449Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-09T08:46:20.449Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.468Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-12-09T08:46:20.468Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-09T08:46:20.516Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-09T08:46:20.517Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.532Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [none]
+[debug] [2025-12-09T08:46:20.532Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-09T08:46:20.538Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-09T08:46:20.538Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.549Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-12-09T08:46:20.549Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-09T08:46:20.552Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-09T08:46:20.552Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.578Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-12-09T08:46:20.578Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-09T08:46:20.604Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-09T08:46:20.606Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-09T08:46:20.622Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [none]
+[debug] [2025-12-09T08:46:20.622Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-09T08:46:20.668Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com 403
+[debug] [2025-12-09T08:46:20.668Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [omitted]
+[debug] [2025-12-09T08:46:21.449Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com 403
+[debug] [2025-12-09T08:46:21.449Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-12-09T08:46:21.466Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com 403
+[debug] [2025-12-09T08:46:21.466Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-12-09T08:46:21.474Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com 403
+[debug] [2025-12-09T08:46:21.474Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [omitted]
+[debug] [2025-12-09T08:46:21.535Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com 403
+[debug] [2025-12-09T08:46:21.536Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-12-09T08:46:21.586Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com 403
+[debug] [2025-12-09T08:46:21.586Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-09T08:46:21.596Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com 403
+[debug] [2025-12-09T08:46:21.597Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-09T08:46:21.614Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-09T08:46:21.615Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-09T08:46:21.623Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-09T08:46:21.623Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-09T08:46:21.664Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com 403
+[debug] [2025-12-09T08:46:21.665Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-09T08:46:21.711Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-09T08:46:21.711Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-09T08:46:21.716Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-09T08:46:21.717Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-09T08:46:21.755Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-09T08:46:21.755Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-09T08:46:21.760Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-09T08:46:21.760Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-10T01:06:16.536Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-10T01:06:16.537Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-10T01:06:16.550Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.551Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.551Z] > refreshing access token with scopes: []
+[debug] [2025-12-10T01:06:16.554Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-10T01:06:16.554Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.558Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.558Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.559Z] > refreshing access token with scopes: []
+[debug] [2025-12-10T01:06:16.559Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-10T01:06:16.560Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.573Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.573Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.573Z] > refreshing access token with scopes: []
+[debug] [2025-12-10T01:06:16.574Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-10T01:06:16.575Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.578Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.578Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.578Z] > refreshing access token with scopes: []
+[debug] [2025-12-10T01:06:16.578Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-10T01:06:16.579Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.581Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-10T01:06:16.581Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-10T01:06:16.582Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.583Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.583Z] > refreshing access token with scopes: []
+[debug] [2025-12-10T01:06:16.583Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-10T01:06:16.583Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.585Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.585Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.585Z] > refreshing access token with scopes: []
+[debug] [2025-12-10T01:06:16.585Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-10T01:06:16.586Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.590Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.590Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.590Z] > refreshing access token with scopes: []
+[debug] [2025-12-10T01:06:16.591Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-10T01:06:16.591Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.593Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.593Z] Checked if tokens are valid: false, expires at: 1765273579606
+[debug] [2025-12-10T01:06:16.593Z] > refreshing access token with scopes: []
+[debug] [2025-12-10T01:06:16.594Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-10T01:06:16.594Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.715Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-10T01:06:16.715Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.733Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-12-10T01:06:16.733Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-10T01:06:16.773Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-10T01:06:16.775Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.788Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [none]
+[debug] [2025-12-10T01:06:16.788Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-10T01:06:16.794Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-10T01:06:16.794Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.802Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [none]
+[debug] [2025-12-10T01:06:16.803Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-10T01:06:16.805Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-10T01:06:16.805Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.813Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-12-10T01:06:16.813Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-10T01:06:16.815Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-10T01:06:16.815Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.823Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [none]
+[debug] [2025-12-10T01:06:16.823Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-10T01:06:16.863Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-10T01:06:16.863Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.879Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [none]
+[debug] [2025-12-10T01:06:16.879Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-10T01:06:16.887Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-10T01:06:16.888Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.898Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-12-10T01:06:16.899Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-10T01:06:16.926Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-10T01:06:16.926Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-10T01:06:16.939Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-12-10T01:06:16.939Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-10T01:06:17.771Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com 403
+[debug] [2025-12-10T01:06:17.771Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-12-10T01:06:17.792Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com 403
+[debug] [2025-12-10T01:06:17.792Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [omitted]
+[debug] [2025-12-10T01:06:17.805Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com 403
+[debug] [2025-12-10T01:06:17.805Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-12-10T01:06:17.833Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com 403
+[debug] [2025-12-10T01:06:17.834Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [omitted]
+[debug] [2025-12-10T01:06:17.840Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com 403
+[debug] [2025-12-10T01:06:17.841Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [omitted]
+[debug] [2025-12-10T01:06:17.861Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com 403
+[debug] [2025-12-10T01:06:17.861Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-12-10T01:06:17.897Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com 403
+[debug] [2025-12-10T01:06:17.898Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [omitted]
+[debug] [2025-12-10T01:06:17.926Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com 403
+[debug] [2025-12-10T01:06:17.927Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-10T01:06:17.948Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-10T01:06:17.949Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-10T01:06:17.954Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-10T01:06:17.954Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-10T01:06:18.008Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-10T01:06:18.010Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-10T01:06:18.014Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-10T01:06:18.014Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-10T01:06:18.038Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-10T01:06:18.038Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-10T01:06:18.040Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-10T01:06:18.040Z] > authorizing via signed-in user (jasling613@gmail.com)
