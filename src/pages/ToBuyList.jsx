@@ -174,15 +174,25 @@ const handleToggle = async (id) => {
     <Container maxWidth="md">
       <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
         {/* 標題 + 返回按鈕 + 模式切換 */}
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h4">待買清單</Typography>
-          <Box>
-            <Button variant="outlined" onClick={() => setShoppingMode(!shoppingMode)} sx={{ mr: 2 }}>
-              {shoppingMode ? '返回表格模式' : '購物模式'}
-            </Button>
-            <Button variant="outlined" onClick={onBack}>返回庫存</Button>
-          </Box>
-        </Box>
+            <Box sx={{
+                display: 'flex',
+                flexDirection: { xs: 'column', sm: 'row' }, // 手機垂直，桌面水平
+                justifyContent: 'space-between',
+                alignItems: { xs: 'flex-start', sm: 'center' },
+                gap: 2, // 按鈕和標題之間留空間
+              }}
+            >
+              <Typography variant="h4">待買清單</Typography>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setShoppingMode(!shoppingMode)}
+                >
+                  {shoppingMode ? '返回表格模式' : '購物模式'}
+                </Button>
+                <Button variant="outlined" onClick={onBack}>返回庫存</Button>
+              </Box>
+            </Box>
 
         {/* 新增待買項目表單 */}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3 }}>
