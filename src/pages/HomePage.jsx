@@ -400,7 +400,7 @@ function HomePage() {
             {/* 標題上方右方的按鈕 */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                   {/* 最左邊 Logo */}
-                  <Avatar src="/favicon.png" alt="Logo" sx={{ width: 40, height: 40 }} />
+                  <Avatar src="/favicon.png" alt="Logo" variant="square" sx={{ width: 40, height: 40 }} />
 
                   {/* 最右邊 按鈕 */}
                   <Button 
