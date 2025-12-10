@@ -20,6 +20,7 @@ import {
   MenuItem,
   InputAdornment,
   Autocomplete,
+  Avatar,
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -397,15 +398,19 @@ function HomePage() {
           <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
             
             {/* 標題上方右方的按鈕 */}
-            <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-              <Button 
-                variant="outlined" 
-                color="secondary" 
-                onClick={() => setShowToBuyList(true)}  // 切換 ToBuyList
-              >
-                待買清單
-              </Button>
-            </Box>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                  {/* 最左邊 Logo */}
+                  <Avatar src="/favicon.png" alt="Logo" sx={{ width: 40, height: 40 }} />
+
+                  {/* 最右邊 按鈕 */}
+                  <Button 
+                    variant="outlined" 
+                    color="secondary" 
+                    onClick={() => setShowToBuyList(true)}  // 切換 ToBuyList
+                  >
+                    待買清單
+                  </Button>
+                </Box>
                 <Typography variant="h4" component="h1" gutterBottom align="center">
                 新增物品
                 </Typography>
