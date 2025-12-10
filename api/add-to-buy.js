@@ -8,6 +8,7 @@ export default async function handler(req, res) {
   try {
     const { action, newRow, id, status, priority, quantity } = req.body;
 
+    // 建立 Google Sheets 驗證
     const auth = new google.auth.JWT({
       email: process.env.GOOGLE_CLIENT_EMAIL,
       key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
@@ -123,6 +124,7 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, message: "Quantity updated successfully" });
     }
 
+    // 如果 action 不符合任何分支
     return res.status(400).json({ success: false, message: "Invalid action" });
   } catch (error) {
     console.error("Error in add-to-buy handler:", error);
