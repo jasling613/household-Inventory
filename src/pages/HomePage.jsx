@@ -24,6 +24,10 @@ import {
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import Checkbox from "@mui/material/Checkbox";   // 如果有用到勾選框
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';
@@ -58,6 +62,8 @@ function HomePage() {
   const [expirationDate, setExpirationDate] = useState(null);
   const [formError, setFormError] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSimplifiedInventory, setShowSimplifiedInventory] = useState(true);
+
 
   // Dropdown options
   const [itemTypeOptions, setItemTypeOptions] = useState([]);
@@ -397,19 +403,29 @@ function HomePage() {
         <Container maxWidth="md">
           <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
             
-            {/* 標題上方右方的按鈕 */}
-            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                {/* 標題上方右方的按鈕 */}
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                   {/* 最左邊 Logo */}
                   <Avatar src="/favicon.png" alt="Logo" variant="square" sx={{ width: 40, height: 40 }} />
 
-                  {/* 最右邊 按鈕 */}
-                  <Button 
-                    variant="outlined" 
-                    color="secondary" 
-                    onClick={() => setShowToBuyList(true)}  // 切換 ToBuyList
+                  {/* 最右邊 按鈕群組 */}
+                  <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setShowSimplifiedInventory(!showSimplifiedInventory)}
                   >
-                    待買清單
+                    {showSimplifiedInventory ? "返回完整庫存" : "簡化庫存"}
                   </Button>
+
+                    <Button
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() => setShowToBuyList(true)} // 切換 ToBuyList
+                    >
+                      待買清單
+                    </Button>
+                  </Box>
                 </Box>
                 <Typography variant="h4" component="h1" gutterBottom align="center">
                 新增物品
@@ -643,61 +659,114 @@ function HomePage() {
                     </Box>
                   )}
 
-                        <TableContainer component={Paper} variant="outlined">
-                        <Table aria-label="inventory table">
-                            <TableHead>
-                            <TableRow>
-                                <TableCell align="center">ID</TableCell>
-                                <TableCell align="center">物品種類ID</TableCell>
-                                <TableCell align="center">物品種類</TableCell>
-                                <TableCell align="center">物品名稱</TableCell>
-                                <TableCell align="center">數量</TableCell>
-                                <TableCell align="center">單價</TableCell>
-                                <TableCell align="center">購買地點</TableCell>
-                                <TableCell align="center">購買日期</TableCell>
-                                <TableCell align="center">到期日</TableCell>
-                            </TableRow>
-                            </TableHead>
-                            <TableBody>
-                            {filteredInventoryData.length > 0 ? (
-                                filteredInventoryData.map((item, index) => (
-                                <TableRow key={`${item.id}-${index}`}>
-                                    <TableCell align="center">{formatId(item.id)}</TableCell>
-                                    <TableCell align="center">{item.itemTypeId}</TableCell>
-                                    <TableCell align="center">{item.itemType}</TableCell>
-                                    <TableCell align="center">{item.itemName}</TableCell>
-                                    <TableCell align="center">{item.quantity}</TableCell>
-                                    <TableCell align="center">${item.unitPrice}</TableCell>
-                                    <TableCell align="center">{item.purchaseLocation || 'N/A'}</TableCell>
-                                    <TableCell align="center">{item.purchaseDate && item.purchaseDate.isValid()? item.purchaseDate.format('DD-MM-YYYY'): 'N/A'}</TableCell>
-                                    <TableCell align="center" className={item.expirationDate && item.expirationDate.isValid()
-                                        ? (item.expirationDate.isSame(dayjs(), 'day') || item.expirationDate.isBefore(dayjs(), 'day'))
-                                          ? 'expired'
-                                          : ''
-                                        : ''
-                                    }>
-                                      {item.expirationDate && item.expirationDate.isValid()
-                                        ? item.expirationDate.format('DD-MM-YYYY')
-                                        : 'N/A'}
-                                    </TableCell>
-                                </TableRow>
-                                ))
-                            ) : (
-                                <TableRow>
-                                <TableCell colSpan={8} align="center">目前沒有任何物品符合篩選條件</TableCell>
-                                </TableRow>
-                            )}
-                            </TableBody>
-                        </Table>
-                        </TableContainer>
-                        <Box sx={{ mt: 2, p: 2, border: '1px solid', borderColor: 'grey.300', borderRadius: 1, textAlign: 'right' }}>
-                            <Typography variant="h6">
-                                總數量: {totalQuantity}
-                            </Typography>
-                        </Box>
+                              {/* 完整庫存模式 */}
+                              {!showSimplifiedInventory && (
+                                <>
+                                  <TableContainer component={Paper} variant="outlined">
+                                    <Table aria-label="inventory table">
+                                      <TableHead>
+                                        <TableRow>
+                                          <TableCell align="center">ID</TableCell>
+                                          <TableCell align="center">物品種類ID</TableCell>
+                                          <TableCell align="center">物品種類</TableCell>
+                                          <TableCell align="center">物品名稱</TableCell>
+                                          <TableCell align="center">數量</TableCell>
+                                          <TableCell align="center">單價</TableCell>
+                                          <TableCell align="center">購買地點</TableCell>
+                                          <TableCell align="center">購買日期</TableCell>
+                                          <TableCell align="center">到期日</TableCell>
+                                        </TableRow>
+                                      </TableHead>
+                                      <TableBody>
+                                        {filteredInventoryData.length > 0 ? (
+                                          filteredInventoryData.map((item, index) => (
+                                            <TableRow key={`${item.id}-${index}`}>
+                                              <TableCell align="center">{formatId(item.id)}</TableCell>
+                                              <TableCell align="center">{item.itemTypeId}</TableCell>
+                                              <TableCell align="center">{item.itemType}</TableCell>
+                                              <TableCell align="center">{item.itemName}</TableCell>
+                                              <TableCell align="center">{item.quantity}</TableCell>
+                                              <TableCell align="center">${item.unitPrice}</TableCell>
+                                              <TableCell align="center">{item.purchaseLocation || 'N/A'}</TableCell>
+                                              <TableCell align="center">
+                                                {item.purchaseDate && item.purchaseDate.isValid()
+                                                  ? item.purchaseDate.format('DD-MM-YYYY')
+                                                  : 'N/A'}
+                                              </TableCell>
+                                              <TableCell
+                                                align="center"
+                                                className={
+                                                  item.expirationDate && item.expirationDate.isValid()
+                                                    ? (item.expirationDate.isSame(dayjs(), 'day') ||
+                                                        item.expirationDate.isBefore(dayjs(), 'day'))
+                                                      ? 'expired'
+                                                      : ''
+                                                    : ''
+                                                }
+                                              >
+                                                {item.expirationDate && item.expirationDate.isValid()
+                                                  ? item.expirationDate.format('DD-MM-YYYY')
+                                                  : 'N/A'}
+                                              </TableCell>
+                                            </TableRow>
+                                          ))
+                                        ) : (
+                                          <TableRow>
+                                            <TableCell colSpan={9} align="center">
+                                              目前沒有任何物品符合篩選條件
+                                            </TableCell>
+                                          </TableRow>
+                                        )}
+                                      </TableBody>
+                                    </Table>
+                                  </TableContainer>
+
+                                  <Box
+                                    sx={{
+                                      mt: 2,
+                                      p: 2,
+                                      border: '1px solid',
+                                      borderColor: 'grey.300',
+                                      borderRadius: 1,
+                                      textAlign: 'right',
+                                    }}
+                                  >
+                                    <Typography variant="h6">總數量: {totalQuantity}</Typography>
+                                  </Box>
+                                </>
+                              )}
+
+                              {/* 簡化庫存模式 */}
+                              {showSimplifiedInventory && (
+                                <Box sx={{ mt: 3 }}>
+                                  <List>
+                                    {filteredInventoryData.length > 0 ? (
+                                      filteredInventoryData.map((item, index) => (
+                                        <ListItem key={`${item.id}-${index}`}>
+                                          <ListItemText
+                                            primary={`${item.id} - ${item.itemName} (數量: ${item.quantity})`}
+                                            secondary={
+                                              `單價: ${item.unitPrice && Number(item.unitPrice) !== 0 ? `$${item.unitPrice}` : "待定"} | ` +
+                                              `購買地點: ${item.purchaseLocation ? item.purchaseLocation : "待定"} | ` +
+                                              `到期日: ${item.expirationDate && item.expirationDate.isValid()
+                                                ? item.expirationDate.format("DD-MM-YYYY")
+                                                : "N/A"}`
+                                            }
+                                          />
+                                        </ListItem>
+                                      ))
+                                    ) : (
+                                      <Typography align="center">目前沒有任何物品符合篩選條件</Typography>
+                                    )}
+                                  </List>
+                                </Box>
+                              )}
+
                     </>
                 )}
                 </Box>
+
+                
             </Paper>
         </Container>
         </Box>

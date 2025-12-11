@@ -38,7 +38,85 @@ const app = express();
 app.use(cors(corsOptions));
 app.use(express.json());
 
-// 🛒 統一的多 action API
+// ➕ 新增物品 HouseInventory
+app.post('/api/add-data', async (req, res) => {
+  try {
+    const { newRow } = req.body;
+    if (!newRow || !Array.isArray(newRow)) {
+      return res.status(400).json({ success: false, message: 'Invalid data format.' });
+    }
+
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    const response = await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'HouseInventory!A1',
+      valueInputOption: 'USER_ENTERED',
+      resource: { values: [newRow] },
+    });
+
+    return res.status(200).json({ success: true, data: response.data });
+  } catch (error) {
+    console.error('Error during /api/add-data:', error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// ✏️ 更新數量（扣減 / 增加） HouseInventory
+app.post('/api/update-data', async (req, res) => {
+  try {
+    const { id, newQuantity } = req.body;
+    if (!id || newQuantity === undefined) {
+      return res.status(400).json({ success: false, message: 'Missing id or newQuantity.' });
+    }
+
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    
+    // 先讀取 ID 欄位 HouseInventory
+    const getResponse = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'HouseInventory!A:A',
+    });
+
+    const rows = getResponse.data.values || [];
+    const rowIndex = rows.findIndex(row => row[0] === id);
+
+    if (rowIndex === -1) {
+      return res.status(404).json({ success: false, message: `Item with ID ${id} not found.` });
+    }
+
+    const rowToUpdate = rowIndex + 1; // Google Sheets 是 1-indexed
+
+    await sheets.spreadsheets.values.update({
+      spreadsheetId: SPREADSHEET_ID,
+      range: `HouseInventory!E${rowToUpdate}`,
+      valueInputOption: 'USER_ENTERED',
+      resource: { values: [[newQuantity]] },
+    });
+
+    return res.status(200).json({ success: true, message: 'Quantity updated successfully.' });
+  } catch (error) {
+    console.error('Error during /api/update-data:', error);
+    return res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
+
+
+
+// 🛒 統一的多 action API ToBuyList
 app.post('/api/add-to-buy', async (req, res) => {
   try {
     console.log("Received payload:", req.body);
@@ -50,7 +128,7 @@ app.post('/api/add-to-buy', async (req, res) => {
     });
     const sheets = google.sheets({ version: 'v4', auth });
 
-    // ➕ 新增待買項目
+    // ➕ 新增待買項目 ToBuyList
     if (action === "add") {
       if (!newRow || !Array.isArray(newRow)) {
         return res.json({ success: false, message: "Invalid newRow" });
@@ -64,7 +142,7 @@ app.post('/api/add-to-buy', async (req, res) => {
       return res.json({ success: true, message: "Item added successfully" });
     }
 
-    // ✏️ 更新狀態
+    // ✏️ 更新狀態 ToBuyList
     if (action === "updateStatus") {
       if (!id || !status) {
         return res.json({ success: false, message: "Missing id or status" });
@@ -88,7 +166,7 @@ app.post('/api/add-to-buy', async (req, res) => {
       return res.json({ success: true, message: "Status updated successfully" });
     }
 
-    // ✏️ 更新優先度
+    // ✏️ 更新優先度 ToBuyList
     if (action === "updatePriority") {
       if (!id || !priority) {
         return res.json({ success: false, message: "Missing id or priority" });
@@ -112,7 +190,7 @@ app.post('/api/add-to-buy', async (req, res) => {
       return res.json({ success: true, message: "Priority updated successfully" });
     }
 
-    // ✏️ 更新數量
+    // ✏️ 更新數量update ToBuyList
     if (action === "updateQuantity") {
       if (!id || quantity === undefined) {
         return res.json({ success: false, message: "Missing id or quantity" });
