@@ -401,7 +401,7 @@ function HomePage() {
       // 👉 顯示原本的 HomePage 畫面
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100vh', bgcolor: 'grey.100' }}>
         <Container maxWidth="md">
-          <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+          <Paper elevation={3} sx={{ p: 2, borderRadius: 2 }}>
             
                 {/* 標題上方右方的按鈕 */}
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>

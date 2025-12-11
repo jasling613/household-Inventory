@@ -201,7 +201,7 @@ const handleToggle = async (id) => {
 
   return (
 <Container maxWidth="md">
-  <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
+  <Paper elevation={3} sx={{ p: 2, borderRadius: 2 }}>
     {/* 頂部列：左邊 Logo + 右邊按鈕 */}
     <Box
       sx={{
