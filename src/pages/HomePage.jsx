@@ -746,8 +746,8 @@ function HomePage() {
                                           <ListItemText
                                             primary={`${item.id} - ${item.itemName} (數量: ${item.quantity})`}
                                             secondary={
-                                              `單價: ${item.unitPrice && Number(item.unitPrice) !== 0 ? `$${item.unitPrice}` : "待定"} | ` +
-                                              `購買地點: ${item.purchaseLocation ? item.purchaseLocation : "待定"} | `
+                                              `單價: ${item.unitPrice && Number(item.unitPrice) !== 0 ? `$${item.unitPrice}` : "$N/A"} | ` +
+                                              `購買地點: ${item.purchaseLocation ? item.purchaseLocation : "N/A"} `
                                             }
                                           />
                                         </ListItem>
