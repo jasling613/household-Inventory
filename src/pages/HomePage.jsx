@@ -415,7 +415,7 @@ function HomePage() {
                     color="primary"
                     onClick={() => setShowSimplifiedInventory(!showSimplifiedInventory)}
                   >
-                    {showSimplifiedInventory ? "返回完整庫存" : "簡化庫存"}
+                    {showSimplifiedInventory ? "完整庫存" : "簡化庫存"}
                   </Button>
 
                     <Button
