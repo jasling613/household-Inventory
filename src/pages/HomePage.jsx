@@ -747,10 +747,7 @@ function HomePage() {
                                             primary={`${item.id} - ${item.itemName} (數量: ${item.quantity})`}
                                             secondary={
                                               `單價: ${item.unitPrice && Number(item.unitPrice) !== 0 ? `$${item.unitPrice}` : "待定"} | ` +
-                                              `購買地點: ${item.purchaseLocation ? item.purchaseLocation : "待定"} | ` +
-                                              `到期日: ${item.expirationDate && item.expirationDate.isValid()
-                                                ? item.expirationDate.format("DD-MM-YYYY")
-                                                : "N/A"}`
+                                              `購買地點: ${item.purchaseLocation ? item.purchaseLocation : "待定"} | `
                                             }
                                           />
                                         </ListItem>
