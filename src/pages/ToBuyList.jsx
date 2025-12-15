@@ -377,8 +377,9 @@ const handleToggle = async (id) => {
 )}
         
         {/* 購物模式：簡化清單 + Checkbox */}
-        {shoppingMode && (
+{shoppingMode && (
   <Box sx={{ mt: 3 }}>
+
     {/* 顯示/隱藏已買切換按鈕 */}
     <Button
       variant="outlined"
@@ -388,39 +389,84 @@ const handleToggle = async (id) => {
       {showBought ? "隱藏已買" : "顯示已買"}
     </Button>
 
-    <List>
-      {visibleItems.map((row, index) => {
-        const id = row[0];
-        const itemName = row[1];
-        const quantity = row[2];
-        const location = row[3];
-        const unitPrice = row[4];
-        const status = row[5];
-        const priority = row[6];
+    {/* ✅ 只顯示已買 */}
+    {showBought && (
+      <List>
+        {visibleItems
+          .filter(row => row[5] === "已買")   // ✅ 只留下已買
+          .reverse()   // ✅ 倒序
+          .map((row, index) => {
+            const id = row[0];
+            const itemName = row[1];
+            const quantity = row[2];
+            const location = row[3];
+            const unitPrice = row[4];
+            const status = row[5];
+            const priority = row[6];
 
-        return (
-          <ListItem
-            key={index}
-            sx={{ display: "flex", alignItems: "center" }}
-          >
-            <Checkbox
-              checked={status === "已買"}
-              onChange={() => handleToggle(id)}
-            />
-            <ListItemText
-              primary={`${id} - ${itemName} (數量: ${quantity})`}
-              secondary={
-                `${location ? `地點: ${location}` : "地點: 待定"} | ` +
-                `${unitPrice && Number(unitPrice) !== 0 ? `單價: $${unitPrice}` : "單價: 待定"} | ` +
-                `優先度: ${priority ? priority : "待定"}`
-              }
-            />
-          </ListItem>
-        );
-      })}
-    </List>
+            return (
+              <ListItem
+                key={index}
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <Checkbox
+                  checked={status === "已買"}
+                  onChange={() => handleToggle(id)}
+                />
+                <ListItemText
+                  primary={`${id} - ${itemName} (數量: ${quantity})`}
+                  secondary={
+                    `${location ? `地點: ${location}` : "地點: 待定"} | ` +
+                    `${unitPrice && Number(unitPrice) !== 0 ? `單價: $${unitPrice}` : "單價: 待定"} | ` +
+                    `優先度: ${priority ? priority : "待定"}`
+                  }
+                />
+              </ListItem>
+            );
+          })}
+      </List>
+    )}
+
+    {/* ✅ 不顯示已買 → 顯示未買 */}
+    {!showBought && (
+      <List>
+        {visibleItems
+          .filter(row => row[5] !== "已買")   // ✅ 只留下未買
+          .map((row, index) => {
+            const id = row[0];
+            const itemName = row[1];
+            const quantity = row[2];
+            const location = row[3];
+            const unitPrice = row[4];
+            const status = row[5];
+            const priority = row[6];
+
+            return (
+              <ListItem
+                key={index}
+                sx={{ display: "flex", alignItems: "center" }}
+              >
+                <Checkbox
+                  checked={status === "已買"}
+                  onChange={() => handleToggle(id)}
+                />
+                <ListItemText
+                  primary={`${id} - ${itemName} (數量: ${quantity})`}
+                  secondary={
+                    `${location ? `地點: ${location}` : "地點: 待定"} | ` +
+                    `${unitPrice && Number(unitPrice) !== 0 ? `單價: $${unitPrice}` : "單價: 待定"} | ` +
+                    `優先度: ${priority ? priority : "待定"}`
+                  }
+                />
+              </ListItem>
+            );
+          })}
+      </List>
+    )}
+
   </Box>
 )}
+
 
       </Paper>
     </Container>
