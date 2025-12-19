@@ -6,8 +6,8 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { timestamp, action, itemTypeId, itemName, quantity, newQuantity } = req.body;
-    if (!action || !itemTypeId || !itemName) {
+    let { timestamp, action, itemTypeId, itemName, quantity, newQuantity } = req.body;
+    if (!action || !itemName) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
@@ -31,6 +31,25 @@ export default async function handler(req, res) {
 
     const sheets = google.sheets({ version: "v4", auth });
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
+
+    // 🛒 如果是購物清單動作 → 查 GoodsID sheet
+    if (action.includes("(購物)")) {
+      const goods = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: "GoodsID!A:C", // A=種類ID, B=種類, C=品名
+      });
+    
+      const cleanName = itemName.trim();
+      const match = goods.data.values.find(row => row[2].trim() === cleanName); // 比對 C 欄品名
+      itemTypeId = match ? match[0] : "N/A"; // 取 A 欄種類ID
+      
+      
+
+      // newQuantity 在購物清單語境下就是狀態
+      if (action === "新增(購物)") newQuantity = "待購買";
+      else if (action === "已買(購物)") newQuantity = "已購買";
+      else if (action === "未買(購物)") newQuantity = "待購買";
+    }
 
     const logRow = [logTimestamp, action, itemTypeId, itemName, quantity, newQuantity];
 

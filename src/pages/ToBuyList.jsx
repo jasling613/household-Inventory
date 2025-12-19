@@ -148,64 +148,75 @@ const handleToggle = async (id) => {
 
 
   // 新增待買項目
-  const handleAddToBuy = async () => {
-    setSubmitted(true);
+// 新增待買項目
+const handleAddToBuy = async () => {
+  setSubmitted(true);
 
-    if (!newItemName || newItemName.trim() === '') {
-      return;
-    }
+  if (!newItemName || newItemName.trim() === '') {
+    return;
+  }
 
-    const unitPriceValue = newUnitPrice && newUnitPrice.trim() !== ''
-      ? Number(newUnitPrice)
-      : 0;
+  const unitPriceValue = newUnitPrice && newUnitPrice.trim() !== ''
+    ? Number(newUnitPrice)
+    : 0;
 
-    const newRow = [
-      newId,
-      newItemName,
-      newQuantity,
-      newLocation && newLocation.trim() !== '' ? newLocation : '待定',
-      unitPriceValue,
-      '待買',
-      newPriority,
-    ];
-
-    try {
-      const response = await fetch('/api/add-to-buy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          action: 'add',   // 👈 指定動作
-          newRow,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      if (result.success) {
-        setItems([...items, newRow]);
-
-        // 更新下一個 ID
-        const num = parseInt(newId.slice(1), 10);
-        const nextId = `B${String(num + 1).padStart(5, '0')}`;
-        setNewId(nextId);
-
-        // 清空表單
-        setNewItemName('');
-        setNewQuantity(1);
-        setNewLocation('');
-        setNewUnitPrice('');
-        setNewPriority('');
-        setSubmitted(false);
-      } else {
-        console.error('Add failed:', result.message);
-      }
-    } catch (err) {
-      console.error('Error adding to ToBuyList:', err);
-    }
+  // ActionLog payload
+  const payloadLog = {
+    action: "新增(購物)",
+    itemTypeId: "",   // 後端會查 GoodsID
+    itemName: newItemName,
+    quantity: newQuantity,
+    newQuantity: "待購買",
   };
+
+  // ToBuyList row
+  const newRow = [
+    newId,
+    newItemName,
+    newQuantity,
+    newLocation && newLocation.trim() !== '' ? newLocation : '待定',
+    unitPriceValue,
+    '待買',
+    newPriority,
+  ];
+
+  try {
+    // 1️⃣ ActionLog
+    await fetch('/api/log-action', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payloadLog),
+    });
+
+    // 2️⃣ ToBuyList
+    await fetch('/api/add-to-buy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: "add", newRow }),
+    });
+
+    // 更新前端清單顯示
+    setItems([...items, newRow]);
+
+    // 更新下一個 ID
+    const num = parseInt(newId.slice(1), 10);
+    const nextId = `B${String(num + 1).padStart(5, '0')}`;
+    setNewId(nextId);
+
+    // 清空表單
+    setNewItemName('');
+    setNewQuantity(1);
+    setNewLocation('');
+    setNewUnitPrice('');
+    setNewPriority('');
+    setSubmitted(false);
+
+  } catch (err) {
+    console.error('Error adding to ToBuyList:', err);
+  }
+};
+
+
 
     // 👇 新增過濾邏輯放這裡
     const visibleItems = showBought
