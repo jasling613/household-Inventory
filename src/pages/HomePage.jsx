@@ -329,105 +329,103 @@ function HomePage() {
         setFormError(`無法新增物品：${error.message}`);
     }
   };
-//扣減
-  const handleConsumption = async (operation) => {
-    if (!consumptionItemId) {
-      setConsumptionError('請選擇要消耗的物品 ID。');
-      return;
-    }
+// 扣減
+const handleConsumption = async (operation) => {
+  if (!consumptionItemId) {
+    setConsumptionError('請選擇要消耗的物品 ID。');
+    return;
+  }
 
-    const itemToUpdate = inventoryData.find(item => item.id === consumptionItemId);
-    if (!itemToUpdate) {
-      setConsumptionError('找不到對應的物品。');
-      return;
-    }
+  const itemToUpdate = inventoryData.find(item => item.id === consumptionItemId);
+  if (!itemToUpdate) {
+    setConsumptionError('找不到對應的物品。');
+    return;
+  }
 
-    const currentQuantity = parseInt(itemToUpdate.quantity, 10);
-    const changeQuantity = parseInt(consumptionQuantity, 10);
+  const currentQuantity = parseInt(itemToUpdate.quantity, 10);
+  const changeQuantity = parseInt(consumptionQuantity, 10);
 
-    if (isNaN(changeQuantity) || changeQuantity <= 0) {
-        setConsumptionError('消耗數量必須是大於 0 的數字。');
-        return;
-    }
-    
-    let newQuantity;
-    if (operation === 'add') {
-        newQuantity = currentQuantity + changeQuantity;
-    } else {
-        newQuantity = currentQuantity - changeQuantity;
-    }
+  if (isNaN(changeQuantity) || changeQuantity <= 0) {
+    setConsumptionError('消耗數量必須是大於 0 的數字。');
+    return;
+  }
 
-    if (newQuantity < 0) {
-      setConsumptionError('消耗後的數量不可為負數。');
-      return;
-    }
+  let newQuantity = operation === 'add'
+    ? currentQuantity + changeQuantity
+    : currentQuantity - changeQuantity;
 
-    setIsConsuming(true);
-    setConsumptionError(null);
+  if (newQuantity < 0) {
+    setConsumptionError('消耗後的數量不可為負數。');
+    return;
+  }
 
+  setIsConsuming(true);
+  setConsumptionError(null);
+
+  try {
+    // --- 呼叫 update-data ---
+    const response = await fetch('/api/update-data', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: consumptionItemId, newQuantity }),
+    });
+
+    const raw = await response.text(); // 只讀一次
+    let result;
     try {
-      const response = await fetch('/api/update-data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: consumptionItemId, newQuantity }),
-      });
-    
-      let result;
-      try {
-        result = await response.json();
-      } catch (e) {
-        const text = await response.text();
-        throw new Error(text || response.statusText || '從伺服器返回了一個未知的錯誤');
-      }
-    
-      if (!response.ok || !result.success) {
-        throw new Error(result.message || '後端返回了一個錯誤');
-      }
-    
-      // ✅ 成功後直接寫入 ActionLog
-      try {
-        const logRes = await fetch("/api/log-action", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            action: operation === "add" ? "新增(消耗)" : "扣減(消耗)",
-            itemTypeId: itemToUpdate.itemTypeId,
-            itemName: itemToUpdate.itemName,
-            quantity: changeQuantity,
-            newQuantity,
-          }),
-        });
-    
-        let logResult;
-        try {
-          logResult = await logRes.json();
-        } catch (e) {
-          const text = await logRes.text();
-          console.error("❌ ActionLog returned non-JSON:", text);
-          logResult = { success: false, message: text };
-        }
-    
-        if (!logResult.success) {
-          console.error("❌ ActionLog failed:", logResult.message);
-        } else {
-          console.log("✅ Action logged:", logResult);
-        }
-      } catch (logError) {
-        console.error("❌ ActionLog error:", logError);
-      }
-    
-      setIsConsuming(false);
-      setConsumptionItemId('');
-      setConsumptionQuantity(1);
-      setTimeout(() => loadSheetDataForReading(), 500);
-    
-    } catch (error) {
-      setIsConsuming(false);
-      console.error('Error updating data:', error);
-      setConsumptionError(`無法更新數量：${error.message}`);
+      result = JSON.parse(raw);
+    } catch {
+      throw new Error(raw || response.statusText || '從伺服器返回了一個未知的錯誤');
     }
-    
-  };
+
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || '後端返回了一個錯誤');
+    }
+
+    // --- 成功後寫入 ActionLog ---
+    try {
+      const logRes = await fetch("/api/log-action", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: operation === "add" ? "新增(消耗)" : "扣減(消耗)",
+          itemTypeId: itemToUpdate.itemTypeId,
+          itemName: itemToUpdate.itemName,
+          quantity: changeQuantity,
+          newQuantity,
+        }),
+      });
+
+      const rawLog = await logRes.text(); // 只讀一次
+      let logResult;
+      try {
+        logResult = JSON.parse(rawLog);
+      } catch {
+        console.error("❌ ActionLog returned non-JSON:", rawLog);
+        logResult = { success: false, message: rawLog };
+      }
+
+      if (!logResult.success) {
+        console.error("❌ ActionLog failed:", logResult.message);
+      } else {
+        console.log("✅ Action logged:", logResult);
+      }
+    } catch (logError) {
+      console.error("❌ ActionLog error:", logError);
+    }
+
+    setIsConsuming(false);
+    setConsumptionItemId('');
+    setConsumptionQuantity(1);
+    setTimeout(() => loadSheetDataForReading(), 500);
+
+  } catch (error) {
+    setIsConsuming(false);
+    console.error('Error updating data:', error);
+    setConsumptionError(`無法更新數量：${error.message}`);
+  }
+};
+
 
   const filteredInventoryData = inventoryData.filter(item => {
     return (
