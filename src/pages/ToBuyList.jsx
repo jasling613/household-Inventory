@@ -25,50 +25,63 @@ function ToBuyList({ onBack }) {
   const [newPriority, setNewPriority] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
-  // 數量 dropdown List
+  // dropdown List
+  const [itemNameOptions, setItemNameOptions] = useState([]);
   const quantityOptions = Array.from({ length: 10 }, (_, i) => String(i + 1));
 
-  // 📖 用 gapi 讀取 ToBuyList
-  useEffect(() => {
-    const loadToBuyList = () => {
-      window.gapi.client.sheets.spreadsheets.values.get({
-        spreadsheetId: SPREADSHEET_ID,
-        range: 'ToBuyList!A2:G',
-      }).then((response) => {
-        const rows = response.result.values || [];
-        setItems(rows);
+// 📖 用 gapi 讀取 ToBuyList + GoodsID
+useEffect(() => {
+  const loadData = () => {
+    // 1. 讀取 ToBuyList
+    window.gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'ToBuyList!A2:G',
+    }).then((response) => {
+      const rows = response.result.values || [];
+      setItems(rows);
 
-        // 自動生成下一個 ID
-        if (rows.length > 0) {
-          const lastRow = rows[rows.length - 1];
-          const lastId = lastRow[0]; // A 欄是 ID
-          if (lastId && /^B\d{5}$/.test(lastId)) {
-            const num = parseInt(lastId.slice(1), 10);
-            const nextId = `B${String(num + 1).padStart(5, '0')}`;
-            setNewId(nextId);
-          } else {
-            setNewId('B00001');
-          }
+      // 自動生成下一個 ID
+      if (rows.length > 0) {
+        const lastRow = rows[rows.length - 1];
+        const lastId = lastRow[0]; // A 欄是 ID
+        if (lastId && /^B\d{5}$/.test(lastId)) {
+          const num = parseInt(lastId.slice(1), 10);
+          const nextId = `B${String(num + 1).padStart(5, '0')}`;
+          setNewId(nextId);
         } else {
           setNewId('B00001');
         }
-      }, (err) => {
-        console.error('Error fetching ToBuyList:', err);
-      });
-    };
+      } else {
+        setNewId('B00001');
+      }
+    }, (err) => {
+      console.error('Error fetching ToBuyList:', err);
+    });
 
-    const initClient = () => {
-      const GAPI_READ_API_KEY = import.meta.env.VITE_GAPI_READ_API_KEY;
-      window.gapi.client.init({
-        apiKey: GAPI_READ_API_KEY,
-        discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
-      }).then(loadToBuyList);
-    };
+    // 2. 讀取 GoodsID 的 C 欄 → 下拉選單選項
+    window.gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'GoodsID!C2:C',
+    }).then((response) => {
+      const values = response.result.values?.flat().filter(v => v) || [];
+      setItemNameOptions(values); // ✅ 更新 dropdown list 選項
+    }, (err) => {
+      console.error('Error fetching GoodsID:', err);
+    });
+  };
 
-    if (window.gapi) {
-      window.gapi.load('client', initClient);
-    }
-  }, []);
+  const initClient = () => {
+    const GAPI_READ_API_KEY = import.meta.env.VITE_GAPI_READ_API_KEY;
+    window.gapi.client.init({
+      apiKey: GAPI_READ_API_KEY,
+      discoveryDocs: ['https://sheets.googleapis.com/$discovery/rest?version=v4'],
+    }).then(loadData);
+  };
+
+  if (window.gapi) {
+    window.gapi.load('client', initClient);
+  }
+}, []);
 
 // 勾選已購買 → 更新狀態 (樂觀更新 + 延遲隱藏)
 const handleToggle = async (id) => {
@@ -242,19 +255,33 @@ const handleToggle = async (id) => {
 
 {/* 新增待買項目表單 */}
 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mt: 3 }}>
-  {/* 第一行：ID + 物品名稱 */}
+  {/* 第一行：ID + 物品名稱 → 各佔 50% */}
   <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
-    <TextField label="ID" value={newId} disabled sx={{ flex: 1 }} />
-    <TextField
-      label="物品名稱"
-      value={newItemName}
-      onChange={(e) => setNewItemName(e.target.value)}
-      required
-      error={submitted && (!newItemName || newItemName.trim() === '')}
-      helperText={submitted && (!newItemName || newItemName.trim() === '') ? '物品名稱必須填寫' : ''}
-      sx={{ flex: 1 }}
-    />
-  </Box>
+  <TextField label="ID" value={newId} disabled sx={{ flex: 1 }} />
+
+  <Autocomplete
+    freeSolo
+    options={itemNameOptions}
+    value={newItemName}
+    onChange={(event, newValue) => setNewItemName(newValue)}
+    onInputChange={(event, newInputValue) => setNewItemName(newInputValue)}
+    sx={{ flex: 1 }}   // ✅ 外層也要 flex:1
+    renderInput={(params) => (
+      <TextField
+        {...params}
+        label="物品名稱"
+        required
+        error={submitted && (!newItemName || newItemName.trim() === '')}
+        helperText={
+          submitted && (!newItemName || newItemName.trim() === '')
+            ? '物品名稱必須填寫'
+            : ''
+        }
+      />
+    )}
+  />
+</Box>
+
 
   {/* 第二行：數量 + 購買地點 */}
   <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2 }}>
