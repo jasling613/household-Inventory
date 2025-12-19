@@ -11,6 +11,18 @@ export default async function handler(req, res) {
       return res.status(400).json({ success: false, message: "Missing required fields" });
     }
 
+    // ✅ 如果前端沒送 timestamp，就自己生成
+    const logTimestamp = timestamp || new Date().toLocaleString("zh-HK", {
+      timeZone: "Asia/Hong_Kong",
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    }).replace(/\//g, "-").replace(",", "");
+
     const auth = new google.auth.JWT({
       email: process.env.GOOGLE_CLIENT_EMAIL,
       key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
@@ -20,7 +32,7 @@ export default async function handler(req, res) {
     const sheets = google.sheets({ version: "v4", auth });
     const spreadsheetId = process.env.GOOGLE_SHEET_ID;
 
-    const logRow = [timestamp, action, itemTypeId, itemName, quantity, newQuantity];
+    const logRow = [logTimestamp, action, itemTypeId, itemName, quantity, newQuantity];
 
     await sheets.spreadsheets.values.append({
       spreadsheetId,
