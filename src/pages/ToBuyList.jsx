@@ -85,45 +85,57 @@ useEffect(() => {
 
 // 勾選已購買 → 更新狀態 (樂觀更新 + 延遲隱藏)
 const handleToggle = async (id) => {
-  // 找出目前這筆 item 的狀態
   const currentItem = items.find((row) => row[0] === id);
   const isBought = currentItem && currentItem[5] === "已買";
   const newStatus = isBought ? "待買" : "已買";
 
-  // 👇 樂觀更新：先改前端 items，讓 UI 立即顯示剔號
+  // 樂觀更新 UI
   setItems((prevItems) =>
     prevItems.map((row) =>
       row[0] === id ? [...row.slice(0, 5), newStatus, ...row.slice(6)] : row
     )
   );
 
-  // 👇 標記剛剛勾選的項目，延遲隱藏
   setJustToggled(id);
-  setTimeout(() => setJustToggled(null), 500); // 0.5 秒後清除
+  setTimeout(() => setJustToggled(null), 500);
 
-  const payload = {
+  // 1️⃣ ActionLog payload
+  const payloadLog = {
+    action: newStatus === "已買" ? "已買(購物)" : "未買(購物)",
+    itemTypeId: "", // 後端會查 GoodsID
+    itemName: currentItem[1], // 品名在第2欄
+    quantity: currentItem[2], // 數量在第3欄
+    newQuantity: newStatus === "已買" ? "已購買" : "待購買",
+  };
+
+  // 2️⃣ ToBuyList payload
+  const payloadToBuy = {
     action: "updateStatus",
     id,
     status: newStatus,
   };
 
-  console.log("Sending payload:", payload);
-
   try {
+    // ActionLog
+    await fetch("/api/log-action", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payloadLog),
+    });
+
+    // ToBuyList
     const response = await fetch("/api/add-to-buy", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(payloadToBuy),
     });
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
     const result = await response.json();
     if (!result.success) {
       console.error("Update failed:", result.message);
-      // 👇 回滾前端狀態
+      // 回滾 UI
       setItems((prevItems) =>
         prevItems.map((row) =>
           row[0] === id
@@ -134,7 +146,7 @@ const handleToggle = async (id) => {
     }
   } catch (err) {
     console.error("Error updating status:", err);
-    // 👇 API 出錯也回滾
+    // 回滾 UI
     setItems((prevItems) =>
       prevItems.map((row) =>
         row[0] === id
@@ -144,6 +156,7 @@ const handleToggle = async (id) => {
     );
   }
 };
+
 
 
 
