@@ -362,6 +362,7 @@ const handleConsumption = async (operation) => {
   setIsConsuming(true);
   setConsumptionError(null);
 
+  
   try {
     // --- 呼叫 update-data ---
     const response = await fetch('/api/update-data', {
