@@ -274,7 +274,7 @@ function HomePage() {
             },
             body: JSON.stringify({ newRow }),
         });
-
+   
         if (!response.ok) {
             let errorData;
             try {
@@ -285,11 +285,31 @@ function HomePage() {
             throw new Error(errorData.message || '從伺服器返回了一個錯誤');
         }
 
-        const result = await response.json();
+     const result = await response.json();
 
         if (!result.success) {
             throw new Error(result.message || '後端返回了一個失敗的回應。');
         }
+
+              // ✅ 成功後直接寫入 ActionLog
+              const logRes = await fetch("/api/log-action", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  action: "新增物品",
+                  itemTypeId,
+                  itemName,
+                  quantity,
+                  newQuantity: quantity,
+                }),
+              });
+
+              const logResult = await logRes.json();
+              if (!logResult.success) {
+                console.error("❌ ActionLog failed:", logResult.message);
+              } else {
+                console.log("✅ Action logged:", logResult);
+              }
 
         setIsSubmitting(false);
         setItemTypeId('');
@@ -370,6 +390,25 @@ function HomePage() {
             throw new Error(result.message || '後端返回了一個失敗的回應。');
         }
 
+                // ✅ 成功後直接寫入 ActionLog
+                const logRes = await fetch("/api/log-action", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    action: operation === "add" ? "新增(消耗)" : "扣減(消耗)",
+                    itemTypeId: itemToUpdate.itemTypeId,
+                    itemName: itemToUpdate.itemName,
+                    quantity: changeQuantity,
+                    newQuantity,
+                  }),
+                });
+
+                const logResult = await logRes.json();
+                if (!logResult.success) {
+                  console.error("❌ ActionLog failed:", logResult.message);
+                } else {
+                  console.log("✅ Action logged:", logResult);
+                }
         setIsConsuming(false);
         setConsumptionItemId('');
         setConsumptionQuantity(1);

@@ -221,6 +221,53 @@ app.post('/api/add-to-buy', async (req, res) => {
   }
 });
 
+
+//Log Action
+app.post('/api/log-action', async (req, res) => {
+  try {
+    const { timestamp, action, itemTypeId, itemName, quantity, newQuantity } = req.body;
+    if (!action || !itemTypeId || !itemName) {
+      return res.status(400).json({ success: false, message: 'Missing required fields.' });
+    }
+
+    // ✅ 優先用前端送來的 timestamp，沒有才自己生成
+    const logTimestamp = timestamp || new Date()
+      .toLocaleString("zh-HK", {
+        timeZone: "Asia/Hong_Kong",
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true, // ✅ 使用 12 小時制
+      })
+      .replace(/\//g, "-")
+      .replace(",", "");
+
+    const logRow = [logTimestamp, action, itemTypeId, itemName, quantity, newQuantity];
+
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'ActionLog!A:F',
+      valueInputOption: 'USER_ENTERED',
+      resource: { values: [logRow] },
+    });
+
+    return res.json({ success: true, message: 'Action logged successfully' });
+  } catch (error) {
+    console.error('Error in /api/log-action:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+
 app.listen(port, '0.0.0.0', () => {
   console.log(`Backend server started, listening on http://0.0.0.0:${port}`);
 });
