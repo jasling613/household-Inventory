@@ -28,6 +28,7 @@ function ToBuyList({ onBack }) {
   // dropdown List
   const [itemNameOptions, setItemNameOptions] = useState([]);
   const quantityOptions = Array.from({ length: 10 }, (_, i) => String(i + 1));
+  const [locations, setLocations] = useState([]);
 
 // 📖 用 gapi 讀取 ToBuyList + GoodsID
 useEffect(() => {
@@ -67,6 +68,17 @@ useEffect(() => {
       setItemNameOptions(values); // ✅ 更新 dropdown list 選項
     }, (err) => {
       console.error('Error fetching GoodsID:', err);
+    });
+
+    // 3. 讀取 Location sheet → 購買地點 dropdown 選項
+    window.gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Location!A2:A', // 假設 A 欄是地點
+    }).then((response) => {
+      const values = response.result.values?.flat().filter(v => v) || [];
+      setLocations(values); // ✅ 更新購買地點 dropdown list
+    }, (err) => {
+      console.error('Error fetching Location:', err);
     });
   };
 
@@ -156,7 +168,6 @@ const handleToggle = async (id) => {
     );
   }
 };
-
 
 
 
@@ -338,12 +349,22 @@ const handleAddToBuy = async () => {
       )}
     />
 
-    <TextField
-      label="購買地點"
-      value={newLocation}
-      onChange={(e) => setNewLocation(e.target.value)}
-      sx={{ flex: 1 }}
-    />
+            <Autocomplete
+              freeSolo                     //  允許自由輸入
+              options={locations}          //  從 Location sheet 抓回來的候選清單
+              value={newLocation}          //  當前選擇/輸入的值
+              sx={{ flex: 1 }}
+              onChange={(event, newValue) => setNewLocation(newValue)}          //  選擇下拉項目
+              onInputChange={(event, newInputValue) => setNewLocation(newInputValue)} //  自由輸入
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="購買地點"
+                  sx={{ flex: 1 }}
+                />
+              )}
+            />
+
   </Box>
 
   {/* 第三行：單價 + 優先度 */}

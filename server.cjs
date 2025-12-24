@@ -221,6 +221,27 @@ app.post('/api/add-to-buy', async (req, res) => {
   }
 });
 
+//to-buy-list Location
+app.get('/api/get-locations', async (req, res) => {
+  try {
+    const auth = new google.auth.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+    });
+    const sheets = google.sheets({ version: 'v4', auth });
+
+    const result = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'Location!A2:A', // 假設 A 欄是地點名稱
+    });
+
+    const locations = result.data.values ? result.data.values.flat() : [];
+    res.json({ success: true, data: locations });
+  } catch (error) {
+    console.error('Error fetching locations:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 //Log Action
 app.post('/api/log-action', async (req, res) => {

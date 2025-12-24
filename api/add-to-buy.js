@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { action, newRow, id, status, priority, quantity } = req.body;
+    const { action, newRow, id, status, priority, quantity, location } = req.body;
 
     // 建立 Google Sheets 驗證
     const auth = new google.auth.JWT({
@@ -122,6 +122,36 @@ export default async function handler(req, res) {
       });
 
       return res.status(200).json({ success: true, message: "Quantity updated successfully" });
+    }
+
+    // ✏️ 更新購買地點
+    if (action === "updateLocation") {
+      if (!id || !location) {
+        return res.status(400).json({ success: false, message: "Missing id or location" });
+      }
+
+      const readRes = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: "ToBuyList!A2:G",
+      });
+
+      const rows = readRes.data.values || [];
+      const rowIndex = rows.findIndex((row) => row[0].trim() === id.trim());
+
+      if (rowIndex === -1) {
+        return res.status(404).json({ success: false, message: "ID not found in sheet" });
+      }
+
+      const rowNumber = rowIndex + 2;
+
+      await sheets.spreadsheets.values.update({
+        spreadsheetId,
+        range: `ToBuyList!D${rowNumber}`, // D 欄是購買地點
+        valueInputOption: "USER_ENTERED",
+        resource: { values: [[location]] },
+      });
+
+      return res.status(200).json({ success: true, message: "Location updated successfully" });
     }
 
     // 如果 action 不符合任何分支
