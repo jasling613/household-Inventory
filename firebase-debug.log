@@ -1788,3 +1788,118 @@
 [error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
 [debug] [2025-12-24T01:10:38.928Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
 [debug] [2025-12-24T01:10:38.928Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-29T03:49:17.675Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-29T03:49:17.677Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-29T03:49:17.678Z] Checked if tokens are valid: false, expires at: 1766542234181
+[debug] [2025-12-29T03:49:17.678Z] Checked if tokens are valid: false, expires at: 1766542234181
+[debug] [2025-12-29T03:49:17.679Z] > refreshing access token with scopes: []
+[debug] [2025-12-29T03:49:17.681Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-29T03:49:17.681Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-29T03:49:17.685Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-29T03:49:17.685Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-29T03:49:17.685Z] Checked if tokens are valid: false, expires at: 1766542234181
+[debug] [2025-12-29T03:49:17.686Z] Checked if tokens are valid: false, expires at: 1766542234181
+[debug] [2025-12-29T03:49:17.686Z] > refreshing access token with scopes: []
+[debug] [2025-12-29T03:49:17.686Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2025-12-29T03:49:17.687Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-29T03:49:17.777Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-29T03:49:17.778Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-29T03:49:17.801Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2025-12-29T03:49:17.841Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2025-12-29T03:49:17.843Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2025-12-29T03:49:17.865Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2025-12-29T03:49:18.828Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 200
+[debug] [2025-12-29T03:49:18.829Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"name":"projects/jaslinghome/billingInfo","projectId":"jaslinghome","billingAccountName":"","billingEnabled":false}
+[debug] [2025-12-29T03:49:18.863Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:18.863Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:18.864Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:18.864Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:18.901Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:18.903Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:18.903Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:18.904Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:18.904Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [none]
+[debug] [2025-12-29T03:49:18.904Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-29T03:49:18.914Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-12-29T03:49:18.914Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-29T03:49:18.921Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-12-29T03:49:18.923Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-29T03:49:18.925Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [none]
+[debug] [2025-12-29T03:49:18.926Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-29T03:49:19.024Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 200
+[debug] [2025-12-29T03:49:19.025Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"name":"projects/jaslinghome/billingInfo","projectId":"jaslinghome","billingAccountName":"","billingEnabled":false}
+[debug] [2025-12-29T03:49:19.027Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:19.028Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:19.028Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:19.028Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:19.050Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:19.050Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:19.050Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:19.050Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:19.051Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [none]
+[debug] [2025-12-29T03:49:19.051Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-29T03:49:19.055Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [none]
+[debug] [2025-12-29T03:49:19.056Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-29T03:49:19.062Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [none]
+[debug] [2025-12-29T03:49:19.062Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-29T03:49:19.064Z] >>> [apiv2][query] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [none]
+[debug] [2025-12-29T03:49:19.065Z] >>> [apiv2][(partial)header] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com x-goog-quota-user=projects/jaslinghome
+[debug] [2025-12-29T03:49:19.958Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com 403
+[debug] [2025-12-29T03:49:19.959Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [omitted]
+[debug] [2025-12-29T03:49:19.982Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com 403
+[debug] [2025-12-29T03:49:19.982Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-12-29T03:49:20.011Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com 403
+[debug] [2025-12-29T03:49:20.011Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [omitted]
+[debug] [2025-12-29T03:49:20.044Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com 403
+[debug] [2025-12-29T03:49:20.045Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-29T03:49:20.072Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-29T03:49:20.072Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-29T03:49:20.073Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:20.073Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:20.073Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2025-12-29T03:49:20.090Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com 403
+[debug] [2025-12-29T03:49:20.091Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firestore.googleapis.com [omitted]
+[debug] [2025-12-29T03:49:20.144Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com 403
+[debug] [2025-12-29T03:49:20.149Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebasedataconnect.googleapis.com [omitted]
+[debug] [2025-12-29T03:49:20.150Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com 403
+[debug] [2025-12-29T03:49:20.150Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseapphosting.googleapis.com [omitted]
+[debug] [2025-12-29T03:49:20.165Z] <<< [apiv2][status] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com 403
+[debug] [2025-12-29T03:49:20.165Z] <<< [apiv2][body] GET https://serviceusage.googleapis.com/v1/projects/jaslinghome/services/firebaseio.com [omitted]
+[debug] [2025-12-29T03:49:21.048Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 200
+[debug] [2025-12-29T03:49:21.052Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"name":"projects/jaslinghome/billingInfo","projectId":"jaslinghome","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-29T03:49:21.060Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-29T03:49:21.060Z] > authorizing via signed-in user (jasling613@gmail.com)
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-29T03:49:21.148Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-29T03:49:21.148Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-29T03:49:21.150Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:21.150Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:21.150Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-29T03:49:21.187Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-29T03:49:21.188Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-29T03:49:21.188Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:21.188Z] Checked if tokens are valid: true, expires at: 1766983756843
+[debug] [2025-12-29T03:49:21.188Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2025-12-29T03:49:21.661Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 200
+[debug] [2025-12-29T03:49:21.662Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"name":"projects/jaslinghome/billingInfo","projectId":"jaslinghome","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-29T03:49:21.668Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-29T03:49:21.680Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2025-12-29T03:49:22.124Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 200
+[debug] [2025-12-29T03:49:22.130Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"name":"projects/jaslinghome/billingInfo","projectId":"jaslinghome","billingAccountName":"","billingEnabled":false}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2025-12-29T03:49:22.137Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2025-12-29T03:49:22.137Z] > authorizing via signed-in user (jasling613@gmail.com)

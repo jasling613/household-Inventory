@@ -83,6 +83,7 @@ function HomePage() {
 
   //To Buy List
   const [showToBuyList, setShowToBuyList] = useState(false);
+  
 
   const loadSheetDataForReading = useCallback(() => {
     setLoading(true);
@@ -787,17 +788,46 @@ const handleConsumption = async (operation) => {
                                 <Box sx={{ mt: 3 }}>
                                   <List>
                                     {filteredInventoryData.length > 0 ? (
-                                      filteredInventoryData.map((item, index) => (
-                                        <ListItem key={`${item.id}-${index}`}>
-                                          <ListItemText
-                                            primary={`${item.id} - ${item.itemName} (數量: ${item.quantity})`}
-                                            secondary={
-                                              `單價: ${item.unitPrice && Number(item.unitPrice) !== 0 ? `$${item.unitPrice}` : "$N/A"} | ` +
-                                              `購買地點: ${item.purchaseLocation ? item.purchaseLocation : "N/A"} `
-                                            }
-                                          />
-                                        </ListItem>
-                                      ))
+                                      filteredInventoryData.map((item, index) => {
+                                        // 判斷到期日樣式
+                                        const getExpiryStyle = (expirationDate) => {
+                                          if (!expirationDate || !expirationDate.isValid()) {
+                                            return { color: "black" };
+                                          }
+                                          const today = dayjs();
+                                          const diffDays = expirationDate.diff(today, "day");
+
+                                          if (diffDays < 0) {
+                                            return { color: "red", fontWeight: "bold" }; // 已過期
+                                          }
+                                          if (diffDays <= 7) {
+                                            return { color: "orange" }; // 快到期
+                                          }
+                                          return { color: "black" }; // 正常
+                                        };
+
+                                        return (
+                                          <ListItem key={`${item.id}-${index}`}>
+                                            <ListItemText
+                                              primary={
+                                                <span style={getExpiryStyle(item.expirationDate)}>
+                                                  {`${item.id} - ${item.itemName} (數量: ${item.quantity})`}
+                                                </span>
+                                              }
+                                              secondary={
+                                                <span style={getExpiryStyle(item.expirationDate)}>
+                                                  單價: {item.unitPrice && Number(item.unitPrice) !== 0 ? `$${item.unitPrice}` : "$N/A"} |{" "}
+                                                  購買地點: {item.purchaseLocation ? item.purchaseLocation : "N/A"} |{" "}
+                                                  到期日:{" "}
+                                                  {item.expirationDate && item.expirationDate.isValid()
+                                                    ? item.expirationDate.format("DD-MM-YYYY")
+                                                    : "N/A"}
+                                                </span>
+                                              }
+                                            />
+                                          </ListItem>
+                                        );
+                                      })
                                     ) : (
                                       <Typography align="center">目前沒有任何物品符合篩選條件</Typography>
                                     )}
