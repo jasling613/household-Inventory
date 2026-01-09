@@ -5,7 +5,17 @@ import {
   Checkbox, List, ListItem, ListItemText, TextField,
   FormControl, InputLabel, Select, MenuItem,
   InputAdornment, Autocomplete,TableContainer,Avatar,
+  Dialog, DialogTitle, DialogContent, DialogActions, IconButton,
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
+import CustomCalendarHeader from '../components/CustomCalendarHeader';
+
+
 
 const SPREADSHEET_ID = '1onhaEhn7RftQFLYeZeL9uHfD0Ci8pN1d_GJRk4h5OyU';
 
@@ -29,6 +39,64 @@ function ToBuyList({ onBack }) {
   const [itemNameOptions, setItemNameOptions] = useState([]);
   const quantityOptions = Array.from({ length: 10 }, (_, i) => String(i + 1));
   const [locations, setLocations] = useState([]);
+
+  //Dialog
+  const [open, setOpen] = useState(false);
+  const [formData, setFormData] = useState({
+    itemName: "",
+    quantity: 1,
+    location: "",
+    unitPrice: "",
+  });
+  
+  const handleOpenDialog = ({ itemName, quantity, location, unitPrice }) => {
+    setFormData({
+      itemName: itemName || "",
+      quantity: Number(quantity) || 1,
+      location: location || "",
+      unitPrice: unitPrice || "",
+    });
+  
+    // 👇 新增：根據 itemName 去 GoodsID 反查
+    if (itemName) {
+      const selectedGood = goodsIdData.find(item => item.name === itemName);
+      if (selectedGood) {
+        setItemTypeId(selectedGood.id);
+        setItemType(selectedGood.type);
+      } else {
+        setItemTypeId('');
+        setItemType('');
+      }
+    } else {
+      setItemTypeId('');
+      setItemType('');
+    }
+  
+    setOpen(true);
+  };
+  
+  
+  const handleClose = () => setOpen(false);
+
+  const [purchaseDate, setPurchaseDate] = useState(dayjs()); // 預設今天
+  const [expiryDate, setExpiryDate] = useState(null);        // 預設空白
+
+  // 幫助 DatePicker 快速選今天
+  const handleTodayClick = (setter) => () => {
+    setter(dayjs());
+  };
+
+  //get 物品種類ID, 物品種類
+  const [itemTypeId, setItemTypeId] = useState(''); 
+  const [itemType, setItemType] = useState('');
+  const [goodsIdData, setGoodsIdData] = useState([]);
+
+
+  const handleItemNameChange = (event, newValue) => { 
+    setFormData({ ...formData, itemName: newValue }); 
+    const selectedGood = goodsIdData.find(item => item.name === newValue); 
+    if (selectedGood) { setItemTypeId(selectedGood.id); setItemType(selectedGood.type); } 
+    else { setItemTypeId(''); setItemType(''); } };
 
 // 📖 用 gapi 讀取 ToBuyList + GoodsID
 useEffect(() => {
@@ -59,16 +127,23 @@ useEffect(() => {
       console.error('Error fetching ToBuyList:', err);
     });
 
-    // 2. 讀取 GoodsID 的 C 欄 → 下拉選單選項
+    // 2. 讀取 GoodsID 的 A、B、C 欄 → 完整資料
     window.gapi.client.sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'GoodsID!C2:C',
+      range: 'GoodsID!A2:C',
     }).then((response) => {
-      const values = response.result.values?.flat().filter(v => v) || [];
-      setItemNameOptions(values); // ✅ 更新 dropdown list 選項
+      const rows = response.result.values || [];
+      const goodsData = rows.map(row => ({
+        id: row[0],    // A 欄 → 物品種類ID
+        type: row[1],  // B 欄 → 物品種類
+        name: row[2],  // C 欄 → 物品名稱
+      }));
+      setGoodsIdData(goodsData);                     // ✅ 存完整資料
+      setItemNameOptions(goodsData.map(item => item.name)); // ✅ 下拉選單仍然只顯示名稱
     }, (err) => {
       console.error('Error fetching GoodsID:', err);
     });
+
 
     // 3. 讀取 Location sheet → 購買地點 dropdown 選項
     window.gapi.client.sheets.spreadsheets.values.get({
@@ -95,11 +170,55 @@ useEffect(() => {
   }
 }, []);
 
-// 勾選已購買 → 更新狀態 (樂觀更新 + 延遲隱藏)
+// 初始值
+const [nextInventoryId, setNextInventoryId] = useState("000001");
+
+// 📖 用 gapi 讀取 HouseInventory → 生成下一個流水號
+useEffect(() => {
+  const loadInventoryLastId = () => {
+    window.gapi.client.sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: "HouseInventory!A2:I", // 只讀取 A 欄
+    }).then((response) => {
+      const rows = response.result.values || [];
+      const filtered = rows.filter(r => r[0] && r[0].trim() !== "");
+      if (filtered.length > 0) {
+        const lastRow = filtered[filtered.length - 1];
+        const lastId = lastRow[0].trim();
+        if (/^\d+$/.test(lastId)) {
+          const num = parseInt(lastId, 10);
+          const nextId = String(num + 1).padStart(6, "0");
+          setNextInventoryId(nextId);
+        } else {
+          setNextInventoryId("000001");
+        }
+      } else {
+        setNextInventoryId("000001");
+      }
+    }, (err) => {
+      console.error("Error fetching HouseInventory A欄:", err);
+    });
+  };
+
+  const initClient = () => {
+    const GAPI_READ_API_KEY = import.meta.env.VITE_GAPI_READ_API_KEY;
+    window.gapi.client.init({
+      apiKey: GAPI_READ_API_KEY,
+      discoveryDocs: ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+    }).then(loadInventoryLastId);
+  };
+
+  if (window.gapi) {
+    window.gapi.load("client", initClient);
+  }
+}, []);
+
+
 const handleToggle = async (id) => {
   const currentItem = items.find((row) => row[0] === id);
   const isBought = currentItem && currentItem[5] === "已買";
   const newStatus = isBought ? "待買" : "已買";
+
 
   // 樂觀更新 UI
   setItems((prevItems) =>
@@ -107,9 +226,6 @@ const handleToggle = async (id) => {
       row[0] === id ? [...row.slice(0, 5), newStatus, ...row.slice(6)] : row
     )
   );
-
-  setJustToggled(id);
-  setTimeout(() => setJustToggled(null), 500);
 
   // 1️⃣ ActionLog payload
   const payloadLog = {
@@ -167,12 +283,70 @@ const handleToggle = async (id) => {
       )
     );
   }
-};
+}
 
+  // ➕ 新增到庫存
+const handleAddToInventory = async () => {
+  //date Picker
+  const purchaseStr = purchaseDate ? purchaseDate.format("DD-MM-YYYY") : ""; 
+  const expiryStr = expiryDate ? expiryDate.format("DD-MM-YYYY") : "";
 
+  // 送滿 9 欄，第一欄用 nextInventoryId
+  const newInventoryRow = [
+    nextInventoryId,       // A 欄 id → 前端生成的流水號
+    itemTypeId,            // B 欄 → 物品種類ID GoodsID
+    itemType,              // C 欄 → 物品種類 GoodsID
+    formData.itemName,     // D 欄 物品名稱
+    formData.quantity,     // E 欄 數量
+    formData.unitPrice,    // F 欄 單價
+    formData.location,     // G 欄 購買地點
+    purchaseStr,           // H 欄 購買日期
+    expiryStr,             // I 欄 到期日 → 先留空
+  ];
 
-  // 新增待買項目
-// 新增待買項目
+  const payloadLog = {
+    action: "新增(庫存)",
+    itemTypeId,        // ✅ 改成用 state
+    itemType,          // ✅ 改成用 state
+    itemName: formData.itemName,
+    quantity: formData.quantity,
+    newQuantity: "加入庫存",
+  };
+  
+
+  try {
+    // ActionLog
+    await fetch("/api/log-action", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payloadLog),
+    });
+
+    // HouseInventory
+    const response = await fetch("/api/add-data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ newRow: newInventoryRow }),
+    });
+
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+    const result = await response.json();
+    if (!result.success) {
+      console.error("寫入 HouseInventory 失敗:", result.message);
+    }
+
+    // ✅ 新增成功後，更新下一個流水號 
+    const num = parseInt(nextInventoryId, 10); 
+      const nextId = String(num + 1).padStart(6, "0"); 
+      setNextInventoryId(nextId); 
+      setOpen(false); 
+      } catch (err) 
+      { console.error("Error adding to HouseInventory:", err); 
+      } 
+      };
+
+// ➕ 新增待買項目
 const handleAddToBuy = async () => {
   setSubmitted(true);
 
@@ -239,6 +413,7 @@ const handleAddToBuy = async () => {
     console.error('Error adding to ToBuyList:', err);
   }
 };
+
 
 
 
@@ -530,6 +705,15 @@ const handleAddToBuy = async () => {
                     `優先度: ${priority ? priority : "待定"}`
                   }
                 />
+
+                <IconButton
+                  onClick={() =>
+                    handleOpenDialog({ itemName, quantity, location, unitPrice })
+                  }
+                >
+                  <AddIcon />
+                </IconButton>
+
               </ListItem>
             );
           })}
@@ -540,7 +724,129 @@ const handleAddToBuy = async () => {
 )}
 
 
+<Dialog open={open} onClose={() => setOpen(false)}>
+  <DialogTitle>新增到庫存</DialogTitle>
+  <DialogContent>
+    <TextField
+      label="自動生成編號"
+      value={nextInventoryId}
+      fullWidth
+      sx={{ mt:2,mb: 2 }}
+      disabled
+    />  
+
+    {/* 自動帶出種類ID & 種類 */}
+    <TextField
+      label="物品種類ID"
+      value={itemTypeId}
+      fullWidth
+      sx={{ mb: 2 }}
+      disabled
+    /> 
+    <TextField
+      label="物品種類"
+      value={itemType}
+      fullWidth
+      sx={{ mb: 2 }}
+      disabled
+    />
+
+    {/* 物品名稱選擇 → Autocomplete + 反查 */}
+    <Autocomplete
+      options={itemNameOptions}
+      value={formData.itemName}
+      onChange={(event, newValue) => {
+        setFormData({ ...formData, itemName: newValue });
+        const selectedGood = goodsIdData.find(item => item.name === newValue);
+        if (selectedGood) {
+          setItemTypeId(selectedGood.id);
+          setItemType(selectedGood.type);
+        } else {
+          setItemTypeId('');
+          setItemType('');
+        }
+      }}
+      onInputChange={(event, newInputValue) => {
+        setFormData({ ...formData, itemName: newInputValue });
+        const selectedGood = goodsIdData.find(item => item.name === newInputValue);
+        if (selectedGood) {
+          setItemTypeId(selectedGood.id);
+          setItemType(selectedGood.type);
+        } else {
+          setItemTypeId('');
+          setItemType('');
+        }
+      }}
+      renderInput={(params) => (
+        <TextField {...params} label="物品名稱" fullWidth sx={{ mb: 2 }} />
+      )}
+    />
+
+    <TextField
+      label="數量"
+      type="number"
+      value={formData.quantity}
+      onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+      fullWidth sx={{ mb: 2 }}
+    />
+
+    <TextField
+      label="單價"
+      type="number"
+      value={formData.unitPrice}
+      onChange={(e) => setFormData({ ...formData, unitPrice: e.target.value })}
+      fullWidth sx={{ mb: 2 }}
+    />
+
+    {/* 購買地點 → 改成 Autocomplete */}
+    <Autocomplete
+      freeSolo
+      options={locations}
+      value={formData.location}
+      onChange={(event, newValue) => setFormData({ ...formData, location: newValue })}
+      onInputChange={(event, newInputValue) => setFormData({ ...formData, location: newInputValue })}
+      renderInput={(params) => (
+        <TextField {...params} label="購買地點" fullWidth sx={{ mb: 2 }} />
+      )}
+    />
+
+    {/* 日期選擇器 */}
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="zh-cn">
+      <DatePicker
+        label="購買日期"
+        value={purchaseDate}
+        onChange={(newValue) => setPurchaseDate(newValue)}
+        format="DD-MM-YYYY"
+        slots={{ calendarHeader: CustomCalendarHeader }}
+        slotProps={{
+          calendarHeader: { onTodayClick: handleTodayClick(setPurchaseDate) },
+          textField: { fullWidth: true, sx: { mb: 2 } },
+        }}
+      />
+      <DatePicker
+        label="到期日"
+        value={expiryDate}
+        onChange={(newValue) => setExpiryDate(newValue)}
+        format="DD-MM-YYYY"
+        slots={{ calendarHeader: CustomCalendarHeader }}
+        slotProps={{
+          calendarHeader: { onTodayClick: handleTodayClick(setExpiryDate) },
+          textField: { fullWidth: true, sx: { mb: 2 } },
+        }}
+      />
+    </LocalizationProvider>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={() => setOpen(false)}>取消</Button>
+    <Button onClick={handleAddToInventory} variant="contained" color="primary">
+      加入
+    </Button>
+  </DialogActions>
+</Dialog>
+
       </Paper>
-    </Container>
-    );}
+      </Container>
+  );
+};
+
 export default ToBuyList;

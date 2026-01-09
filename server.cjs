@@ -55,7 +55,7 @@ app.post('/api/add-data', async (req, res) => {
 
     const response = await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'HouseInventory!A1',
+      range: 'HouseInventory!A2:I',
       valueInputOption: 'USER_ENTERED',
       resource: { values: [newRow] },
     });
