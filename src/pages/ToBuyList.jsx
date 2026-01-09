@@ -4,7 +4,7 @@ import {
   Table, TableHead, TableRow, TableCell, TableBody,
   Checkbox, List, ListItem, ListItemText, TextField,
   FormControl, InputLabel, Select, MenuItem,
-  InputAdornment, Autocomplete,TableContainer,Avatar,
+  InputAdornment, Autocomplete,TableContainer,Avatar,ListItemIcon,
   Dialog, DialogTitle, DialogContent, DialogActions, IconButton,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
@@ -674,50 +674,57 @@ const handleAddToBuy = async () => {
       </List>
     )}
 
-    {/* ✅ 不顯示已買 → 顯示未買 */}
-    {!showBought && (
-      <List>
-        {visibleItems
-          .filter(row => row[5] !== "已買")   // ✅ 只留下未買
-          .map((row, index) => {
-            const id = row[0];
-            const itemName = row[1];
-            const quantity = row[2];
-            const location = row[3];
-            const unitPrice = row[4];
-            const status = row[5];
-            const priority = row[6];
+{/* ✅ 不顯示已買 → 顯示未買 */}
+{!showBought && (
+  <List>
+    {visibleItems
+      .filter(row => row[5] !== "已買")   // ✅ 只留下未買
+      .map((row, index) => {
+        const id = row[0];
+        const itemName = row[1];
+        const quantity = row[2];
+        const location = row[3];
+        const unitPrice = row[4];
+        const status = row[5];
+        const priority = row[6];
 
-            return (
-              <ListItem
-                key={index}
-                sx={{ display: "flex", alignItems: "center" }}
-              >
-                <Checkbox
-                  checked={status === "已買"}
-                  onChange={() => handleToggle(id)}
-                />
-                <ListItemText
-                  primary={`${id} - ${itemName} (數量: ${quantity})`}
-                  secondary={
-                    `${location ? `地點: ${location}` : "地點: 待定"} | ` +
-                    `${unitPrice && Number(unitPrice) !== 0 ? `單價: $${unitPrice}` : "單價: 待定"}`
-                  }
-                />
+        return (
+          <ListItem
+            key={index}
+            sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", pl: 0 }}
+          >
+            {/* 左邊 Checkbox 永遠靠最左 */}
+            <ListItemIcon sx={{ minWidth: 0, mr: 1 }}>
+              <Checkbox
+                checked={status === "已買"}
+                onChange={() => handleToggle(id)}
+              />
+            </ListItemIcon>
 
-                <IconButton
-                  onClick={() =>
-                    handleOpenDialog({ itemName, quantity, location, unitPrice })
-                  }
-                >
-                  <AddIcon />
-                </IconButton>
+            {/* 中間文字 */}
+            <ListItemText
+              primary={`${id} - ${itemName} (數量: ${quantity})`}
+              secondary={
+                `${location ? `地點: ${location}` : "地點: 待定"} | ` +
+                `${unitPrice && Number(unitPrice) !== 0 ? `單價: $${unitPrice}` : "單價: 待定"} | ` +
+                `優先度: ${priority ? priority : "待定"}`
+              }
+            />
 
-              </ListItem>
-            );
-          })}
-      </List>
-    )}
+            {/* 右側按鈕 */}
+            <IconButton
+              onClick={() =>
+                handleOpenDialog({ itemName, quantity, location, unitPrice })
+              }
+            >
+              <AddIcon />
+            </IconButton>
+          </ListItem>
+        );
+      })}
+  </List>
+)}
+
 
   </Box>
 )}
