@@ -701,8 +701,7 @@ const handleAddToBuy = async () => {
                   primary={`${id} - ${itemName} (數量: ${quantity})`}
                   secondary={
                     `${location ? `地點: ${location}` : "地點: 待定"} | ` +
-                    `${unitPrice && Number(unitPrice) !== 0 ? `單價: $${unitPrice}` : "單價: 待定"} | ` +
-                    `優先度: ${priority ? priority : "待定"}`
+                    `${unitPrice && Number(unitPrice) !== 0 ? `單價: $${unitPrice}` : "單價: 待定"}`
                   }
                 />
 
