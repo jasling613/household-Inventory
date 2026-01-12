@@ -625,8 +625,9 @@ const handleConsumption = async (operation) => {
 
   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, my: 3 }}>
     
-    {/* 物品種類 + 物品名稱並排 */}
+    {/* 物品種類 + 數量並排 */}
     <Box sx={{ display: 'flex', gap: 2 }}>
+      {/* 物品種類 */}
       <FormControl fullWidth required>
         <InputLabel id="consumption-item-type-label">物品種類</InputLabel>
         <Select
@@ -646,53 +647,28 @@ const handleConsumption = async (operation) => {
         </Select>
       </FormControl>
 
-      <FormControl fullWidth required disabled={!consumptionItemType}>
-        <InputLabel id="consumption-item-name-label">物品名稱</InputLabel>
+      {/* 數量選擇 */}
+      <FormControl fullWidth required>
+        <InputLabel id="consumption-quantity-label">數量</InputLabel>
         <Select
-          labelId="consumption-item-name-label"
-          value={consumptionItemName}
-          label="物品名稱"
+          labelId="consumption-quantity-label"
+          value={consumptionQuantity <= 10 ? consumptionQuantity : "other"}
+          label="數量"
           onChange={(e) => {
-            setConsumptionItemName(e.target.value);
-            const selected = inventoryData.find(
-              item => item.itemType === consumptionItemType && item.itemName === e.target.value
-            );
-            if (selected) setConsumptionItemId(selected.id);
+            if (e.target.value === "other") {
+              setConsumptionQuantity(""); // 清空，讓使用者輸入
+            } else {
+              setConsumptionQuantity(e.target.value);
+            }
           }}
         >
-          <MenuItem value=""><em>全部</em></MenuItem>
-          {inventoryData
-            .filter(item => item.itemType === consumptionItemType && parseInt(item.quantity, 10) > 0)
-            .map((item) => (
-              <MenuItem key={item.id} value={item.itemName}>
-                {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
-              </MenuItem>
-            ))}
+          {[...Array(10)].map((_, i) => (
+            <MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>
+          ))}
+          <MenuItem value="other">其他</MenuItem>
         </Select>
       </FormControl>
     </Box>
-
-    {/* 數量選擇：下拉 1–10 + 自訂 */}
-    <FormControl fullWidth required>
-      <InputLabel id="consumption-quantity-label">數量</InputLabel>
-      <Select
-        labelId="consumption-quantity-label"
-        value={consumptionQuantity <= 10 ? consumptionQuantity : "other"}
-        label="數量"
-        onChange={(e) => {
-          if (e.target.value === "other") {
-            setConsumptionQuantity(""); // 清空，讓使用者輸入
-          } else {
-            setConsumptionQuantity(e.target.value);
-          }
-        }}
-      >
-        {[...Array(10)].map((_, i) => (
-          <MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>
-        ))}
-        <MenuItem value="other">其他</MenuItem>
-      </Select>
-    </FormControl>
 
     {/* 如果選了 "其他"，顯示輸入框 */}
     {consumptionQuantity === "" && (
@@ -707,6 +683,33 @@ const handleConsumption = async (operation) => {
         fullWidth
       />
     )}
+
+    {/* 物品名稱獨立一行 */}
+    <FormControl fullWidth required disabled={!consumptionItemType}>
+      <InputLabel id="consumption-item-name-label">物品名稱</InputLabel>
+      <Select
+        labelId="consumption-item-name-label"
+        value={consumptionItemName}
+        label="物品名稱"
+        onChange={(e) => {
+          setConsumptionItemName(e.target.value);
+          const selected = inventoryData.find(
+            item => item.itemType === consumptionItemType && item.itemName === e.target.value
+          );
+          if (selected) setConsumptionItemId(selected.id);
+        }}
+      >
+        <MenuItem value=""><em>全部</em></MenuItem>
+        {inventoryData
+          .filter(item => item.itemType === consumptionItemType && parseInt(item.quantity, 10) > 0)
+          .map((item) => (
+            <MenuItem key={item.id} value={item.itemName}>
+              {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
+            </MenuItem>
+          ))}
+      </Select>
+    </FormControl>
+
 
     {/* 按鈕 */}
     <Box sx={{ display: 'flex', gap: 2 }}>
