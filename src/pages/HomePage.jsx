@@ -622,67 +622,55 @@ const handleConsumption = async (operation) => {
   <Typography variant="h4" component="h1" gutterBottom align="center">
     減掉消耗
   </Typography>
-
   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, my: 3 }}>
-    
-    {/* 物品種類 + 數量並排 */}
-    <Box sx={{ display: 'flex', gap: 2 }}>
-      {/* 物品種類 */}
-      <FormControl fullWidth required>
-        <InputLabel id="consumption-item-type-label">物品種類</InputLabel>
-        <Select
-          labelId="consumption-item-type-label"
-          value={consumptionItemType}
-          label="物品種類"
-          onChange={(e) => {
-            setConsumptionItemType(e.target.value);
-            setConsumptionItemName("");
-            setConsumptionItemId("");
-          }}
-        >
-          <MenuItem value=""><em>全部</em></MenuItem>
-          {[...new Set(inventoryData.map(item => item.itemType))].map((type) => (
-            <MenuItem key={type} value={type}>{type}</MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-
-      {/* 數量選擇 */}
-      <FormControl fullWidth required>
-        <InputLabel id="consumption-quantity-label">數量</InputLabel>
-        <Select
-          labelId="consumption-quantity-label"
-          value={consumptionQuantity <= 10 ? consumptionQuantity : "other"}
-          label="數量"
-          onChange={(e) => {
-            if (e.target.value === "other") {
-              setConsumptionQuantity(""); // 清空，讓使用者輸入
-            } else {
-              setConsumptionQuantity(e.target.value);
-            }
-          }}
-        >
-          {[...Array(10)].map((_, i) => (
-            <MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>
-          ))}
-          <MenuItem value="other">其他</MenuItem>
-        </Select>
-      </FormControl>
-    </Box>
-
-    {/* 如果選了 "其他"，顯示輸入框 */}
-    {consumptionQuantity === "" && (
-      <TextField
-        label="自訂數量"
-        type="number"
-        value={consumptionQuantity}
-        onChange={(e) => setConsumptionQuantity(e.target.value)}
-        InputProps={{
-          inputProps: { min: 1 },
+  
+  {/* 物品種類 + 數量並排 */}
+  <Box sx={{ display: 'flex', gap: 2 }}>
+    {/* 物品種類 */}
+    <FormControl sx={{ flex: 1 }} required>
+      <InputLabel id="consumption-item-type-label">物品種類</InputLabel>
+      <Select
+        labelId="consumption-item-type-label"
+        value={consumptionItemType}
+        label="物品種類"
+        onChange={(e) => {
+          setConsumptionItemType(e.target.value);
+          setConsumptionItemName("");
+          setConsumptionItemId("");
         }}
-        fullWidth
+      >
+        <MenuItem value=""><em>全部</em></MenuItem>
+        {[...new Set(inventoryData.map(item => item.itemType))].map((type) => (
+          <MenuItem key={type} value={type}>{type}</MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+
+    {/* 數量選擇 */}
+    <Box sx={{ flex: 1 }}>
+      <Autocomplete
+        freeSolo                 // ✅ 允許自由輸入
+        disablePortal
+        options={[...Array(10)].map((_, i) => (i + 1).toString())} // 1–10 選項
+        value={consumptionQuantity?.toString() || ""}
+        onChange={(e, newValue) => setConsumptionQuantity(newValue)}
+        onInputChange={(e, newInputValue) => setConsumptionQuantity(newInputValue)}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="數量"
+            type="number"
+            required
+            InputProps={{
+              ...params.InputProps,
+              inputProps: { ...params.inputProps, min: 1 },
+            }}
+          />
+        )}
       />
-    )}
+    </Box>
+  </Box>
+
 
     {/* 物品名稱獨立一行 */}
     <FormControl fullWidth required disabled={!consumptionItemType}>
