@@ -1984,3 +1984,18 @@
 [debug] [2026-01-12T08:02:29.589Z] Checked if tokens are valid: true, expires at: 1768207418959
 [debug] [2026-01-12T08:02:29.590Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
 [debug] [2026-01-12T08:02:30.082Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-01-12T08:08:27.462Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-12T08:08:27.464Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-01-12T08:08:27.465Z] Checked if tokens are valid: true, expires at: 1768207418959
+[debug] [2026-01-12T08:08:27.466Z] Checked if tokens are valid: true, expires at: 1768207418959
+[debug] [2026-01-12T08:08:27.466Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-12T08:08:27.466Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-01-12T08:08:27.467Z] Checked if tokens are valid: true, expires at: 1768207418959
+[debug] [2026-01-12T08:08:27.467Z] Checked if tokens are valid: true, expires at: 1768207418959
+[debug] [2026-01-12T08:08:27.469Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-01-12T08:08:27.474Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-01-12T08:08:27.999Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
