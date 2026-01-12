@@ -566,9 +566,9 @@ const handleAddToBuy = async () => {
         onChange={(e) => setNewPriority(e.target.value)}
         label="優先度"
       >
-        <MenuItem value="高">高</MenuItem>
-        <MenuItem value="中">中</MenuItem>
-        <MenuItem value="低">低</MenuItem>
+        <MenuItem value="高">高(紅色)</MenuItem>
+        <MenuItem value="中">中(橙色)</MenuItem>
+        <MenuItem value="低">低(黑色)</MenuItem>
       </Select>
     </FormControl>
   </Box>

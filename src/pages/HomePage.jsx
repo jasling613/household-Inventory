@@ -24,13 +24,13 @@ import {
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs from 'dayjs';
+import 'dayjs/locale/zh-cn';
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import Checkbox from "@mui/material/Checkbox";   // 如果有用到勾選框
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import CustomCalendarHeader from '../components/CustomCalendarHeader';
 import ToBuyList from './ToBuyList';
@@ -77,6 +77,8 @@ function HomePage() {
 
   // Consumption state
   const [consumptionItemId, setConsumptionItemId] = useState('');
+  const [consumptionItemType, setConsumptionItemType] = useState(""); 
+  const [consumptionItemName, setConsumptionItemName] = useState("");
   const [consumptionQuantity, setConsumptionQuantity] = useState(1);
   const [consumptionError, setConsumptionError] = useState(null);
   const [isConsuming, setIsConsuming] = useState(false);
@@ -330,7 +332,7 @@ function HomePage() {
         setFormError(`無法新增物品：${error.message}`);
     }
   };
-// 扣減
+// 扣減 / 增加
 const handleConsumption = async (operation) => {
   if (!consumptionItemId) {
     setConsumptionError('請選擇要消耗的物品 ID。');
@@ -363,7 +365,6 @@ const handleConsumption = async (operation) => {
   setIsConsuming(true);
   setConsumptionError(null);
 
-  
   try {
     // --- 呼叫 update-data ---
     const response = await fetch('/api/update-data', {
@@ -372,7 +373,7 @@ const handleConsumption = async (operation) => {
       body: JSON.stringify({ id: consumptionItemId, newQuantity }),
     });
 
-    const raw = await response.text(); // 只讀一次
+    const raw = await response.text();
     let result;
     try {
       result = JSON.parse(raw);
@@ -398,7 +399,7 @@ const handleConsumption = async (operation) => {
         }),
       });
 
-      const rawLog = await logRes.text(); // 只讀一次
+      const rawLog = await logRes.text();
       let logResult;
       try {
         logResult = JSON.parse(rawLog);
@@ -416,9 +417,13 @@ const handleConsumption = async (operation) => {
       console.error("❌ ActionLog error:", logError);
     }
 
+    // ✅ 成功後重置所有選擇
     setIsConsuming(false);
+    setConsumptionItemType('');
+    setConsumptionItemName('');
     setConsumptionItemId('');
     setConsumptionQuantity(1);
+
     setTimeout(() => loadSheetDataForReading(), 500);
 
   } catch (error) {
@@ -427,6 +432,7 @@ const handleConsumption = async (operation) => {
     setConsumptionError(`無法更新數量：${error.message}`);
   }
 };
+
 
 
   const filteredInventoryData = inventoryData.filter(item => {
@@ -500,16 +506,28 @@ const handleConsumption = async (operation) => {
                         <FormControl fullWidth required disabled={!itemType} sx={{ flex: 2 }}>
                             <InputLabel id="item-name-label">物品名稱</InputLabel>
                             <Select
-                                labelId="item-name-label"
-                                value={itemName}
-                                label="物品名稱"
-                                onChange={handleItemNameChange}
-                            >
-                                {itemNameOptions.map(name => (
-                                    <MenuItem key={name} value={name}>{name}</MenuItem>
-                                ))
-                                }
-                            </Select>
+  labelId="consumption-item-name-label"
+  value={consumptionItemName}
+  label="物品名稱"
+  onChange={(e) => {
+    setConsumptionItemName(e.target.value);
+    const selected = inventoryData.find(
+      item => item.itemType === consumptionItemType && item.itemName === e.target.value
+    );
+    if (selected) {
+      setConsumptionItemId(selected.id);   // ✅ 設定物品 ID
+    }
+  }}
+>
+  {inventoryData
+    .filter(item => item.itemType === consumptionItemType && parseInt(item.quantity, 10) > 0)
+    .map((item) => (
+      <MenuItem key={item.id} value={item.itemName}>
+        {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
+      </MenuItem>
+    ))}
+</Select>
+
                         </FormControl>
                         <Autocomplete
                             value={quantity.toString()}
@@ -601,60 +619,121 @@ const handleConsumption = async (operation) => {
                 </Box>
 
                 <Box sx={{ mt: 6 }}>
-                  <Typography variant="h4" component="h1" gutterBottom align="center">
-                    減掉消耗
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, my: 3 }}>
-                    <FormControl fullWidth required>
-                      <InputLabel id="consumption-item-id-label">物品 ID</InputLabel>
-                      <Select
-                        labelId="consumption-item-id-label"
-                        value={consumptionItemId}
-                        label="物品 ID"
-                        onChange={(e) => setConsumptionItemId(e.target.value)}
-                        >
-                        {inventoryData
-                          .filter(item => parseInt(item.quantity, 10) > 0)   // 👈 只顯示數量大於 0
-                          .map((item) => (
-                            <MenuItem key={item.id} value={item.id}>
-                              {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
-                            </MenuItem>
-                          ))}
-                      </Select>
-                    </FormControl>
-                    <TextField
-                      label="數量"
-                      type="number"
-                      value={consumptionQuantity}
-                      onChange={(e) => setConsumptionQuantity(e.target.value)}
-                      required
-                      InputProps={{
-                        inputProps: { min: 1 },
-                      }}
-                    />
-                    <Box sx={{ display: 'flex', gap: 2 }}>
-                        <Button
-                          variant="contained"
-                          color="success"
-                          onClick={() => handleConsumption('add')}
-                          disabled={isConsuming}
-                          fullWidth
-                        >
-                          {isConsuming ? <CircularProgress size={24} /> : '增加'}
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="error"
-                          onClick={() => handleConsumption('subtract')}
-                          disabled={isConsuming}
-                          fullWidth
-                        >
-                          {isConsuming ? <CircularProgress size={24} /> : '扣減'}
-                        </Button>
-                    </Box>
-                  </Box>
-                  {consumptionError && <Alert severity="error" sx={{ mt: 2 }}>{consumptionError}</Alert>}
-                </Box>
+  <Typography variant="h4" component="h1" gutterBottom align="center">
+    減掉消耗
+  </Typography>
+
+  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, my: 3 }}>
+    
+    {/* 物品種類 + 物品名稱並排 */}
+    <Box sx={{ display: 'flex', gap: 2 }}>
+      <FormControl fullWidth required>
+        <InputLabel id="consumption-item-type-label">物品種類</InputLabel>
+        <Select
+          labelId="consumption-item-type-label"
+          value={consumptionItemType}
+          label="物品種類"
+          onChange={(e) => {
+            setConsumptionItemType(e.target.value);
+            setConsumptionItemName("");
+            setConsumptionItemId("");
+          }}
+        >
+          <MenuItem value=""><em>全部</em></MenuItem>
+          {[...new Set(inventoryData.map(item => item.itemType))].map((type) => (
+            <MenuItem key={type} value={type}>{type}</MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+
+      <FormControl fullWidth required disabled={!consumptionItemType}>
+        <InputLabel id="consumption-item-name-label">物品名稱</InputLabel>
+        <Select
+          labelId="consumption-item-name-label"
+          value={consumptionItemName}
+          label="物品名稱"
+          onChange={(e) => {
+            setConsumptionItemName(e.target.value);
+            const selected = inventoryData.find(
+              item => item.itemType === consumptionItemType && item.itemName === e.target.value
+            );
+            if (selected) setConsumptionItemId(selected.id);
+          }}
+        >
+          <MenuItem value=""><em>全部</em></MenuItem>
+          {inventoryData
+            .filter(item => item.itemType === consumptionItemType && parseInt(item.quantity, 10) > 0)
+            .map((item) => (
+              <MenuItem key={item.id} value={item.itemName}>
+                {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
+              </MenuItem>
+            ))}
+        </Select>
+      </FormControl>
+    </Box>
+
+    {/* 數量選擇：下拉 1–10 + 自訂 */}
+    <FormControl fullWidth required>
+      <InputLabel id="consumption-quantity-label">數量</InputLabel>
+      <Select
+        labelId="consumption-quantity-label"
+        value={consumptionQuantity <= 10 ? consumptionQuantity : "other"}
+        label="數量"
+        onChange={(e) => {
+          if (e.target.value === "other") {
+            setConsumptionQuantity(""); // 清空，讓使用者輸入
+          } else {
+            setConsumptionQuantity(e.target.value);
+          }
+        }}
+      >
+        {[...Array(10)].map((_, i) => (
+          <MenuItem key={i + 1} value={i + 1}>{i + 1}</MenuItem>
+        ))}
+        <MenuItem value="other">其他</MenuItem>
+      </Select>
+    </FormControl>
+
+    {/* 如果選了 "其他"，顯示輸入框 */}
+    {consumptionQuantity === "" && (
+      <TextField
+        label="自訂數量"
+        type="number"
+        value={consumptionQuantity}
+        onChange={(e) => setConsumptionQuantity(e.target.value)}
+        InputProps={{
+          inputProps: { min: 1 },
+        }}
+        fullWidth
+      />
+    )}
+
+    {/* 按鈕 */}
+    <Box sx={{ display: 'flex', gap: 2 }}>
+      <Button
+        variant="contained"
+        color="success"
+        onClick={() => handleConsumption('add')}
+        disabled={isConsuming}
+        fullWidth
+      >
+        {isConsuming ? <CircularProgress size={24} /> : '增加'}
+      </Button>
+      <Button
+        variant="contained"
+        color="error"
+        onClick={() => handleConsumption('subtract')}
+        disabled={isConsuming}
+        fullWidth
+      >
+        {isConsuming ? <CircularProgress size={24} /> : '扣減'}
+      </Button>
+    </Box>
+  </Box>
+
+  {consumptionError && <Alert severity="error" sx={{ mt: 2 }}>{consumptionError}</Alert>}
+</Box>
+
 
 
                 <Box sx={{ mt: 6 }}>
