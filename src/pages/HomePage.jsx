@@ -503,32 +503,30 @@ const handleConsumption = async (operation) => {
                         </Select>
                     </FormControl>
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'start' }}>
-                        <FormControl fullWidth required disabled={!itemType} sx={{ flex: 2 }}>
+                      <FormControl fullWidth required disabled={!itemType} sx={{ flex: 2 }}>
                             <InputLabel id="item-name-label">物品名稱</InputLabel>
                             <Select
-  labelId="consumption-item-name-label"
-  value={consumptionItemName}
-  label="物品名稱"
-  onChange={(e) => {
-    setConsumptionItemName(e.target.value);
-    const selected = inventoryData.find(
-      item => item.itemType === consumptionItemType && item.itemName === e.target.value
-    );
-    if (selected) {
-      setConsumptionItemId(selected.id);   // ✅ 設定物品 ID
-    }
-  }}
->
-  {inventoryData
-    .filter(item => item.itemType === consumptionItemType && parseInt(item.quantity, 10) > 0)
-    .map((item) => (
-      <MenuItem key={item.id} value={item.itemName}>
-        {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
-      </MenuItem>
-    ))}
-</Select>
+                              labelId="item-name-label"
+                              value={itemName}
+                              label="物品名稱"
+                              onChange={(e) => {
+                                const selectedName = e.target.value;
+                                setItemName(selectedName);
+                                // 從 goodsIdData 找出對應的物品種類 ID
+                                const selectedGood = goodsIdData.find(
+                                  item => item.type === itemType && item.name === selectedName
+                                );
+                                if (selectedGood) {
+                                  setItemTypeId(selectedGood.id);   // ✅ 正確設定物品種類 ID
+                                }
+                              }}
+                            >
+                              {itemNameOptions.map((name, idx) => (
+                                <MenuItem key={idx} value={name}>{name}</MenuItem>
+                              ))}
+                            </Select>
+                          </FormControl>
 
-                        </FormControl>
                         <Autocomplete
                             value={quantity.toString()}
                             onChange={(event, newValue) => {
