@@ -900,6 +900,17 @@ const handleConsumption = async (operation) => {
                                       <Typography align="center">目前沒有任何物品符合篩選條件</Typography>
                                     )}
                                   </List>
+                                      {/* ✅ 總數量顯示 */}
+                                          <Box 
+                                            sx={{ mt: 2,
+                                                  p: 2, border: '1px solid',
+                                                  borderColor: 'grey.300',
+                                                  borderRadius: 1,
+                                                  textAlign: 'right', 
+                                                  }} 
+                                                  >
+                                            <Typography variant="h6">總數量: {totalQuantity}</Typography>
+                                          </Box>
                                 </Box>
                               )}
 
