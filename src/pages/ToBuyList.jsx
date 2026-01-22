@@ -805,13 +805,25 @@ const handleAddToBuy = async () => {
       )}
     />
 
-    <TextField
-      label="數量"
-      type="number"
-      value={formData.quantity}
-      onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-      fullWidth sx={{ mb: 2 }}
-    />
+<Autocomplete
+  freeSolo
+  disablePortal
+  options={quantityOptions}              // 下拉選項：1–10
+  value={formData.quantity.toString()}   // 顯示目前數量
+  onChange={(event, newValue) => {
+    setFormData({ ...formData, quantity: parseInt(newValue, 10) || 1 });
+  }}
+  onInputChange={(event, newInputValue) => {
+    const newQuantity = parseInt(newInputValue, 10);
+    if (!isNaN(newQuantity) && newQuantity > 0) {
+      setFormData({ ...formData, quantity: newQuantity });
+    }
+  }}
+  renderInput={(params) => (
+    <TextField {...params} label="數量" type="number" fullWidth sx={{ mb: 2 }} />
+  )}
+/>
+
 
     <TextField
       label="單價"
