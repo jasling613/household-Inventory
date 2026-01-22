@@ -49,8 +49,9 @@ function ToBuyList({ onBack }) {
     unitPrice: "",
   });
   
-  const handleOpenDialog = ({ itemName, quantity, location, unitPrice }) => {
+  const handleOpenDialog = ({  id,itemName, quantity, location, unitPrice }) => {
     setFormData({
+      id: id || "", 
       itemName: itemName || "",
       quantity: Number(quantity) || 1,
       location: location || "",
@@ -313,38 +314,55 @@ const handleAddToInventory = async () => {
     newQuantity: "加入庫存",
   };
   
-
-  try {
-    // ActionLog
-    await fetch("/api/log-action", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payloadLog),
-    });
-
-    // HouseInventory
-    const response = await fetch("/api/add-data", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ newRow: newInventoryRow }),
-    });
-
-    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-    const result = await response.json();
-    if (!result.success) {
-      console.error("寫入 HouseInventory 失敗:", result.message);
-    }
-
-    // ✅ 新增成功後，更新下一個流水號 
-    const num = parseInt(nextInventoryId, 10); 
+  
+    try {
+      // 1️⃣ 寫入 ActionLog
+      await fetch("/api/log-action", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payloadLog),
+      });
+  
+      // 2️⃣ 新增到 HouseInventory
+      const response = await fetch("/api/add-data", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ newRow: newInventoryRow }),
+      });
+  
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+      const result = await response.json();
+      if (!result.success) {
+        console.error("寫入 HouseInventory 失敗:", result.message);
+      }
+  
+      // 3️⃣ 更新 ToBuyList → 用 ID 更新數量、地點、單價
+      const payloadToBuyUpdate = {
+        action: "updateDetails",
+        id: formData.id,                        // ✅ 現在有值了
+        quantity: Number(formData.quantity),    // 確保是數字
+        location: formData.location,
+        unitPrice: Number(formData.unitPrice),  // 確保是數字
+      };
+      
+  
+      await fetch("/api/add-to-buy", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payloadToBuyUpdate),
+      });
+  
+      // ✅ 更新成功後，流水號 + 關閉 Dialog
+      const num = parseInt(nextInventoryId, 10); 
       const nextId = String(num + 1).padStart(6, "0"); 
       setNextInventoryId(nextId); 
       setOpen(false); 
-      } catch (err) 
-      { console.error("Error adding to HouseInventory:", err); 
-      } 
-      };
+  
+    } catch (err) {
+      console.error("Error adding to HouseInventory / updating ToBuyList:", err);
+    }
+  };
+  
 
 // ➕ 新增待買項目
 const handleAddToBuy = async () => {
@@ -566,9 +584,9 @@ const handleAddToBuy = async () => {
         onChange={(e) => setNewPriority(e.target.value)}
         label="優先度"
       >
-        <MenuItem value="高">高</MenuItem>
-        <MenuItem value="中">中</MenuItem>
-        <MenuItem value="低">低</MenuItem>
+        <MenuItem value="高">高(紅色)</MenuItem>
+        <MenuItem value="中">中(橙色)</MenuItem>
+        <MenuItem value="低">低(黑色)</MenuItem>
       </Select>
     </FormControl>
   </Box>
@@ -713,7 +731,7 @@ const handleAddToBuy = async () => {
             {/* 右側按鈕 */}
             <IconButton
               onClick={() =>
-                handleOpenDialog({ itemName, quantity, location, unitPrice })
+                handleOpenDialog({ id,itemName, quantity, location, unitPrice })
               }
             >
               <AddIcon />

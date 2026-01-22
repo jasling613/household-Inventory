@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { action, newRow, id, status, priority, quantity, location } = req.body;
+    const { action, newRow, id, status, priority, quantity, location, unitPrice } = req.body;
 
     // 建立 Google Sheets 驗證
     const auth = new google.auth.JWT({
@@ -94,36 +94,6 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, message: "Priority updated successfully" });
     }
 
-    // ✏️ 更新數量
-    if (action === "updateQuantity") {
-      if (!id || quantity === undefined) {
-        return res.status(400).json({ success: false, message: "Missing id or quantity" });
-      }
-
-      const readRes = await sheets.spreadsheets.values.get({
-        spreadsheetId,
-        range: "ToBuyList!A2:G",
-      });
-
-      const rows = readRes.data.values || [];
-      const rowIndex = rows.findIndex((row) => row[0].trim() === id.trim());
-
-      if (rowIndex === -1) {
-        return res.status(404).json({ success: false, message: "ID not found in sheet" });
-      }
-
-      const rowNumber = rowIndex + 2;
-
-      await sheets.spreadsheets.values.update({
-        spreadsheetId,
-        range: `ToBuyList!C${rowNumber}`, // C 欄是數量
-        valueInputOption: "USER_ENTERED",
-        resource: { values: [[quantity]] },
-      });
-
-      return res.status(200).json({ success: true, message: "Quantity updated successfully" });
-    }
-
     // ✏️ 更新購買地點
     if (action === "updateLocation") {
       if (!id || !location) {
@@ -152,6 +122,36 @@ export default async function handler(req, res) {
       });
 
       return res.status(200).json({ success: true, message: "Location updated successfully" });
+    }
+
+    // ✏️ 更新數量 + 地點 + 單價
+    if (action === "updateDetails") {
+      if (!id) {
+        return res.status(400).json({ success: false, message: "Missing id" });
+      }
+
+      const readRes = await sheets.spreadsheets.values.get({
+        spreadsheetId,
+        range: "ToBuyList!A2:G",
+      });
+
+      const rows = readRes.data.values || [];
+      const rowIndex = rows.findIndex((row) => row[0].trim() === id.trim());
+
+      if (rowIndex === -1) {
+        return res.status(404).json({ success: false, message: "ID not found in sheet" });
+      }
+
+      const rowNumber = rowIndex + 2;
+
+      await sheets.spreadsheets.values.update({
+        spreadsheetId,
+        range: `ToBuyList!C${rowNumber}:E${rowNumber}`, // C:E 欄 → 數量、地點、單價
+        valueInputOption: "USER_ENTERED",
+        resource: { values: [[quantity, location, unitPrice]] },
+      });
+
+      return res.status(200).json({ success: true, message: "Details updated successfully" });
     }
 
     // 如果 action 不符合任何分支

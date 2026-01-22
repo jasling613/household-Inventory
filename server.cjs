@@ -120,7 +120,7 @@ app.post('/api/update-data', async (req, res) => {
 app.post('/api/add-to-buy', async (req, res) => {
   try {
     console.log("Received payload:", req.body);
-    const { action, newRow, id, status, priority, quantity } = req.body;
+    const { action, newRow, id, status, priority, quantity, location, unitPrice } = req.body;
 
     const auth = new google.auth.GoogleAuth({
       credentials,
@@ -142,7 +142,7 @@ app.post('/api/add-to-buy', async (req, res) => {
       return res.json({ success: true, message: "Item added successfully" });
     }
 
-    // ✏️ 更新狀態 ToBuyList
+    // ✏️ 更新狀態 ToBuyList (F 欄)
     if (action === "updateStatus") {
       if (!id || !status) {
         return res.json({ success: false, message: "Missing id or status" });
@@ -166,7 +166,7 @@ app.post('/api/add-to-buy', async (req, res) => {
       return res.json({ success: true, message: "Status updated successfully" });
     }
 
-    // ✏️ 更新優先度 ToBuyList
+    // ✏️ 更新優先度 ToBuyList (G 欄)
     if (action === "updatePriority") {
       if (!id || !priority) {
         return res.json({ success: false, message: "Missing id or priority" });
@@ -190,28 +190,33 @@ app.post('/api/add-to-buy', async (req, res) => {
       return res.json({ success: true, message: "Priority updated successfully" });
     }
 
-    // ✏️ 更新數量update ToBuyList
-    if (action === "updateQuantity") {
-      if (!id || quantity === undefined) {
-        return res.json({ success: false, message: "Missing id or quantity" });
-      }
-      const readRes = await sheets.spreadsheets.values.get({
-        spreadsheetId: SPREADSHEET_ID,
-        range: "ToBuyList!A:A",
-      });
-      const rows = readRes.data.values || [];
-      const rowIndex = rows.findIndex((row) => row[0] && row[0].trim() === id.trim());
-      if (rowIndex === -1) {
-        return res.json({ success: false, message: "ID not found in sheet" });
-      }
-      const rowNumber = rowIndex + 1;
-      await sheets.spreadsheets.values.update({
-        spreadsheetId: SPREADSHEET_ID,
-        range: `ToBuyList!C${rowNumber}`,
-        valueInputOption: "USER_ENTERED",
-        resource: { values: [[quantity]] },
-      });
-      return res.json({ success: true, message: "Quantity updated successfully" });
+// ✏️ 更新數量、地點、單價 ToBuyList (C:E 欄)
+if (action === "updateDetails") {
+  if (!id) {
+    return res.json({ success: false, message: "Missing id" });
+  }
+
+  const readRes = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: "ToBuyList!A:A",
+  });
+  const rows = readRes.data.values || [];
+  const rowIndex = rows.findIndex((row) => row[0] && row[0].trim() === id.trim());
+  if (rowIndex === -1) {
+    return res.json({ success: false, message: "ID not found in sheet" });
+  }
+  const rowNumber = rowIndex + 1;
+
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `ToBuyList!C${rowNumber}:E${rowNumber}`,
+    valueInputOption: "USER_ENTERED",
+    resource: {
+      values: [[quantity, location, unitPrice]],
+    },
+  });
+
+      return res.json({ success: true, message: "Details updated successfully" });
     }
 
     return res.json({ success: false, message: "Invalid action" });
@@ -220,6 +225,7 @@ app.post('/api/add-to-buy', async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 });
+
 
 //to-buy-list Location
 app.get('/api/get-locations', async (req, res) => {
@@ -242,6 +248,9 @@ app.get('/api/get-locations', async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
+
+
+
 
 //Log Action
 app.post('/api/log-action', async (req, res) => {
