@@ -2106,3 +2106,28 @@
 [debug] [2026-01-22T06:02:42.524Z] Checked if tokens are valid: true, expires at: 1769065360997
 [debug] [2026-01-22T06:02:42.524Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
 [debug] [2026-01-22T06:02:42.591Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-01-26T02:33:45.085Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-26T02:33:45.087Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-01-26T02:33:45.088Z] Checked if tokens are valid: false, expires at: 1769065360997
+[debug] [2026-01-26T02:33:45.089Z] Checked if tokens are valid: false, expires at: 1769065360997
+[debug] [2026-01-26T02:33:45.090Z] > refreshing access token with scopes: []
+[debug] [2026-01-26T02:33:45.093Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-01-26T02:33:45.094Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-26T02:33:45.099Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-26T02:33:45.100Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-01-26T02:33:45.100Z] Checked if tokens are valid: false, expires at: 1769065360997
+[debug] [2026-01-26T02:33:45.100Z] Checked if tokens are valid: false, expires at: 1769065360997
+[debug] [2026-01-26T02:33:45.101Z] > refreshing access token with scopes: []
+[debug] [2026-01-26T02:33:45.102Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-01-26T02:33:45.102Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-26T02:33:45.176Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-01-26T02:33:45.177Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-26T02:33:45.208Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-01-26T02:33:45.214Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-01-26T02:33:45.214Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-01-26T02:33:45.232Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-01-26T02:33:45.596Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403

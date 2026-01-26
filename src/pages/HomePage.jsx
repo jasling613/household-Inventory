@@ -670,32 +670,30 @@ const handleConsumption = async (operation) => {
   </Box>
 
 
-    {/* 物品名稱獨立一行 */}
-    <FormControl fullWidth required disabled={!consumptionItemType}>
-      <InputLabel id="consumption-item-name-label">物品名稱</InputLabel>
-      <Select
-        labelId="consumption-item-name-label"
-        value={consumptionItemName}
-        label="物品名稱"
-        onChange={(e) => {
-          setConsumptionItemName(e.target.value);
-          const selected = inventoryData.find(
-            item => item.itemType === consumptionItemType && item.itemName === e.target.value
-          );
-          if (selected) setConsumptionItemId(selected.id);
-        }}
-      >
-        <MenuItem value=""><em>全部</em></MenuItem>
-        {inventoryData
-          .filter(item => item.itemType === consumptionItemType && parseInt(item.quantity, 10) > 0)
-          .map((item) => (
-            <MenuItem key={item.id} value={item.itemName}>
-              {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
-            </MenuItem>
-          ))}
-      </Select>
-    </FormControl>
-
+     {/* 物品名稱獨立一行 */}
+     <FormControl fullWidth required disabled={!consumptionItemType}>
+  <InputLabel id="consumption-item-name-label">物品名稱</InputLabel>
+  <Select
+    labelId="consumption-item-name-label"
+    value={consumptionItemId}   // ✅ 用 ID 綁定
+    label="物品名稱"
+    onChange={(e) => {
+      const selectedId = e.target.value;
+      setConsumptionItemId(selectedId);
+      const selected = inventoryData.find(item => item.id === selectedId);
+      if (selected) setConsumptionItemName(selected.itemName);
+    }}
+  >
+    <MenuItem value=""><em>全部</em></MenuItem>
+    {inventoryData
+      .filter(item => item.itemType === consumptionItemType && parseInt(item.quantity, 10) > 0)
+      .map((item) => (
+        <MenuItem key={item.id} value={item.id}>
+          {formatId(item.id)} - {item.itemName} [現有庫存: {item.quantity}]
+        </MenuItem>
+      ))}
+  </Select>
+</FormControl>
 
     {/* 按鈕 */}
     <Box sx={{ display: 'flex', gap: 2 }}>
