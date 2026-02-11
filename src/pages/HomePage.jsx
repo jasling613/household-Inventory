@@ -157,8 +157,8 @@ function HomePage() {
             newQuantity: row[5],
           }));
           
-          // ✅ 按時間倒序排列（假設 timestamp 是 "DD-MM-YYYY HH:mm" 格式）
-          formattedLogs.sort((a, b) => dayjs(b.timestamp, "DD-MM-YYYY HH:mm").valueOf() - dayjs(a.timestamp, "DD-MM-YYYY HH:mm").valueOf());
+        // ✅ 直接依照 row 倒序排列 
+            formattedLogs.reverse();
           
           setLogs(formattedLogs);
           
@@ -494,7 +494,9 @@ const handleConsumption = async (operation) => {
                   <Button
                     variant="outlined"
                     color="success"
-                    onClick={() => setOpenDrawer(true)}
+                    onClick={() => {setOpenDrawer(true);
+                    loadSheetDataForReading(); // ✅ 打開時更新紀錄
+                    }}
                   >
                     查看紀錄
                   </Button>
