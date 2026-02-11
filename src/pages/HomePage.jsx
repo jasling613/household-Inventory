@@ -983,7 +983,10 @@ const handleConsumption = async (operation) => {
                           }
                         }}
                     >
-                      <Typography variant="h6" gutterBottom>操作紀錄</Typography>
+                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                      <Typography variant="h6">操作紀錄</Typography>
+                          <Button onClick={() => setOpenDrawer(false)} color="error">關閉</Button>
+                    </Box>
 
                       {logs.length === 0 ? (
                         <Typography align="center">尚無紀錄</Typography>
