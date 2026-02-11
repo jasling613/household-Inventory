@@ -155,7 +155,12 @@ function HomePage() {
             quantity: row[4],
             newQuantity: row[5],
           }));
+          
+          // ✅ 按時間倒序排列（假設 timestamp 是 "DD-MM-YYYY HH:mm" 格式）
+          formattedLogs.sort((a, b) => dayjs(b.timestamp, "DD-MM-YYYY HH:mm").valueOf() - dayjs(a.timestamp, "DD-MM-YYYY HH:mm").valueOf());
+          
           setLogs(formattedLogs);
+          
 
         },
         (reason) => {
