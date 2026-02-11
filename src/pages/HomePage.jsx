@@ -463,13 +463,6 @@ const handleConsumption = async (operation) => {
 
                   {/* 最右邊 按鈕群組 */}
                   <Box sx={{ display: 'flex', gap: 1 }}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => setShowSimplifiedInventory(!showSimplifiedInventory)}
-                  >
-                    {showSimplifiedInventory ? "完整庫存" : "簡化庫存"}
-                  </Button>
 
                     <Button
                       variant="outlined"
@@ -670,8 +663,8 @@ const handleConsumption = async (operation) => {
   </Box>
 
 
-     {/* 物品名稱獨立一行 */}
-     <FormControl fullWidth required disabled={!consumptionItemType}>
+    {/* 物品名稱獨立一行 */}
+    <FormControl fullWidth required disabled={!consumptionItemType}>
   <InputLabel id="consumption-item-name-label">物品名稱</InputLabel>
   <Select
     labelId="consumption-item-name-label"
@@ -694,6 +687,8 @@ const handleConsumption = async (operation) => {
       ))}
   </Select>
 </FormControl>
+
+
 
     {/* 按鈕 */}
     <Box sx={{ display: 'flex', gap: 2 }}>
@@ -721,10 +716,28 @@ const handleConsumption = async (operation) => {
   {consumptionError && <Alert severity="error" sx={{ mt: 2 }}>{consumptionError}</Alert>}
 </Box>
 
-
-
                 <Box sx={{ mt: 6 }}>
-                <Typography variant="h4" component="h1" gutterBottom align="center">庫存總覽</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+                    {/* 左邊空白佔位 */}
+                    <Box sx={{ flex: 1 }} />
+
+                    {/* 中間標題 */}
+                    <Typography variant="h4" component="h1" align="center">
+                      庫存總覽
+                    </Typography>
+
+                    {/* 右邊按鈕 */}
+                    <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => setShowSimplifiedInventory(!showSimplifiedInventory)}
+                      >
+                        {showSimplifiedInventory ? "完整庫存" : "簡化庫存"}
+                      </Button>
+                    </Box>
+                  </Box>
+
                     {loading ? (
                         <Box sx={{ display: 'flex', justifyContent: 'center', my: 5 }}><CircularProgress /></Box>
                     ) : error ? (

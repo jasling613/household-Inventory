@@ -2131,3 +2131,79 @@
 [debug] [2026-01-26T02:33:45.214Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
 [debug] [2026-01-26T02:33:45.232Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
 [debug] [2026-01-26T02:33:45.596Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-01-26T02:43:00.703Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-26T02:43:00.708Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-01-26T02:43:00.714Z] Checked if tokens are valid: true, expires at: 1769398424214
+[debug] [2026-01-26T02:43:00.718Z] Checked if tokens are valid: true, expires at: 1769398424214
+[debug] [2026-01-26T02:43:00.719Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-26T02:43:00.719Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-01-26T02:43:00.722Z] Checked if tokens are valid: true, expires at: 1769398424214
+[debug] [2026-01-26T02:43:00.723Z] Checked if tokens are valid: true, expires at: 1769398424214
+[debug] [2026-01-26T02:43:00.730Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-01-26T02:43:00.739Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-01-26T02:43:01.253Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
+[debug] [2026-01-26T02:43:01.253Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-01-26T02:43:01.340Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-26T02:43:01.346Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-01-26T02:43:01.347Z] Checked if tokens are valid: true, expires at: 1769398424214
+[debug] [2026-01-26T02:43:01.347Z] Checked if tokens are valid: true, expires at: 1769398424214
+[debug] [2026-01-26T02:43:01.347Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-01-26T02:43:01.387Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-01-26T02:43:01.388Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-01-26T02:43:01.388Z] Checked if tokens are valid: true, expires at: 1769398424214
+[debug] [2026-01-26T02:43:01.388Z] Checked if tokens are valid: true, expires at: 1769398424214
+[debug] [2026-01-26T02:43:01.402Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-01-26T02:43:01.694Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
+[debug] [2026-01-26T02:43:01.695Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-01-26T02:43:01.789Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
+[debug] [2026-01-26T02:43:01.793Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[debug] [2026-01-26T02:43:01.998Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-11T01:25:48.880Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-11T01:25:48.881Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-02-11T01:25:48.890Z] Checked if tokens are valid: false, expires at: 1769398424214
+[debug] [2026-02-11T01:25:48.891Z] Checked if tokens are valid: false, expires at: 1769398424214
+[debug] [2026-02-11T01:25:48.891Z] > refreshing access token with scopes: []
+[debug] [2026-02-11T01:25:48.899Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-11T01:25:48.899Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-11T01:25:48.907Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-11T01:25:48.907Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-02-11T01:25:48.907Z] Checked if tokens are valid: false, expires at: 1769398424214
+[debug] [2026-02-11T01:25:48.907Z] Checked if tokens are valid: false, expires at: 1769398424214
+[debug] [2026-02-11T01:25:48.907Z] > refreshing access token with scopes: []
+[debug] [2026-02-11T01:25:48.908Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2026-02-11T01:25:48.908Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-11T01:25:48.959Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-11T01:25:48.960Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-11T01:25:48.981Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-02-11T01:25:49.008Z] <<< [apiv2][status] POST https://www.googleapis.com/oauth2/v3/token 200
+[debug] [2026-02-11T01:25:49.009Z] <<< [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]
+[debug] [2026-02-11T01:25:49.022Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-02-11T01:25:50.194Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
+[debug] [2026-02-11T01:25:50.195Z] <<< [apiv2][body] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo {"error":{"code":403,"message":"The caller does not have permission","status":"PERMISSION_DENIED"}}
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[error] Failed to fetch Firebase Project from Studio Workspace because WORKSPACE_SLUG environment variable is empty
+[debug] [2026-02-11T01:25:50.214Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-11T01:25:50.214Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-02-11T01:25:50.214Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/userinfo.email"]
+[debug] [2026-02-11T01:25:50.214Z] > authorizing via signed-in user (jasling613@gmail.com)
+[debug] [2026-02-11T01:25:50.214Z] Checked if tokens are valid: true, expires at: 1770776748009
+[debug] [2026-02-11T01:25:50.215Z] Checked if tokens are valid: true, expires at: 1770776748009
+[debug] [2026-02-11T01:25:50.217Z] Checked if tokens are valid: true, expires at: 1770776748009
+[debug] [2026-02-11T01:25:50.217Z] Checked if tokens are valid: true, expires at: 1770776748009
+[debug] [2026-02-11T01:25:50.217Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-02-11T01:25:50.218Z] >>> [apiv2][query] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo [none]
+[debug] [2026-02-11T01:25:50.226Z] <<< [apiv2][status] GET https://cloudbilling.googleapis.com/v1/projects/jaslinghome/billingInfo 403
