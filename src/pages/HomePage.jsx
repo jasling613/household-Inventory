@@ -92,6 +92,7 @@ function HomePage() {
   //Drawer
   const [openDrawer, setOpenDrawer] = useState(false);
   const [logs, setLogs] = useState([]);
+  const [visibleCount, setVisibleCount] = useState(10); // 預設顯示 10 筆
 
 
   const loadSheetDataForReading = useCallback(() => {
@@ -967,50 +968,56 @@ const handleConsumption = async (operation) => {
                 
             </Paper>
         </Container>
-        <Drawer
-  anchor="right"
-  open={openDrawer}
-  onClose={() => setOpenDrawer(false)}
->
-  <Box sx={{ width: 360, p: 2 }}>
-    <Typography variant="h6" gutterBottom>
-      操作紀錄
-    </Typography>
+        
 
-    {logs.length === 0 ? (
-      <Typography align="center">尚無紀錄</Typography>
-    ) : (
-      logs.map((log, idx) => (
-        <Card key={idx} sx={{ mb: 2 }}>
-          <CardContent>
-            <Typography variant="body2" color="text.secondary">
-              🕒 {log.timestamp}
-            </Typography>
-            <Typography
-              variant="subtitle1"
-              color={
-                log.action.includes("新增")
-                  ? "success.main"
-                  : log.action.includes("扣減")
-                  ? "error.main"
-                  : "warning.main"
-              }
-            >
-              動作：{log.action}
-            </Typography>
-            <Typography variant="body1">
-              物品：{log.itemName} (ID: {log.itemTypeId})
-            </Typography>
-            <Typography variant="body2">數量：{log.quantity}</Typography>
-            <Typography variant="body2" color="text.secondary">
-              新狀態：{log.newQuantity}
-            </Typography>
-          </CardContent>
-        </Card>
-      ))
-    )}
-  </Box>
-</Drawer>
+                  <Drawer
+                    anchor="right"
+                    open={openDrawer}
+                    onClose={() => setOpenDrawer(false)}
+                  >
+                    <Box sx={{ width: 360, p: 2, height: "100%", overflowY: "auto" }}
+                        onScroll={(e) => {
+                          const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+                          if (bottom && visibleCount < logs.length) {
+                            setVisibleCount((prev) => prev + 10);   // ✅ 滑到底自動載入更多
+                          }
+                        }}
+                    >
+                      <Typography variant="h6" gutterBottom>操作紀錄</Typography>
+
+                      {logs.length === 0 ? (
+                        <Typography align="center">尚無紀錄</Typography>
+                      ) : (
+                        logs.slice(0, visibleCount).map((log, idx) => (
+                          <Card key={idx} sx={{ mb: 2 }}>
+                            <CardContent>
+                              <Typography variant="body2" color="text.secondary">🕒 {log.timestamp}</Typography>
+                              <Typography
+                                variant="subtitle1"
+                                color={
+                                  log.action.includes("新增")
+                                    ? "success.main"
+                                    : log.action.includes("扣減")
+                                    ? "error.main"
+                                    : "warning.main"
+                                }
+                              >
+                                動作：{log.action}
+                              </Typography>
+                              <Typography variant="body1">
+                                物品：{log.itemName} (ID: {log.itemTypeId})
+                              </Typography>
+                              <Typography variant="body2">數量：{log.quantity}</Typography>
+                              <Typography variant="body2" color="text.secondary">
+                                新狀態：{log.newQuantity}
+                              </Typography>
+                            </CardContent>
+                          </Card>
+                        ))
+                      )}
+                    </Box>
+                  </Drawer>
+
 
         </Box>
         )}
