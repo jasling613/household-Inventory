@@ -21,6 +21,9 @@ import {
   InputAdornment,
   Autocomplete,
   Avatar,
+  Drawer,
+  Card,
+  CardContent,
 } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -85,7 +88,11 @@ function HomePage() {
 
   //To Buy List
   const [showToBuyList, setShowToBuyList] = useState(false);
-  
+
+  //Drawer
+  const [openDrawer, setOpenDrawer] = useState(false);
+  const [logs, setLogs] = useState([]);
+
 
   const loadSheetDataForReading = useCallback(() => {
     setLoading(true);
@@ -98,7 +105,7 @@ function HomePage() {
     window.gapi.client.sheets.spreadsheets.values
       .batchGet({
         spreadsheetId: SPREADSHEET_ID,
-        ranges: ['HouseInventory!A2:I', 'GoodsID!A2:C', 'Location!A2:A'],
+        ranges: ['HouseInventory!A2:I', 'GoodsID!A2:C', 'Location!A2:A','ActionLog!A2:F'],
       })
       .then(
         (response) => {
@@ -136,6 +143,20 @@ function HomePage() {
           const uniqueTypes = [...new Set(goodsData.map(item => item.type))];
           setItemTypeOptions(uniqueTypes);
           setLoading(false);
+
+          //Drawer
+          const actionLogRows = response.result.valueRanges[3].values || [];
+          const formattedLogs = actionLogRows.map((row, index) => ({
+            id: index,
+            timestamp: row[0],
+            action: row[1],
+            itemTypeId: row[2],
+            itemName: row[3],
+            quantity: row[4],
+            newQuantity: row[5],
+          }));
+          setLogs(formattedLogs);
+
         },
         (reason) => {
           console.error('Error fetching data: ', reason.result);
@@ -463,6 +484,15 @@ const handleConsumption = async (operation) => {
 
                   {/* 最右邊 按鈕群組 */}
                   <Box sx={{ display: 'flex', gap: 1 }}>
+
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    onClick={() => setOpenDrawer(true)}
+                  >
+                    查看紀錄
+                  </Button>
+
 
                     <Button
                       variant="outlined"
@@ -932,6 +962,51 @@ const handleConsumption = async (operation) => {
                 
             </Paper>
         </Container>
+        <Drawer
+  anchor="right"
+  open={openDrawer}
+  onClose={() => setOpenDrawer(false)}
+>
+  <Box sx={{ width: 360, p: 2 }}>
+    <Typography variant="h6" gutterBottom>
+      操作紀錄
+    </Typography>
+
+    {logs.length === 0 ? (
+      <Typography align="center">尚無紀錄</Typography>
+    ) : (
+      logs.map((log, idx) => (
+        <Card key={idx} sx={{ mb: 2 }}>
+          <CardContent>
+            <Typography variant="body2" color="text.secondary">
+              🕒 {log.timestamp}
+            </Typography>
+            <Typography
+              variant="subtitle1"
+              color={
+                log.action.includes("新增")
+                  ? "success.main"
+                  : log.action.includes("扣減")
+                  ? "error.main"
+                  : "warning.main"
+              }
+            >
+              動作：{log.action}
+            </Typography>
+            <Typography variant="body1">
+              物品：{log.itemName} (ID: {log.itemTypeId})
+            </Typography>
+            <Typography variant="body2">數量：{log.quantity}</Typography>
+            <Typography variant="body2" color="text.secondary">
+              新狀態：{log.newQuantity}
+            </Typography>
+          </CardContent>
+        </Card>
+      ))
+    )}
+  </Box>
+</Drawer>
+
         </Box>
         )}
     </LocalizationProvider>
