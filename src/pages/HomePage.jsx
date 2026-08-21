@@ -89,7 +89,7 @@ function HomePage() {
   //To Buy List
   const [showToBuyList, setShowToBuyList] = useState(false);
 
-  //Drawer
+  //Drawer 10
   const [openDrawer, setOpenDrawer] = useState(false);
   const [logs, setLogs] = useState([]);
   const [visibleCount, setVisibleCount] = useState(10); // 預設顯示 10 筆
